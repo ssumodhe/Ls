@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:29 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/04/21 19:03:17 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/04/24 18:17:56 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,50 @@
 
 int		main(int argc, char **argv)
 {
-	int		i;
-	int		j;
+	int			i;
+	t_option	*opt;
+	t_args		*args;
+//	t_option	*tmp_o;
+//	t_args		*tmp_a;
 
-	/*
-	** Check les illegal option
-	*/
+/*
+** - attention au ls tout seul
+** - attention au ls --
+*/
 
+	opt = NULL;
+	args = NULL;
 	i = 1;
-	while (i < argc)
+	if (argv[1][0] == '-') // pour recuperer les options
 	{
-		if (argv[i][0] == '-') // pour gerer les options.
+		while (i < argc && argv[i][0] == '-')
 		{
-			if (argv[i][1] && argv[i][1] == '-') // pour le ft_ls --
-			{
-			// pour le -- , sort quand meme illegal option quand juste --;	
-				if (argv[i][2] && argv[i][2] == '\0')
-				{
-					ft_putstr("hello\n");
-				}
-				else if (argv[i][2] && argv[i][2] != '\0')
-				{
-					ft_putstr("ft_ls: illegal option -- ");
-					ft_putchar(argv[i][1]);
-					ft_exit("\nusage: ft_ls [-lRart] [file ...]");
-				}
-			}
-			j = 1;
-			while (argv[i][j] != '\0')
-			{
-				if (argv[i][j] != 'l' && argv[i][j] != 'R' && argv[i][j] != 'a' \
-						&& argv[i][j] != 'r' && argv[i][j] != 't')
-				{
-					ft_putstr("ft_ls: illegal option -- ");
-					ft_putchar(argv[i][j]);
-					ft_exit("\nusage: ft_ls [-lRart] [file ...]");
-				}
-				j++;
-			}
+			opt = fill_option(i, argv[i], opt);
+			i++;
 		}
-		/*
-		else pour gerer les arguments.
-		*/
+	}
+	while (i < argc) // pour recuperer les arguments
+	{
+		args = fill_args(i, argv[i], args);
 		i++;
 	}
+
+/* // print les listes
+	tmp_o = opt;
+	while (tmp_o != NULL)
+	{
+		printf(BLUE"main - option | i = %d\topt = %s\n"RESET, tmp_o->i, tmp_o->opt);
+		tmp_o = tmp_o->next;
+	}
+	tmp_a = args;
+	while (tmp_a != NULL)
+	{
+		printf(BLUE"main - args | i = %d\targ = %s\n"RESET, tmp_a->i, tmp_a->arg);
+		tmp_a = tmp_a->next;
+	}
+*/
+
+	ft_prog(opt, args);
+
+	return (0);
 }
