@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/04/24 19:30:58 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/04/25 19:47:35 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 typedef struct		s_flags
 {
 	int		l;
-	int		R;
+	int		u_r;
 	int		a;
-	int		r;
+	int		l_r;
 	int		t;
 }					t_flags;
 
