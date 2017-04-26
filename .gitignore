@@ -1,0 +1,5 @@
+a.out
+ft_ls
+libft/*.o
+libft/*.a
+*.o
