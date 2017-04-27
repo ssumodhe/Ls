@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/04/25 19:47:35 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/04/27 18:10:03 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #define FT_LS_H
 
 #include "libft/libft.h"
+#include <dirent.h> //opendir etc
+#include <sys/errno.h> //errno's define
 
 typedef struct		s_flags
 {
@@ -35,6 +37,7 @@ typedef struct		s_args
 {
 	int					i;
 	char				*arg;
+	int					error;
 	struct s_args		*next;
 }					t_args;
 
