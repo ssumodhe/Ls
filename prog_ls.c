@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/04/27 19:04:00 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/04/28 17:02:38 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,25 +122,34 @@ void		check_args(t_args **args)
 		tmp = tmp->next;
 	}
 }
-/*
+
 void		remove_error_args(t_args **args)
 {
 	t_args	*tmp;
 	t_args	*prev;
 
 	prev = *args;
+	while (prev && prev->error == 2)
+	{
+		prev = prev->next;
+	}
+	*args = prev;
 	tmp = prev->next;
 	while (prev && tmp)
 	{
 		if (tmp->error == 2)
 		{
 		//	tmp = tmp->next;
-			prev = tmp;
+			//prev = tmp;
+			//tmp = tmp->next;
+			prev->next = tmp->next;
 			tmp = tmp->next;
 		}
+		else 
+			prev = prev->next;
 		tmp = tmp->next;
 	}
-}*/
+}
 
 void		ft_prog(t_option *opt, t_args *args)
 {
@@ -169,14 +178,14 @@ void		ft_prog(t_option *opt, t_args *args)
 		tmp = tmp->next;
 	}
 
-/*	remove_error_args(&args);
+	remove_error_args(&args);
 	tmp = args;
 	while (tmp != NULL)
 	{
 		printf(YELLOW"prog_ls - ascii | arg = %s, errno = %d\n"RESET, tmp->arg, tmp->error); //
 		tmp = tmp->next;
 	}
-*/
+
 }
 
 
