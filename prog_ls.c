@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/04/28 17:02:38 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/04/29 19:19:30 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,26 +103,32 @@ void		check_args(t_args **args)
 	tmp = *args;
 	while (tmp)
 	{
-		if ((!(dir = opendir(tmp->arg))) && (tmp->error = errno) == 2)
+		errno = 0;
+		if ((!(dir = opendir(tmp->arg))))
 		{
+			tmp->error = errno;
+			if (errno == 2)
+			{
 				ft_putstr(RESET); //
 				ft_putstr("ft_ls: ");
 				ft_putstr(tmp->arg);
 				ft_putendl(": No such file or directory");
+			}
 		}
 		else
 		{
-			ft_putstr(RESET); //
+			ft_putstr(GREEN"prog_ls - check_args: "); //
 			ft_putstr("OK: "); //
 			ft_putendl(tmp->arg); //
-			tmp->error = 0;
+			ft_putstr(RESET); //
+			tmp->error = errno;
 			if (closedir(dir) == -1)
 				ft_exit("We seem to reach a problem when closing the directory");
 		}
 		tmp = tmp->next;
 	}
 }
-
+/*
 void		remove_error_args(t_args **args)
 {
 	t_args	*tmp;
@@ -139,6 +145,7 @@ void		remove_error_args(t_args **args)
 	{
 		if (tmp->error == 2)
 		{
+			printf("args : %s\n", tmp->arg);
 		//	tmp = tmp->next;
 			//prev = tmp;
 			//tmp = tmp->next;
@@ -148,6 +155,32 @@ void		remove_error_args(t_args **args)
 		else 
 			prev = prev->next;
 		tmp = tmp->next;
+	}
+}
+*/
+
+
+
+void		remove_error_args(t_args **args)
+{
+	t_args 		*tmp;
+	t_args 		*prev;
+
+	tmp = *args;
+	if (tmp && tmp->error == 2)
+	{
+		tmp = tmp->next;
+		*args = tmp;
+		remove_error_args(args);
+	}
+	while (tmp)
+	{
+		if (tmp->next && tmp->next->error == 2)
+			tmp->next = tmp->next->next;
+		prev = tmp;
+		tmp = tmp->next;
+		if (tmp && tmp->error == 2)
+			prev->next = tmp->next;
 	}
 }
 
@@ -174,7 +207,7 @@ void		ft_prog(t_option *opt, t_args *args)
 	tmp = args;
 	while (tmp != NULL)
 	{
-		printf(CYAN"prog_ls - ascii | arg = %s, errno = %d\n"RESET, tmp->arg, tmp->error); //
+		printf(CYAN"prog_ls - args + errno | arg = %s, errno = %d\n"RESET, tmp->arg, tmp->error); //
 		tmp = tmp->next;
 	}
 
@@ -182,7 +215,7 @@ void		ft_prog(t_option *opt, t_args *args)
 	tmp = args;
 	while (tmp != NULL)
 	{
-		printf(YELLOW"prog_ls - ascii | arg = %s, errno = %d\n"RESET, tmp->arg, tmp->error); //
+		printf(YELLOW"prog_ls - args - errno==2 | arg = %s, errno = %d\n"RESET, tmp->arg, tmp->error); //
 		tmp = tmp->next;
 	}
 

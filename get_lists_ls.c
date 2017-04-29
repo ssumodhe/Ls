@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 16:14:40 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/04/25 19:47:37 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/04/29 19:12:23 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,6 @@ t_args	*fill_args(int i, char *arg, t_args *argmt)
 		new->next = NULL;
 		printf(GREEN"get_lists - args | i = %d\targ = %s\n"RESET, new->i, new->arg); //
 	}
-	ft_putstr(RESET);
+	ft_putstr(RESET); //
 	return (argmt);
 }
