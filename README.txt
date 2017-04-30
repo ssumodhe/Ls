@@ -1,0 +1,8 @@
+
+
+1 - Attention ls tout seul (le . est un directory qui contient tous les
+elements du fichiers sur lequel on travaille)
+2 - Attention ls --
+3 - Si ls -'' -> Segfault
+4 - Si aucun args -> Segfault
+
