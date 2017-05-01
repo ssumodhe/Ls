@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/04/29 19:19:30 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/01 17:27:40 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,33 +129,33 @@ void		check_args(t_args **args)
 	}
 }
 /*
-void		remove_error_args(t_args **args)
-{
-	t_args	*tmp;
-	t_args	*prev;
+   void		remove_error_args(t_args **args)
+   {
+   t_args	*tmp;
+   t_args	*prev;
 
-	prev = *args;
-	while (prev && prev->error == 2)
-	{
-		prev = prev->next;
-	}
-	*args = prev;
-	tmp = prev->next;
-	while (prev && tmp)
-	{
-		if (tmp->error == 2)
-		{
-			printf("args : %s\n", tmp->arg);
-		//	tmp = tmp->next;
-			//prev = tmp;
-			//tmp = tmp->next;
-			prev->next = tmp->next;
-			tmp = tmp->next;
-		}
-		else 
-			prev = prev->next;
-		tmp = tmp->next;
-	}
+   prev = *args;
+   while (prev && prev->error == 2)
+   {
+   prev = prev->next;
+   }
+ *args = prev;
+ tmp = prev->next;
+ while (prev && tmp)
+ {
+ if (tmp->error == 2)
+ {
+ printf("args : %s\n", tmp->arg);
+//	tmp = tmp->next;
+//prev = tmp;
+//tmp = tmp->next;
+prev->next = tmp->next;
+tmp = tmp->next;
+}
+else 
+prev = prev->next;
+tmp = tmp->next;
+}
 }
 */
 
@@ -192,31 +192,36 @@ void		ft_prog(t_option *opt, t_args *args)
 	flag = init_flag();
 	flag = check_opt(opt, flag);
 	printf(CYAN"prog_ls - flag | l = %d\tR = %d\ta = %d\tr = %d\tt = %d\n"RESET, flag.l, flag.u_r, flag.a, flag.l_r, flag.t); //
-	
-	ascii_order_args(&args);
 
-	tmp = args;
-	while (tmp != NULL)
+
+	if (args != NULL)
 	{
-		printf(CYAN"prog_ls - ascii | arg = %s\n"RESET, tmp->arg ); //
-		tmp = tmp->next;
-	}
+		ascii_order_args(&args);
 
-	check_args(&args);
+		tmp = args;
+		while (tmp != NULL)
+		{
+			printf(CYAN"prog_ls - ascii | arg = %s\n"RESET, tmp->arg ); //
+			tmp = tmp->next;
+		}
 
-	tmp = args;
-	while (tmp != NULL)
-	{
-		printf(CYAN"prog_ls - args + errno | arg = %s, errno = %d\n"RESET, tmp->arg, tmp->error); //
-		tmp = tmp->next;
-	}
 
-	remove_error_args(&args);
-	tmp = args;
-	while (tmp != NULL)
-	{
-		printf(YELLOW"prog_ls - args - errno==2 | arg = %s, errno = %d\n"RESET, tmp->arg, tmp->error); //
-		tmp = tmp->next;
+		check_args(&args);
+
+		tmp = args;
+		while (tmp != NULL)
+		{
+			printf(CYAN"prog_ls - args + errno | arg = %s, errno = %d\n"RESET, tmp->arg, tmp->error); //
+			tmp = tmp->next;
+		}
+
+		remove_error_args(&args);
+		tmp = args;
+		while (tmp != NULL)
+		{
+			printf(YELLOW"prog_ls - args - errno==2 | arg = %s, errno = %d\n"RESET, tmp->arg, tmp->error); //
+			tmp = tmp->next;
+		}
 	}
 
 }
