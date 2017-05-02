@@ -6,7 +6,7 @@
 #    By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/30 20:36:48 by ssumodhe          #+#    #+#              #
-#    Updated: 2017/04/24 18:04:03 by ssumodhe         ###   ########.fr        #
+#    Updated: 2017/05/02 17:13:41 by ssumodhe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ LIBFT = libft/libft.a
 SRCS = main_ls.c \
 	   get_lists_ls.c \
 	   prog_ls.c \
+	   process_args_ls.c \
 
 OBJS = $(SRCS:.c=.o)
 

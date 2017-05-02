@@ -6,16 +6,16 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/04/27 18:10:03 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/02 18:06:52 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
-#define FT_LS_H
+# define FT_LS_H
 
-#include "libft/libft.h"
-#include <dirent.h> //opendir etc
-#include <sys/errno.h> //errno's define
+# include "libft/libft.h"
+# include <dirent.h> //opendir etc
+# include <sys/errno.h> //errno's define
 
 typedef struct		s_flags
 {
@@ -38,6 +38,8 @@ typedef struct		s_args
 	int					i;
 	char				*arg;
 	int					error;
+	struct dirent		*d;
+	struct s_args		*bellow;
 	struct s_args		*next;
 }					t_args;
 
@@ -51,5 +53,10 @@ t_args				*fill_args(int i, char *arg, t_args *argmt);
 ** prog_ls.c
 */
 void				ft_prog(t_option *opt, t_args *args);
+
+/*
+** process_args_ls.c
+*/
+void				process_args(t_args **args);
 
 #endif

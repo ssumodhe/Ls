@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:29 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/01 15:35:51 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/02 16:35:42 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int		main(int argc, char **argv)
 //	printf("Main | opt = %d\n", opt->i);
 //	printf("Main | args = %d\n", args->i);
 	ft_prog(opt, args);
+
 
 	return (0);
 }
