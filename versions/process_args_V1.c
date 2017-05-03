@@ -6,34 +6,11 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/03 19:57:14 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/03 18:19:32 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-void	ascii_sort_args(t_args **args)
-{
-	t_args	*tmp;
-	t_args	*swap;
-
-	tmp = *args;
-	while (tmp)
-	{
-		if (tmp->bellow != NULL)
-			ascii_sort_args(&tmp->bellow);
-		if (tmp->next != NULL && (ft_strcmp(tmp->arg, tmp->next->arg) > 0))
-		{
-			swap = tmp;
-			tmp = tmp->next;
-			tmp->next = swap;
-			ascii_sort_args(&tmp->bellow);
-		}
-
-		tmp = tmp->next;
-	}
-
-}
 
 void	put_args(t_args **args)
 {
@@ -86,14 +63,22 @@ void	ft_openfiles(t_args **args)
 	t_args	*new;
 	int		i;
 
+
 	dir = NULL;
 	bellow = NULL;
 	(*args)->bellow = bellow;
+
 	i = ft_strlen((*args)->arg);
+//	while (i >= 0 && (*args)->arg[i] != '/')
+//		i--;
+//	i++;
+
 	if ((*args)->arg[i] != '.' && (dir = opendir((*args)->arg)))
 	{
+//		printf(RESET"opening file %s\n"RESET, (*args)->arg);
 		while ((d = readdir(dir)))
 		{
+//			printf(GREEN"fileno = %llu, reclen = %d, type = %hhu, namelen = %hu, name = %s\n", d->d_fileno, d->d_reclen, d->d_type, d->d_namlen, d->d_name);
 			if (bellow == NULL)
 			{
 				if(!(bellow = (t_args *)malloc(sizeof(*bellow))))
@@ -119,12 +104,15 @@ void	ft_openfiles(t_args **args)
 				tmp->next = new;
 				tmp = tmp->next;
 			}
+//		ft_putstr(tmp->arg);
+//		ft_putchar('\n');
 			if (d->d_name[0] != '.' && d->d_type == 4)
 			{
 				errno = 0;
 				ft_openfiles(&tmp);
 			}
 		}
+//		printf(RESET"closing file %s\n"RESET, (*args)->arg);
 	}
 	if (dir && closedir(dir) == -1)
 		ft_exit("We seem to reach a probleme when closing the directory");
@@ -142,10 +130,6 @@ void	process_args(t_args **args)
 		tmp = tmp->next;
 	}
 	put_args(args);
-/*	ascii_sort_args(args);
-	ft_putstr(YELLOW); //
-	put_args(args);
-	ft_putstr(RESET); //
-*/
+
 	//trier les bellow par ordre ascii
 }

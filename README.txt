@@ -7,5 +7,6 @@ elements du fichiers sur lequel on travaille)
 3 - Si ls -'' -> Segfault
 4 - Attention ls -
 5 - Attention MESSAGE D'ERREUR SUR LA SORTIE D'ERREUR
+6 - Attention si argument envoyer avec / a la fin
 
 
