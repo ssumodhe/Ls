@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/02 18:06:47 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/03 15:43:41 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,23 @@ void	ft_openfiles(t_args **args)
 {
 	DIR		*dir;
 	struct dirent *d;
-	char	*both;
 	t_args	*bellow;
+	t_args	*tmp;
+	t_args	*new;
+	int		i;
 
 
+	dir = NULL;
 	bellow = NULL;
-	if ((dir = opendir(args->arg)))
+
+	i = ft_strlen((*args)->arg);
+	while (i >= 0 && (*args)->arg[i] != '/')
+		i--;
+	i++;
+
+	if ((*args)->arg[i] != '.' && (dir = opendir((*args)->arg)))
 	{
-		printf(RESET"opening file %s\n"RESET, str);
+		printf(RESET"opening file %s\n"RESET, (*args)->arg);
 		while ((d = readdir(dir)))
 		{
 			printf(GREEN"fileno = %llu, reclen = %d, type = %hhu, namelen = %hu, name = %s\n", d->d_fileno, d->d_reclen, d->d_type, d->d_namlen, d->d_name);
@@ -59,27 +68,35 @@ void	ft_openfiles(t_args **args)
 			{
 				if(!(bellow = (t_args *)malloc(sizeof(*bellow))))
 					ft_exit(RED"error malloc bellow's list creation"RESET);
-				bellow->args = ft_strdup(d->d_name);
+				bellow->arg = ft_strjoin_path((*args)->arg, '/', d->d_name);
 				bellow->d = d;
-				args->bellow = bellow;
+				bellow->next = NULL;
+				(*args)->bellow = bellow; //free
+				tmp = (*args)->bellow;
 			}
-			//else ajouter au bellow deja existant.
-
+			else
+			{
+				if(!(new = (t_args *)malloc(sizeof(*new))))
+					ft_exit(RED"error malloc new-bellow's list creation"RESET);
+				new->arg = ft_strjoin_path((*args)->arg, '/', d->d_name);
+				new->d = d;
+				new->next = NULL;
+				tmp = (*args)->bellow;
+				while (tmp->next != NULL)
+					tmp = tmp->next;
+				tmp->next = new;
+				tmp = tmp->next;
+			}
 			if (d->d_name[0] != '.' && d->d_type == 4)
 			{
 				errno = 0;
-				printf(YELLOW"name is %s\n", d->d_name);
-				both = ft_strjoin_path(args->arg, '/' ,d->d_name);
-				printf(RESET"name is %s\n"RESET, both);
-				ft_openfiles(both); //renvoyer un t_args
-				ft_strdel(&both);
+				ft_openfiles(&tmp);
 			}
 		}
-		printf(RESET"closing file %s\n"RESET, str);
-
-		if (closedir(dir) == -1)
-			ft_exit("We seem to reach a probleme when closing the directory");
+		printf(RESET"closing file %s\n"RESET, (*args)->arg);
 	}
+	if (dir && closedir(dir) == -1)
+		ft_exit("We seem to reach a probleme when closing the directory");
 }
 
 
@@ -90,7 +107,8 @@ void	process_args(t_args **args)
 	tmp = *args;
 	while (tmp)
 	{
-		ft_openfiles(&tmp)
-			tmp = tmp->next;
+		ft_openfiles(&tmp);
+		tmp = tmp->next;
 	}
+	//trier les bellow par ordre ascii
 }
