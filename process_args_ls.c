@@ -95,7 +95,7 @@ char	*ft_strjoin_path(char *str1, char c, char *str2)
 		join[a++] = str2[b++];
 	return(join);
 }
-
+/*
 t_args *args_newlist(char *str, struct dirent *d)
 {
 	t_args	*new;
@@ -108,7 +108,7 @@ t_args *args_newlist(char *str, struct dirent *d)
 	new->next = NULL;
 	return(new);
 }
-
+*/
 void	ft_openfiles(t_args **args)
 {
 	DIR		*dir;
