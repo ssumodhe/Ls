@@ -6,12 +6,11 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/04 18:38:04 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/04 17:49:01 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
 void	ascii_sort_args(t_args **args)
 {
 	t_args	*tmp;
@@ -37,7 +36,57 @@ void	ascii_sort_args(t_args **args)
 		tmp = tmp->next;
 	}
 }
+/*
+void	ascii_sort_args(t_args **args)
+{
+	t_args	*tmp;
+	t_args	*tmp_2;
+	t_args	*swap;
+	t_args	*prev;
 
+	prev = NULL;
+	tmp = *args;
+	while (tmp)
+	{
+		ft_putstr(GREEN); //
+		ft_putendl("les deux args sont:"); //
+		ft_putendl(tmp->arg); //
+		ft_putendl(tmp->next->arg); //
+		ft_putstr(GREEN);  //
+		if (tmp->next != NULL && (ft_strcmp(tmp->arg, tmp->next->arg) > 0))
+		{
+		ft_putnbr(ft_strcmp(tmp->arg, tmp->next->arg));
+			ft_putchar(' ');
+		ft_putstr(tmp->arg); //
+			ft_putchar(' ');
+		ft_putstr(tmp->next->arg); //
+			ft_putchar(' ');
+		ft_putendl(GREEN HIGHLIGHT"J'ai un swap a faire"RESET); //
+	
+			if (prev)
+				prev->next = tmp->next;
+			else
+				*args = tmp->next;
+			swap = tmp;
+			tmp = tmp->next;
+			tmp->next = swap;
+			swap->next = tmp->next->next;
+
+
+			tmp_2 = *args;
+			while (tmp_2)
+			{
+				ft_putendl(tmp_2->arg); //
+				tmp_2 = tmp_2->next;
+			}
+				ascii_sort_args(args);
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+
+}
+*/
 void	all_args(t_args **args)
 {
 	t_args	*tmp;
@@ -45,6 +94,7 @@ void	all_args(t_args **args)
 	tmp = *args;
 	while (tmp)
 	{
+		ft_putendl(tmp->arg);
 		if (tmp->bellow != NULL)
 		{
 			ascii_sort_args(&tmp->bellow);
@@ -53,7 +103,6 @@ void	all_args(t_args **args)
 		tmp = tmp->next;
 	}
 }
-
 void	put_args(t_args **args)
 {
 	t_args	*tmp;
@@ -96,19 +145,6 @@ char	*ft_strjoin_path(char *str1, char c, char *str2)
 	return(join);
 }
 
-t_args *args_newlist(char *str, struct dirent *d)
-{
-	t_args	*new;
-
-	if(!(new = (t_args *)malloc(sizeof(*new))))
-		ft_exit(RED"error malloc bellow's list creation"RESET);
-	new->arg = ft_strjoin_path(str, '/', d->d_name);
-	new->d = d;
-	new->bellow = NULL;
-	new->next = NULL;
-	return(new);
-}
-
 void	ft_openfiles(t_args **args)
 {
 	DIR		*dir;
@@ -135,7 +171,6 @@ void	ft_openfiles(t_args **args)
 				bellow->bellow = NULL;
 				bellow->next = NULL;
 				(*args)->bellow = bellow; //free
-		//		(*args)->bellow = args_newlist((*args)->arg, d);
 				tmp = (*args)->bellow;
 			}
 			else
@@ -150,11 +185,13 @@ void	ft_openfiles(t_args **args)
 				while (tmp->next != NULL)
 					tmp = tmp->next;
 				tmp->next = new;
-			//	tmp->next = args_newlist((*args)->arg, d);
 				tmp = tmp->next;
 			}
 			if (d->d_name[0] != '.' && d->d_type == 4)
+			{
+				errno = 0;
 				ft_openfiles(&tmp);
+			}
 		}
 	}
 	if (dir && closedir(dir) == -1)
@@ -172,9 +209,18 @@ void	process_args(t_args **args)
 		ft_openfiles(&tmp);
 		tmp = tmp->next;
 	}
-	put_args(args); //
+	put_args(args);
 	all_args(args);
+/*	tmp = *args;
+	while (tmp)
+	{
+		if (tmp->bellow)
+			ascii_sort_args(&tmp->bellow);
+		tmp = tmp->next;
+	}*/
 	ft_putstr(YELLOW); //
-	put_args(args); //
+	put_args(args);
 	ft_putstr(RESET); //
+
+	//trier les bellow par ordre ascii
 }
