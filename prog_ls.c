@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/03 12:56:58 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/05 12:50:51 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,14 +152,14 @@ void		ft_prog(t_option *opt, t_args *args)
 
 	flag = init_flag();
 	flag = check_opt(opt, flag);
+	printf(CYAN"prog - flags | l = %d\tR = %d\ta = %d\tr = %d\tt = %d\n"RESET, flag.l, flag.u_r, flag.a, flag.l_r, flag.t); //
+	ft_putstr(RESET); //
 
-	if (args != NULL)
-	{
-		ascii_order_args(&args);
-		check_args(&args);
-		remove_error_args(&args);
-		process_args(&args);
-	}
+	ascii_order_args(&args);
+	check_args(&args);
+	remove_error_args(&args);
+	process_args(&args);
+
 
 }
 
