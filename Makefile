@@ -17,6 +17,7 @@ SRCS = main_ls.c \
 	   get_lists_ls.c \
 	   prog_ls.c \
 	   process_args_ls.c \
+	   alone_ls.c \
 
 OBJS = $(SRCS:.c=.o)
 

@@ -59,4 +59,8 @@ void				ft_prog(t_option *opt, t_args *args);
 */
 void				process_args(t_args **args);
 
+/*
+** alone_ls.c
+*/
+void				alone(t_args **args);
 #endif

@@ -44,7 +44,10 @@ int		main(int argc, char **argv)
 			i++;
 		}
 		if (args == NULL)
+		{
+			printf("Je passe ici\n");
 			args = fill_args(i, ".", args);
+		}
 	}
 /* // print les listes
 	tmp_o = opt;
@@ -63,7 +66,8 @@ int		main(int argc, char **argv)
 
 
 //	printf("Main | opt = %d\n", opt->i);
-//	printf("Main | args = %d\n", args->i);
+//	printf("Main | args = %d\n", args->i)
+	
 	ft_prog(opt, args);
 
 

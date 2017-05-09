@@ -155,11 +155,18 @@ void		ft_prog(t_option *opt, t_args *args)
 	printf(CYAN"prog - flags | l = %d\tR = %d\ta = %d\tr = %d\tt = %d\n"RESET, flag.l, flag.u_r, flag.a, flag.l_r, flag.t); //
 	ft_putstr(RESET); //
 
-	ascii_order_args(&args);
-	check_args(&args);
-	remove_error_args(&args);
-	process_args(&args);
-
+	if (args != NULL)
+	{
+		ascii_order_args(&args);
+		check_args(&args);
+		remove_error_args(&args);
+		printf("prog | je sors de remove\n");
+		process_args(&args);
+	}
+	if (args != NULL && args->arg[0] == '.')
+	{
+		alone(&args);
+	}
 
 }
 
