@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/05 11:41:14 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/12 19:41:40 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,22 @@ t_args				*fill_args(int i, char *arg, t_args *argmt);
 ** prog_ls.c
 */
 void				ft_prog(t_option *opt, t_args *args);
+void				remove_error_args(t_args **args);
+void				check_args(t_args **args);
+void				ascii_order_args(t_args **args);
+t_flags				check_opt(t_option *opt, t_flags flag);
+t_flags				fill_flag(t_flags flag, char c);
+t_flags				init_flag(void);
 
 /*
 ** process_args_ls.c
 */
 void				process_args(t_args **args);
+void				ft_openfiles(t_args **args);
+char				*ft_strjoin_by(char *str1, char c, char *str2);
+void				put_args(t_args **args);
+void				all_args(t_args **args);
+void				ascii_sort_args(t_args **args);
 
 /*
 ** alone_ls.c

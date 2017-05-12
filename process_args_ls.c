@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/05 11:44:52 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/12 20:05:03 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	put_args(t_args **args)
 	}
 }
 
-char	*ft_strjoin_path(char *str1, char c, char *str2)
+char	*ft_strjoin_by(char *str1, char c, char *str2)
 {
 	int		n1;
 	int		n2;
@@ -130,7 +130,7 @@ void	ft_openfiles(t_args **args)
 			{
 				if(!(bellow = (t_args *)malloc(sizeof(*bellow))))
 					ft_exit(RED"error malloc bellow's list creation"RESET);
-				bellow->arg = ft_strjoin_path((*args)->arg, '/', d->d_name);
+				bellow->arg = ft_strjoin_by((*args)->arg, '/', d->d_name);
 				bellow->d = d;
 				bellow->bellow = NULL;
 				bellow->next = NULL;
@@ -142,7 +142,7 @@ void	ft_openfiles(t_args **args)
 			{
 				if(!(new = (t_args *)malloc(sizeof(*new))))
 					ft_exit(RED"error malloc new-bellow's list creation"RESET);
-				new->arg = ft_strjoin_path((*args)->arg, '/', d->d_name);
+				new->arg = ft_strjoin_by((*args)->arg, '/', d->d_name);
 				new->d = d;
 				new->bellow = NULL;
 				new->next = NULL;
