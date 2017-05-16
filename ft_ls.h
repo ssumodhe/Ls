@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/12 19:41:40 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/16 20:01:44 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 # include <dirent.h> //opendir etc
 # include <sys/errno.h> //errno's define
 
+typedef	struct		s_numbers
+{
+	int		n_file;
+	int		n_other;
+	int		removed;
+}					t_numbers;
+
 typedef struct		s_flags
 {
 	int		l;
@@ -24,6 +31,7 @@ typedef struct		s_flags
 	int		a;
 	int		l_r;
 	int		t;
+	int		none;
 }					t_flags;
 
 typedef struct		s_option
@@ -53,7 +61,7 @@ t_args				*fill_args(int i, char *arg, t_args *argmt);
 ** prog_ls.c
 */
 void				ft_prog(t_option *opt, t_args *args);
-void				remove_error_args(t_args **args);
+int					remove_error_args(t_args **args, int removed);
 void				check_args(t_args **args);
 void				ascii_order_args(t_args **args);
 t_flags				check_opt(t_option *opt, t_flags flag);
@@ -71,7 +79,20 @@ void				all_args(t_args **args);
 void				ascii_sort_args(t_args **args);
 
 /*
+** process_args_ls.c
+*/
+void				process_flags(t_args *args, t_flags flag, t_numbers numbers);
+
+/*
 ** alone_ls.c
 */
-void				alone(t_args **args);
+void				alone(t_args **args, t_numbers numbers, int opt_a);
+void				ft_print_bellow(t_args *file, int opt_a);
+char				*ft_strwithoutstrat(char *str, int size);
+
+/*
+** opt_a_ls.c
+*/
+//void				opt_a_ls(t_args **args);
+
 #endif

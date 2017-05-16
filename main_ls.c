@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:29 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/12 19:40:40 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/16 20:01:39 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ int		main(int argc, char **argv)
 	t_args		*args;
 //	t_option	*tmp_o;
 //	t_args		*tmp_a;
-
-/*
-** - attention au ls tout seul
-** - attention au ls --
-*/
 
 	opt = NULL;
 	args = NULL;
@@ -43,12 +38,11 @@ int		main(int argc, char **argv)
 			args = fill_args(i, argv[i], args);
 			i++;
 		}
-		if (args == NULL)
-		{
-			printf("Je passe ici\n");
-			args = fill_args(i, ".", args);
-		}
+		
 	}
+	if (args == NULL)
+		args = fill_args(i, ".", args);
+
 /* // print les listes
 	tmp_o = opt;
 	while (tmp_o != NULL)

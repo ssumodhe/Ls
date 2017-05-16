@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/12 20:05:03 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/16 20:01:36 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ char	*ft_strjoin_by(char *str1, char c, char *str2)
 		join[a++] = str2[b++];
 	return(join);
 }
+
 /*
 t_args *args_newlist(char *str, struct dirent *d)
 {
@@ -109,6 +110,7 @@ t_args *args_newlist(char *str, struct dirent *d)
 	return(new);
 }
 */
+
 void	ft_openfiles(t_args **args)
 {
 	DIR		*dir;
@@ -172,9 +174,9 @@ void	process_args(t_args **args)
 		ft_openfiles(&tmp);
 		tmp = tmp->next;
 	}
-	put_args(args); //
+//	put_args(args); //
 	all_args(args);
-	ft_putstr(YELLOW); //
-	put_args(args); //
-	ft_putstr(RESET); //
+//	ft_putstr(YELLOW); //
+//	put_args(args); //
+//	ft_putstr(RESET); //
 }

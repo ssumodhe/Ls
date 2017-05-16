@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/12 19:40:45 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/16 20:01:37 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ t_flags		fill_flag(t_flags flag, char c)
 		flag.l_r = 1;
 	else if (c == 't')
 		flag.t = 1;
+	if (flag.t == 1 || flag.l_r == 1 || flag.a == 1 || flag.u_r == 1 || flag.l == 1)
+		flag.none = 1;
 	return (flag);
 }
 
@@ -124,67 +126,64 @@ void		check_args(t_args **args)
 	}
 }
 
-void		remove_error_args(t_args **args)
+int		remove_error_args(t_args **args, int removed)
 {
 	t_args	*tmp;
 
 	tmp = *args;
 	if (tmp && tmp->error == 2)
 	{
+		removed++;
 		tmp = tmp->next;
 		*args = tmp;
-		remove_error_args(args);
+		removed = remove_error_args(args, removed);
 	}
 	while (tmp)
 	{
 		if (tmp->next != NULL && tmp->next->error == 2)
 		{
+			removed++;
 			tmp->next = tmp->next->next;
-			remove_error_args(args);
+			removed = remove_error_args(args, removed);
 		}
 		tmp = tmp->next;
 	}
+	return (removed);
+}
+
+t_numbers	count_args(t_args **args)
+{
+	t_args		*tmp;
+	t_numbers	numbers;
+
+	tmp = *args;
+	numbers.n_file = 0;
+	numbers.n_other = 0;
+	while (tmp)
+	{
+		if (tmp->error == 0)
+			numbers.n_file++;
+		else
+			numbers.n_other++;
+		tmp = tmp->next;
+	}
+	return (numbers);
 }
 
 void		ft_prog(t_option *opt, t_args *args)
 {
 	t_flags		flag;
+	t_numbers	numbers;
 
 	flag = init_flag();
 	flag = check_opt(opt, flag);
 	printf(CYAN"prog - flags | l = %d\tR = %d\ta = %d\tr = %d\tt = %d\n"RESET, flag.l, flag.u_r, flag.a, flag.l_r, flag.t); //
 	ft_putstr(RESET); //
-
-	if (args != NULL)
-	{
-		ascii_order_args(&args);
-		check_args(&args);
-		remove_error_args(&args);
-		printf("prog | je sors de remove\n");
-		process_args(&args);
-	}
-	if (args != NULL && args->arg[0] == '.')
-	{
-		alone(&args);
-	}
-
+	ascii_order_args(&args);
+	check_args(&args);
+	numbers = count_args(&args);
+	numbers.removed = remove_error_args(&args, 0);
+	process_args(&args);
+//	printf("n_file = %d\tn_other = %d, removed = %d\n", numbers.n_file, numbers.n_other, numbers.removed);
+	process_flags(args, flag, numbers);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
