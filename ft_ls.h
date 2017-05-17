@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/16 20:01:44 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/17 19:13:47 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ t_args				*fill_args(int i, char *arg, t_args *argmt);
 */
 void				ft_prog(t_option *opt, t_args *args);
 int					remove_error_args(t_args **args, int removed);
-void				check_args(t_args **args);
+void				put_error_args(t_args **args);
+void				get_error_args(t_args **args);
 void				ascii_order_args(t_args **args);
 t_flags				check_opt(t_option *opt, t_flags flag);
 t_flags				fill_flag(t_flags flag, char c);

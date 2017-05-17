@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/16 20:01:37 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/17 18:55:50 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_flags		check_opt(t_option *opt, t_flags flag) //fonction qui verifie les optio
 			if (tmp->opt[i] != 'l' && tmp->opt[i] != 'R' && tmp->opt[i] != 'a' \
 					&& tmp->opt[i] != 'r' && tmp->opt[i] != 't')
 			{
-				ft_putstr("ft_ls: illegal option -- ");
+				ft_putstr("ft_ls: illegal option -- "); //a mettre sur la sortie d'erreur
 				ft_putchar(tmp->opt[i]);
 				ft_exit("\nusage: ft_ls [-lRart] [file ...]");
 			}
@@ -97,7 +97,7 @@ void		ascii_order_args(t_args **args)
 	}
 }
 
-void		check_args(t_args **args)
+void		get_error_args(t_args **args)
 {
 	DIR		*dir;
 	t_args	*tmp;
@@ -106,34 +106,39 @@ void		check_args(t_args **args)
 	while (tmp)
 	{
 		errno = 0;
-		if ((!(dir = opendir(tmp->arg))))
-		{
-			tmp->error = errno;
-			if (errno == 2)
-			{
-				ft_putstr("ft_ls: "); //a mettre sur la sortie d'erreur
-				perror(tmp->arg);
-				strerror(errno);
-			//	ft_putstr(tmp->arg);
-			//	ft_putendl(": No such file or directory");
-			}
-		}
-		else
-		{
-			tmp->error = errno;
+		dir = opendir(tmp->arg);
+		tmp->error = errno;
+//		printf("args = %s\terror = %d\n", tmp->arg, tmp->error);
+		if (dir != NULL)
 			if (closedir(dir) == -1)
 				ft_exit("We seem to reach a problem when closing the directory");
+		tmp = tmp->next;
+	}
+}
+
+void		put_error_args(t_args **args)
+{
+	t_args	*tmp;
+
+	tmp = *args;
+	while (tmp)
+	{
+		if (tmp->error != 0 && tmp->error != 13 && tmp->error != 20)
+		{
+			errno = tmp->error;
+			ft_putstr_fd("ft_ls: ", 2);
+			perror(tmp->arg);
 		}
 		tmp = tmp->next;
 	}
 }
 
-int		remove_error_args(t_args **args, int removed)
+int			remove_error_args(t_args **args, int removed)
 {
 	t_args	*tmp;
 
 	tmp = *args;
-	if (tmp && tmp->error == 2)
+	if (tmp && tmp->error != 0 && tmp->error != 13 && tmp->error != 20)
 	{
 		removed++;
 		tmp = tmp->next;
@@ -142,7 +147,7 @@ int		remove_error_args(t_args **args, int removed)
 	}
 	while (tmp)
 	{
-		if (tmp->next != NULL && tmp->next->error == 2)
+		if (tmp->next != NULL && tmp->next->error != 0 && tmp->next->error != 13 && tmp->next->error != 20)
 		{
 			removed++;
 			tmp->next = tmp->next->next;
@@ -182,7 +187,8 @@ void		ft_prog(t_option *opt, t_args *args)
 	printf(CYAN"prog - flags | l = %d\tR = %d\ta = %d\tr = %d\tt = %d\n"RESET, flag.l, flag.u_r, flag.a, flag.l_r, flag.t); //
 	ft_putstr(RESET); //
 	ascii_order_args(&args);
-	check_args(&args);
+	get_error_args(&args);
+	put_error_args(&args);
 	numbers = count_args(&args);
 	numbers.removed = remove_error_args(&args, 0);
 	process_args(&args);
