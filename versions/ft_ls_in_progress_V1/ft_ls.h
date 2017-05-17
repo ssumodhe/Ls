@@ -72,7 +72,6 @@ t_flags				init_flag(void);
 ** process_args_ls.c
 */
 void				process_args(t_args **args);
-//void				process_args(t_args **args, int opt_a);
 void				ft_openfiles(t_args **args);
 char				*ft_strjoin_by(char *str1, char c, char *str2);
 void				put_args(t_args **args);

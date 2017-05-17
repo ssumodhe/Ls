@@ -111,11 +111,9 @@ void		check_args(t_args **args)
 			tmp->error = errno;
 			if (errno == 2)
 			{
-				ft_putstr("ft_ls: "); //a mettre sur la sortie d'erreur
-				perror(tmp->arg);
-				strerror(errno);
-			//	ft_putstr(tmp->arg);
-			//	ft_putendl(": No such file or directory");
+				ft_putstr("ft_ls: ");
+				ft_putstr(tmp->arg);
+				ft_putendl(": No such file or directory");
 			}
 		}
 		else
@@ -186,7 +184,6 @@ void		ft_prog(t_option *opt, t_args *args)
 	numbers = count_args(&args);
 	numbers.removed = remove_error_args(&args, 0);
 	process_args(&args);
-//	process_args(&args, flag.a);
 //	printf("n_file = %d\tn_other = %d, removed = %d\n", numbers.n_file, numbers.n_other, numbers.removed);
 	process_flags(args, flag, numbers);
 }
