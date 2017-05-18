@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 16:14:40 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/18 14:30:40 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/18 17:23:25 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,39 +43,37 @@ t_option	*fill_option(int i, char *opt, t_option *option)
 	return (option);
 }
 
-t_args	*fill_args(int i, char *arg, t_args *argmt)
+t_args	*new_args(int i, char *arg)
 {
-	t_args	*tmp;
 	t_args	*new;
 
 	if (!(new = (t_args *)malloc(sizeof(*new))))
 		ft_exit(RED"error malloc args's list creation"RESET);
+	new->i = i;
+	new->arg = ft_strdup(arg);
+	new->error = 0;
+	new->d = NULL;
+	new->bellow = NULL;
+	new->next = NULL;
+	return (new);
+}
+
+t_args	*fill_args(int i, char *arg, t_args *argmt)
+{
+	t_args	*tmp;
+
 	if (argmt == NULL)
 	{
-		new->i = i;
-		new->arg = ft_strdup(arg);
-		new->error = 0;
-		new->d = NULL;
-		new->bellow = NULL;
-		new->next = NULL;
-		argmt = new;
-	printf(GREEN"get_lists - args | i = %d\targ = %s\n"RESET, argmt->i, argmt->arg); //
+		argmt = new_args(i, arg);
+		printf(GREEN"get_lists - args | i = %d\targ = %s\n"RESET, argmt->i, argmt->arg); //
 	}
 	else
 	{
 		tmp = argmt;
 		while (tmp->next != NULL)
-		{
 			tmp = tmp->next;
-		}
-		tmp->next = new;
-		new->i = i;
-		new->arg = ft_strdup(arg);
-		new->error = 0;
-		new->d = NULL;
-		new->bellow = NULL;
-		new->next = NULL;
-		printf(GREEN"get_lists - args | i = %d\targ = %s\n"RESET, new->i, new->arg); //
+		tmp->next = new_args(i, arg);
+		printf(GREEN"get_lists - args | i = %d\targ = %s\n"RESET, tmp->next->i, tmp->next->arg); //
 	}
 	ft_putstr(RESET); //
 	return (argmt);
