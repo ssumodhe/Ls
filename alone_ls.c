@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:00:04 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/16 20:01:41 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/18 14:30:38 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	alone(t_args **args, t_numbers numbers, int opt_a)
 		{
 			arguments++;
 			ft_putendl(file->arg);
+			if (file->error == 13)
 			if (arguments == (numbers.n_other - numbers.removed) && numbers.n_file != 0)
 				ft_putendl("");
 		}

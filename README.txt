@@ -26,7 +26,7 @@ Prog_ls.c:
 	et rempli la structure flag avec les differentes options valides (->fill_flag).
 	Je range par ordre ascii les arguments de la liste *args (->ascii_order_args)
 	Je verifie les erreurs des arguments, fournis par errno, et stock cet errno dans
-	la liste associee *args(->get_error_args)
+	la liste associee *args (->get_error_args)
 	Puis j'affiche les erreurs non liees au errno = 0, = 13 et = 20 (->put_error_args)
 	Avec ->count_args, je recupere une structure numbers avec le nombre de fichier 
 	directory et les autres.
