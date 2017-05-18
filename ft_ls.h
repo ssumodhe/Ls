@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/18 17:23:44 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/18 19:59:37 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft/libft.h"
 # include <dirent.h> //opendir etc
 # include <sys/errno.h> //errno's define
+# include <time.h> //ctime function
 
 typedef	struct		s_numbers
 {
@@ -48,6 +49,7 @@ typedef struct		s_args
 	char				*arg;
 	int					error;
 	struct dirent		*d;
+	struct stat			stat;
 	struct s_args		*bellow;
 	struct s_args		*next;
 }					t_args;
@@ -94,8 +96,8 @@ void				ft_print_bellow(t_args *file, int opt_a);
 char				*ft_strwithoutstrat(char *str, int size);
 
 /*
-** opt_a_ls.c
+** opt_t_ls.c
 */
-//void				opt_a_ls(t_args **args);
+void				opt_t(t_args **args);
 
 #endif

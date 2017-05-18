@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 16:14:40 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/18 17:23:25 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/18 19:59:31 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ t_args	*new_args(int i, char *arg)
 	new->arg = ft_strdup(arg);
 	new->error = 0;
 	new->d = NULL;
+//	new->stat = NULL;
 	new->bellow = NULL;
 	new->next = NULL;
 	return (new);

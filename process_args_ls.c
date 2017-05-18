@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/18 14:30:37 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/18 19:59:32 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	*ft_strjoin_by(char *str1, char c, char *str2)
 	return(join);
 }
 
-/*
+
 t_args *args_newlist(char *str, struct dirent *d)
 {
 	t_args	*new;
@@ -105,54 +105,56 @@ t_args *args_newlist(char *str, struct dirent *d)
 		ft_exit(RED"error malloc bellow's list creation"RESET);
 	new->arg = ft_strjoin_by(str, '/', d->d_name);
 	new->d = d;
+//	new->stat = NULL;
 	new->bellow = NULL;
 	new->next = NULL;
 	return(new);
 }
-*/
+
 
 void	ft_openfiles(t_args **args)
 {
 	DIR		*dir;
 	struct dirent *d;
-	t_args	*bellow;
+//	t_args	*bellow;
 	t_args	*tmp;
-	t_args	*new;
+//	t_args	*new;
 	int		i;
 
 	dir = NULL;
-	bellow = NULL;
-	(*args)->bellow = bellow;
+//	bellow = NULL;
+//	(*args)->bellow = bellow;
 	i = ft_strlen((*args)->arg);
 	if ((*args)->arg[i] != '.' && (dir = opendir((*args)->arg)))
 	{
 		while ((d = readdir(dir)))
 		{
-			if (bellow == NULL)
+		//	if (bellow == NULL)
+			if ((*args)->bellow == NULL)
 			{
-				if(!(bellow = (t_args *)malloc(sizeof(*bellow))))
+			/*	if(!(bellow = (t_args *)malloc(sizeof(*bellow))))
 					ft_exit(RED"error malloc bellow's list creation"RESET);
 				bellow->arg = ft_strjoin_by((*args)->arg, '/', d->d_name);
 				bellow->d = d;
 				bellow->bellow = NULL;
 				bellow->next = NULL;
-				(*args)->bellow = bellow; //free
-		//		(*args)->bellow = args_newlist((*args)->arg, d);
+				(*args)->bellow = bellow; //free*/
+				(*args)->bellow = args_newlist((*args)->arg, d);
 				tmp = (*args)->bellow;
 			}
 			else
 			{
-				if(!(new = (t_args *)malloc(sizeof(*new))))
+			/*	if(!(new = (t_args *)malloc(sizeof(*new))))
 					ft_exit(RED"error malloc new-bellow's list creation"RESET);
 				new->arg = ft_strjoin_by((*args)->arg, '/', d->d_name);
 				new->d = d;
 				new->bellow = NULL;
-				new->next = NULL;
+				new->next = NULL;*/
 				tmp = (*args)->bellow;
 				while (tmp->next != NULL)
 					tmp = tmp->next;
-				tmp->next = new;
-			//	tmp->next = args_newlist((*args)->arg, d);
+			//	tmp->next = new;
+				tmp->next = args_newlist((*args)->arg, d);
 				tmp = tmp->next;
 			}
 			if (d->d_name[0] != '.' && d->d_type == 4)
