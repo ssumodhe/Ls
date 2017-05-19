@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/18 17:37:21 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/18 19:59:30 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/19 15:02:11 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	opt_t(t_args **args)
 			perror(tmp->arg);
 			//free + set NULL le tmp->stat
 		}
-		printf(GREEN"OPT_T | arg = %s, date modif = %ld\n"RESET, tmp->arg, tmp->stat.st_mtimespec.tv_sec);
+		//printf(GREEN"OPT_T | arg = %s, date modif = %ld\n"RESET, tmp->arg, tmp->stat.st_mtimespec.tv_sec);
 		//printf(GREEN"arg = %s\t%s"RESET, tmp->arg, ctime(&tmp->stat.st_mtimespec.tv_sec));
 		if (tmp->bellow != NULL)
 			opt_t(&tmp->bellow);
