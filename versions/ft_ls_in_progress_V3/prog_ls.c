@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/25 19:25:24 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/25 16:01:17 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,36 @@ t_flags		check_opt(t_option *opt, t_flags flag) //fonction qui verifie les optio
 	}
 	return (flag);
 }
+/*
+void		ascii_order_args(t_args **args)
+{
+	t_args	*current;
+	t_args	*after;
+	char	*tmp;
+	int		i;
 
+	current = *args;
+	after = current->next;
+	while (current && after)
+	{
+		i = 0;
+		while (current->arg[i] == after->arg[i])
+			i++;
+		if (current->arg[i] > after->arg[i])
+		{
+			tmp = ft_strdup(current->arg);
+			ft_strdel(&current->arg);
+			current->arg = ft_strdup(after->arg);
+			ft_strdel(&after->arg);
+			after->arg = ft_strdup(tmp);
+			ft_strdel(&tmp);
+			ascii_order_args(args);
+		}
+		current = current->next;
+		after = after->next;
+	}
+}
+*/
 void		get_error_args(t_args **args)
 {
 	DIR		*dir;
@@ -160,13 +189,14 @@ void		ft_prog(t_option *opt, t_args *args)
 	flag = check_opt(opt, flag);
 	printf(CYAN"prog - flags | l = %d\tR = %d\ta = %d\tr = %d\tt = %d\n"RESET, flag.l, flag.u_r, flag.a, flag.l_r, flag.t); //
 	ft_putstr(RESET); //
+//	ascii_order_args(&args);
 	args = ft_mergesort(args, ft_ascii_mergesort);
 	get_error_args(&args);
 	put_error_args(&args);
 	numbers = count_args(&args);
 	numbers.removed = remove_error_args(&args, 0);
-//	process_args(&args);
-	process_args(&args, flag.a);
+	process_args(&args);
+//	process_args(&args, flag.a);
 //	printf("n_file = %d\tn_other = %d, removed = %d\n", numbers.n_file, numbers.n_other, numbers.removed);
 	process_flags(args, flag, numbers);
 }

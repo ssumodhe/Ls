@@ -3,3 +3,5 @@ ft_ls
 libft/*.o
 libft/*.a
 *.o
+.DS_Store
+noaccess

@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/25 21:08:57 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/25 15:48:45 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ typedef struct		s_args
 	struct stat			stat;
 	struct s_args		*bellow;
 	struct s_args		*next;
-	struct s_args		*prev;
 }					t_args;
 
 /*
@@ -60,16 +59,15 @@ typedef struct		s_args
 */
 t_option			*fill_option(int i, char *opt, t_option *option);
 t_args				*fill_args(int i, char *arg, t_args *argmt);
-t_args				*new_args(int i, char *arg);
 
 /*
 ** prog_ls.c
 */
 void				ft_prog(t_option *opt, t_args *args);
-t_numbers			count_args(t_args **args);
 int					remove_error_args(t_args **args, int removed);
 void				put_error_args(t_args **args);
 void				get_error_args(t_args **args);
+void				ascii_order_args(t_args **args);
 t_flags				check_opt(t_option *opt, t_flags flag);
 t_flags				fill_flag(t_flags flag, char c);
 t_flags				init_flag(void);
@@ -87,12 +85,13 @@ void				ft_modif_date_mergesort(t_args **tmp, t_args **left, t_args **right);
 /*
 ** process_args_ls.c
 */
-//void				process_args(t_args **args);
-void				process_args(t_args **args, int opt_a);
+void				process_args(t_args **args);
+//void				process_args(t_args **args, int opt_a);
 void				ft_openfiles(t_args **args);
 char				*ft_strjoin_by(char *str1, char c, char *str2);
 void				put_args(t_args **args);
 void				all_args(t_args **args);
+void				ascii_sort_args(t_args **args);
 
 /*
 ** process_args_ls.c
@@ -102,18 +101,13 @@ void				process_flags(t_args *args, t_flags flag, t_numbers numbers);
 /*
 ** alone_ls.c
 */
-void				alone(t_args **args, t_numbers numbers);
-void				ft_print_bellow(t_args *file);
+void				alone(t_args **args, t_numbers numbers, int opt_a);
+void				ft_print_bellow(t_args *file, int opt_a);
 char				*ft_strwithoutstrat(char *str, int size);
 
 /*
 ** opt_t_ls.c
 */
 void				opt_t(t_args **args);
-
-/*
-** opt_r_ls.c
-*/
-void				opt_r(t_args **args);
 
 #endif

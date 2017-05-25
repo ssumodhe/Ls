@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:00:04 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/25 19:17:02 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/25 12:46:28 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*ft_strwithoutstart(char *str, int size)
 	return (split);
 }
 
-void	ft_print_bellow(t_args *file)
+void	ft_print_bellow(t_args *file, int opt_a)
 {
 	t_args	*tmp;
 	char 	*split;
@@ -40,15 +40,30 @@ void	ft_print_bellow(t_args *file)
 	split = NULL;
 	tmp = file->bellow;
 	n = ft_strlen(file->arg);
-	while (tmp)
+	if (opt_a == 0)
 	{
-		split = ft_strwithoutstart(tmp->arg, (n + 1));
-		ft_putendl(split);
-		ft_strdel(&split);
-		tmp = tmp->next;
+		while (tmp)
+		{
+			if (tmp->arg[n + 1] != '.')
+			{
+				split = ft_strwithoutstart(tmp->arg, (n + 1));
+				ft_putendl(split);
+				ft_strdel(&split);
+			}
+			tmp = tmp->next;
+		}
 	}
+	else
+		while (tmp)
+		{
+			split = ft_strwithoutstart(tmp->arg, (n + 1));
+			ft_putendl(split);
+			ft_strdel(&split);
+			tmp = tmp->next;
+		}
 }
-void	alone(t_args **args, t_numbers numbers)
+
+void	alone(t_args **args, t_numbers numbers, int opt_a)
 {
 	t_args	*file;
 	char	*split;
@@ -87,7 +102,7 @@ void	alone(t_args **args, t_numbers numbers)
 				ft_putstr(file->arg);
 				ft_putendl(":");
 			}
-			ft_print_bellow(file);
+			ft_print_bellow(file, opt_a);
 		if ((numbers.n_file + numbers.n_other + numbers.n_denied) > 1 && arguments < (numbers.n_file + numbers.n_denied))
 			ft_putendl("");
 		//	if (numbers.n_file + numbers.n_other > 1 && arguments < numbers.n_file)

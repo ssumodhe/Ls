@@ -6,12 +6,38 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/25 19:25:20 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/25 15:48:49 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+/*
+void	ascii_sort_args(t_args **args)
+{
+	t_args	*tmp;
+	t_args	*after;
+	t_args	*prev;
 
+	prev = NULL;
+	tmp = *args;
+	while (tmp)
+	{
+		if (tmp->next != NULL && (ft_strcmp(tmp->arg, tmp->next->arg) > 0))
+		{
+			after = tmp->next;
+			if (prev)
+				prev->next = after;
+			else
+				*args = after;
+			tmp->next = after->next;
+			after->next = tmp;
+			ascii_sort_args(args);
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+}
+*/
 void	all_args(t_args **args)
 {
 	t_args	*tmp;
@@ -21,6 +47,7 @@ void	all_args(t_args **args)
 	{
 		if (tmp->bellow != NULL)
 		{
+//			ascii_sort_args(&tmp->bellow);
 			tmp->bellow = ft_mergesort(tmp->bellow, ft_ascii_mergesort);
 			all_args(&tmp->bellow);
 		}
@@ -82,7 +109,6 @@ t_args *args_newlist(char *str, struct dirent *d)
 //	new->stat = NULL;
 	new->bellow = NULL;
 	new->next = NULL;
-	new->prev = NULL;
 	return(new);
 }
 
@@ -91,31 +117,44 @@ void	ft_openfiles(t_args **args)
 {
 	DIR		*dir;
 	struct dirent *d;
+//	t_args	*bellow;
 	t_args	*tmp;
+//	t_args	*new;
 	int		i;
 
 	dir = NULL;
+//	bellow = NULL;
+//	(*args)->bellow = bellow;
 	i = ft_strlen((*args)->arg);
 	if ((*args)->arg[i] != '.' && (dir = opendir((*args)->arg)))
 	{
 		while ((d = readdir(dir)))
-		{//		ft_putstr(RED);
-		//		ft_putstr((*args)->arg);
-		//		ft_putchar('\t');
-		//		ft_putendl(d->d_name);
-		//		ft_putstr(RESET);
-
+		{
+		//	if (bellow == NULL)
 			if ((*args)->bellow == NULL)
 			{
-				//free*/
+			/*	if(!(bellow = (t_args *)malloc(sizeof(*bellow))))
+					ft_exit(RED"error malloc bellow's list creation"RESET);
+				bellow->arg = ft_strjoin_by((*args)->arg, '/', d->d_name);
+				bellow->d = d;
+				bellow->bellow = NULL;
+				bellow->next = NULL;
+				(*args)->bellow = bellow; //free*/
 				(*args)->bellow = args_newlist((*args)->arg, d);
 				tmp = (*args)->bellow;
 			}
 			else
 			{
+			/*	if(!(new = (t_args *)malloc(sizeof(*new))))
+					ft_exit(RED"error malloc new-bellow's list creation"RESET);
+				new->arg = ft_strjoin_by((*args)->arg, '/', d->d_name);
+				new->d = d;
+				new->bellow = NULL;
+				new->next = NULL;*/
 				tmp = (*args)->bellow;
 				while (tmp->next != NULL)
 					tmp = tmp->next;
+			//	tmp->next = new;
 				tmp->next = args_newlist((*args)->arg, d);
 				tmp = tmp->next;
 			}
@@ -127,59 +166,19 @@ void	ft_openfiles(t_args **args)
 		ft_exit("We seem to reach a probleme when closing the directory");
 }
 
-void	ft_openfiles_withouta(t_args **args)
-{
-	DIR		*dir;
-	struct dirent *d;
-	t_args	*tmp;
-	int		i;
 
-	dir = NULL;
-	i = ft_strlen((*args)->arg);
-	if ((*args)->arg[i] != '.' && (dir = opendir((*args)->arg)))
-	{
-		while ((d = readdir(dir)))
-		{
-			if (d->d_name[0] != '.')
-			{
-						if ((*args)->bellow == NULL)
-				{
-					//free*/
-					(*args)->bellow = args_newlist((*args)->arg, d);
-					tmp = (*args)->bellow;
-				}
-				else
-				{
-					tmp = (*args)->bellow;
-					while (tmp->next != NULL)
-						tmp = tmp->next;
-					tmp->next = args_newlist((*args)->arg, d);
-					tmp = tmp->next;
-				}
-				if (d->d_name[0] != '.' && d->d_type == 4)
-					ft_openfiles_withouta(&tmp);
-			}
-		}
-	}
-	if (dir && closedir(dir) == -1)
-		ft_exit("We seem to reach a probleme when closing the directory");
-}
-
-void	process_args(t_args **args, int opt_a)
+void	process_args(t_args **args)
 {
 	t_args	*tmp;
 
 	tmp = *args;
 	while (tmp)
 	{
-		if (opt_a == 1)
-			ft_openfiles(&tmp);
-		else 
-			ft_openfiles_withouta(&tmp);
+		ft_openfiles(&tmp);
 		tmp = tmp->next;
 	}
 //	put_args(args); //
-	all_args(args); //Tri ascii par mergesort
+	all_args(args);
 //	ft_putstr(YELLOW); //
 //	put_args(args); //
 //	ft_putstr(RESET); //

@@ -6,17 +6,26 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/25 21:08:57 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/25 21:12:56 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
 
-# include "libft/libft.h"
+# include "../libft/libft.h"
 # include <dirent.h> //opendir etc
 # include <sys/errno.h> //errno's define
 # include <time.h> //ctime function
+
+
+typedef struct		s_merge
+{
+	int					i;
+	char 				*str;
+	struct s_merge 		*next;
+	struct s_merge 		*prev;
+}					t_merge;
 
 typedef	struct		s_numbers
 {
@@ -73,17 +82,17 @@ void				get_error_args(t_args **args);
 t_flags				check_opt(t_option *opt, t_flags flag);
 t_flags				fill_flag(t_flags flag, char c);
 t_flags				init_flag(void);
-
 /*
 ** mergesort_ls.c
 */
+/*
 t_args				*ft_mergesort(t_args *merge, void f());
 t_args				*ft_glue_mergesort(t_args *left, t_args *right, void f());
 int					ft_lstcount(t_args **merge);
 void				ft_descendingorder_mergesort(t_args **tmp, t_args **left, t_args **right);
 void				ft_ascii_mergesort(t_args **tmp, t_args **left, t_args **right);
 void				ft_modif_date_mergesort(t_args **tmp, t_args **left, t_args **right);
-
+*/
 /*
 ** process_args_ls.c
 */
@@ -114,6 +123,6 @@ void				opt_t(t_args **args);
 /*
 ** opt_r_ls.c
 */
-void				opt_r(t_args **args);
+void				opt_r(t_merge **args);
 
 #endif

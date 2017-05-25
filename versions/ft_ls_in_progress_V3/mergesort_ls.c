@@ -1,42 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tests_mergesort.c                                  :+:      :+:    :+:   */
+/*   mergesort_ls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/23 14:33:41 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/25 21:07:11 by ssumodhe         ###   ########.fr       */
+/*   Created: 2017/05/25 12:10:18 by ssumodhe          #+#    #+#             */
+/*   Updated: 2017/05/25 15:48:44 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-/*
-typedef struct		s_merge
-{
-	int					i;
-	char 				*str;
-	struct s_merge 		*next;
-}					t_merge;
-*/
-int		ft_lstcount(t_merge **merge)
-{
-	t_merge	*tmp;
-	int		nb_list;
 
-	nb_list = 0;
-	tmp = *merge;
-	while (tmp)
-	{
-		nb_list++;
-		tmp = tmp->next;
-	}
-	return (nb_list);
-}
-
-void	ft_ascii_mergesort(t_merge **tmp, t_merge **left, t_merge **right)
+void	ft_modif_date_mergesort(t_args **tmp, t_args **left, t_args **right)
 {
-	if ((ft_strcmp((*left)->str, (*right)->str)) < 0)
+	if ((*left)->stat.st_mtimespec.tv_sec > (*right)->stat.st_mtimespec.tv_sec)
 	{
 		*tmp = *left;
 		*left = (*left)->next;
@@ -48,7 +26,21 @@ void	ft_ascii_mergesort(t_merge **tmp, t_merge **left, t_merge **right)
 	}
 }
 
-void	ft_descendingorder_mergesort(t_merge **tmp, t_merge **left, t_merge **right)
+void	ft_ascii_mergesort(t_args **tmp, t_args **left, t_args **right)
+{
+	if ((ft_strcmp((*left)->arg, (*right)->arg)) < 0)
+	{
+		*tmp = *left;
+		*left = (*left)->next;
+	}
+	else
+	{
+		*tmp = *right;
+		*right = (*right)->next;
+	}
+}
+
+void	ft_descendingorder_mergesort(t_args **tmp, t_args **left, t_args **right)
 {
 	if ((*left)->i > (*right)->i)
 	{
@@ -62,11 +54,26 @@ void	ft_descendingorder_mergesort(t_merge **tmp, t_merge **left, t_merge **right
 	}
 }
 
-t_merge *ft_glue_mergesort(t_merge *left, t_merge *right)
+int		ft_lstcount(t_args **merge)
 {
-	t_merge		*tmp;
-	t_merge		*head;
-	t_merge		*tail;
+	t_args	*tmp;
+	int		nb_list;
+
+	nb_list = 0;
+	tmp = *merge;
+	while (tmp)
+	{
+		nb_list++;
+		tmp = tmp->next;
+	}
+	return (nb_list);
+}
+
+t_args *ft_glue_mergesort(t_args *left, t_args *right, void	f())
+{
+	t_args		*tmp;
+	t_args		*head;
+	t_args		*tail;
 
 	head = NULL;
 	while (left || right)
@@ -84,7 +91,7 @@ t_merge *ft_glue_mergesort(t_merge *left, t_merge *right)
 				left = left->next;
 			}
 			else
-				ft_ascii_mergesort(&tmp, &left, &right);
+				f(&tmp, &left, &right);
 		}
 		if (!head)
 			head = tmp;
@@ -95,11 +102,11 @@ t_merge *ft_glue_mergesort(t_merge *left, t_merge *right)
 	return (head);
 }
 
-t_merge	*ft_split_mergesort(t_merge *merge)
+t_args	*ft_mergesort(t_args *merge, void f())
 {
-	t_merge	*left;
-	t_merge	*right;
-	t_merge	*tmp; //
+	t_args	*left;
+	t_args	*right;
+//	t_args	*tmp; //
 	int		i;
 	int		nb_list;
 
@@ -116,17 +123,17 @@ t_merge	*ft_split_mergesort(t_merge *merge)
 	right = left->next;
 	left->next = NULL;
 	left = merge;
-
+/*
 //AFFICHAGE/
 ft_putendl(GREEN"RIGHT"RESET);
 
 	tmp = right;
 	while (tmp != NULL)
 	{
-		ft_putstr(tmp->str);
+		ft_putstr(tmp->arg);
 		if (tmp->next != NULL)
 			ft_putstr("\t");
-		tmp = tmp->next;
+		tmp = tmp->next;gg
 	}
 	ft_putendl("");
 ft_putendl(GREEN"LEFT"RESET);
@@ -134,88 +141,34 @@ ft_putendl(GREEN"LEFT"RESET);
 	tmp = left;
 	while (tmp != NULL)
 	{
-		ft_putstr(tmp->str);
+		ft_putstr(tmp->arg);
 		if (tmp->next != NULL)
 			ft_putstr("\t");
 		tmp = tmp->next;
 	}
 	ft_putendl("");
 //END - AFFICHAGE/
-
-	right = ft_split_mergesort(right);
-	left = ft_split_mergesort(left);
-	ft_putendl("JE SORS");
-	return ((ft_glue_mergesort(left, right)));
+*/
+	right = ft_mergesort(right, f);
+	left = ft_mergesort(left, f);
+//	ft_putendl("JE SORS");
+	return ((ft_glue_mergesort(left, right, f)));
 }
 
 
-void	opt_r(t_merge **args)
-{
-	t_merge	*tmp;
-	t_merge	*before;
-	t_merge	*tmp_2;
-	int		i;
-
-	i = 0;
-	tmp = *args;
-	tmp->prev = NULL;
-	before = tmp;
-ft_putstr(RED);
-			ft_putendl(tmp->str);
-		//	ft_putstr(YELLOW);
-		//	ft_putendl(tmp->prev->str);
-			ft_putstr(RESET);
-	tmp = tmp->next;
-
-
-
-	while (tmp->next != NULL)
-	{
-		i++;
-		tmp->prev = before;
-			ft_putstr(RED);
-			ft_putendl(tmp->str);
-			ft_putstr(YELLOW);
-			ft_putendl(tmp->prev->str);
-			ft_putstr(RESET);
-		before = tmp;
-		tmp = tmp->next;
-	}
-	if (i != 0)
-		tmp->prev = before;
-			ft_putstr(RED);
-			ft_putendl(tmp->str);
-			ft_putstr(YELLOW);
-			ft_putendl(tmp->prev->str);
-			ft_putstr(RESET);
-
-	tmp_2 = tmp;
-			ft_putendl(tmp->str);
-	before = tmp_2;
-	while (tmp->prev != NULL)
-	{
-		tmp_2 = tmp;
-		tmp_2->next = tmp->prev;
-		tmp_2 = tmp_2->next;
-		tmp = tmp->prev;
-	}
-	tmp_2->next = NULL;
-	tmp = *args;
-	*args = before;
-}
-
+/*
 int		main(int argc, char **argv)
 {
-	t_merge		*merge;
-	t_merge		*tmp;
-	t_merge		*new;
+	t_args		*merge;
+	t_args		*tmp;
+	t_args		*new;
 	int			i;
 
 	if (argc == 1)
 		return (-1);
 
-	if (!(merge = (t_merge *)malloc(sizeof(*merge))))
-		ft_exit(RED"error malloc t_merge *merge"RESET);
+	if (!(merge = (t_args *)malloc(sizeof(*merge))))
+		ft_exit(RED"error malloc t_args *merge"RESET);
 //	merge->i = ft_atoi(argv[1]);
 	merge->str = ft_strdup(argv[1]);
 	merge->next = NULL;
@@ -223,8 +176,8 @@ int		main(int argc, char **argv)
 	i = 2;
 	while (i < argc)
 	{
-		if (!(new = (t_merge *)malloc(sizeof(*new))))
-			ft_exit(RED"error malloc t_merge *merge"RESET);
+		if (!(new = (t_args *)malloc(sizeof(*new))))
+			ft_exit(RED"error malloc t_args *merge"RESET);
 //		new->i = ft_atoi(argv[i]);
 		new->str = ft_strdup(argv[i]);
 		new->next = NULL;
@@ -247,22 +200,21 @@ ft_putendl(GREEN"AVANT"RESET);
 	tmp = merge;
 	while (tmp != NULL)
 	{
-		ft_putstr(tmp->str);
+		ft_putstr(tmp->arg);
 		if (tmp->next != NULL)
 			ft_putstr("\t");
 		tmp = tmp->next;
 	}
 	ft_putendl("");
 
-//	merge = ft_split_mergesort(merge);
-	opt_r(&merge);
+	merge = mergesort(merge);
 	
 ft_putendl(GREEN"APRES"RESET);
 
 	tmp = merge;
 	while (tmp != NULL)
 	{
-		ft_putstr(tmp->str);
+		ft_putstr(tmp->arg);
 		if (tmp->next != NULL)
 			ft_putstr("\t");
 		tmp = tmp->next;
@@ -270,4 +222,4 @@ ft_putendl(GREEN"APRES"RESET);
 	ft_putendl("");
 
 	return (0);
-}
+}*/
