@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 18:12:08 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/26 23:46:46 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/26 23:48:16 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,5 @@ void		process_flags(t_args *args, t_flags flag, t_numbers numbers)
 	ft_putstr(RESET); //
 //end-tests.
 
-//	alone(&args, numbers);
+	alone(&args, numbers);
 }
