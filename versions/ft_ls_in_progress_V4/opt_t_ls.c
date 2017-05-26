@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/18 17:37:21 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/26 23:46:40 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/26 20:39:04 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,28 @@
 
 void	all_args_opt_t(t_args **args)
 {
-	int		go;
 	t_args	*tmp;
 
 	tmp = *args;
-	go = 1;
 	while (tmp)
 	{
 		errno = 0;
 		if((lstat(tmp->arg, &tmp->stat)) == -1)
 		{
-			go = 0;
-			tmp->error = errno; //errno = 13....;
+			ft_putstr_fd("ft_ls: ", 2);
+			perror(tmp->arg);
 			//free + set NULL le tmp->stat
 		}
-			printf("opt_t | type = %hu\n", tmp->stat.st_mode); //
-		if (tmp->stat.st_mode == S_IFLNK)
-			ft_putendl(tmp->arg); //Ici... need les liens pour le deplacer dans la liste chainee a cote de son fichier pointe
-			
+		//printf(GREEN"OPT_T | arg = %s, date modif = %ld\n"RESET, tmp->arg, tmp->stat.st_mtimespec.tv_sec);
+		//printf(GREEN"OPT_T | arg = %s\t%s"RESET, tmp->arg, ctime(&tmp->stat.st_mtimespec.tv_sec));
+//		if (tmp->bellow != NULL)
+//			opt_t(&tmp->bellow);
 		tmp = tmp->next;
 	}
 
-
 	*args = ft_mergesort(*args, ft_modif_date_mergesort);
-	
+
+	ft_putstr(RESET); //
 }
 
 void	opt_t(t_args **args)

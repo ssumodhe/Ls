@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/26 23:46:45 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/25 19:25:24 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void		get_error_args(t_args **args)
 		errno = 0;
 		dir = opendir(tmp->arg);
 		tmp->error = errno;
-	//	printf("args = %s\terror = %d\n", tmp->arg, tmp->error);
+//		printf("args = %s\terror = %d\n", tmp->arg, tmp->error);
 		if (dir != NULL)
 			if (closedir(dir) == -1)
 				ft_exit("We seem to reach a problem when closing the directory");

@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:00:04 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/26 23:46:42 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/25 19:17:02 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,7 @@ void	ft_print_bellow(t_args *file)
 	while (tmp)
 	{
 		split = ft_strwithoutstart(tmp->arg, (n + 1));
-		if (tmp->error == 13)
-		{	
-			errno = tmp->error;
-			ft_putstr_fd("ft_ls: ", 2);
-			perror(split);
-		}
-		else
-			ft_putendl(split);
+		ft_putendl(split);
 		ft_strdel(&split);
 		tmp = tmp->next;
 	}
@@ -66,30 +59,20 @@ void	alone(t_args **args, t_numbers numbers)
 	arguments = 0;
 	while (file)
 	{
-		if (file->error == 20 || file->error == 13)
+		if (file->error == 20)
 		{
 			arguments++;
-		/*	if (file->error == 13)
+			if (file->error == 13)
 			{	
 				errno = file->error;
 				ft_putstr_fd("ft_ls: ", 2);
 				perror(file->arg);
 			}
-			else*/
+			else
 				ft_putendl(file->arg);
 			if (arguments == (numbers.n_other - numbers.removed) && (numbers.n_file + numbers.n_denied) != 0)
 				ft_putendl("");
 		}
-/*		else if (file->error == 13)
-			{	
-			arguments++;
-				errno = file->error;
-				ft_putstr_fd("ft_ls: ", 2);
-				perror(file->arg);
-			if (arguments == (numbers.n_other - numbers.removed) && (numbers.n_file + numbers.n_denied) != 0)
-				ft_putendl("");
-			}*/
-
 		file = file->next;
 	}
 	file = *args;
@@ -105,8 +88,10 @@ void	alone(t_args **args, t_numbers numbers)
 				ft_putendl(":");
 			}
 			ft_print_bellow(file);
-			if ((numbers.n_file + numbers.n_other + numbers.n_denied) > 1 && arguments < (numbers.n_file + numbers.n_denied))
-				ft_putendl("");
+		if ((numbers.n_file + numbers.n_other + numbers.n_denied) > 1 && arguments < (numbers.n_file + numbers.n_denied))
+			ft_putendl("");
+		//	if (numbers.n_file + numbers.n_other > 1 && arguments < numbers.n_file)
+		//		ft_putendl("");
 		}
 		else if (file->error == 13)
 		{	
@@ -122,6 +107,8 @@ void	alone(t_args **args, t_numbers numbers)
 		if ((numbers.n_file + numbers.n_other + numbers.n_denied) > 1 && arguments < (numbers.n_file + numbers.n_denied))
 			ft_putendl("");
 		}
+	//	if ((numbers.n_file + numbers.n_other + numbers.n_denied) > 1 && arguments < (numbers.n_file + numbers.n_denied))
+	//		ft_putendl("");
 		file = file->next;
 	}
 }
