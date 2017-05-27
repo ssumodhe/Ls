@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/28 00:03:33 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/27 22:22:31 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void				process_flags(t_args *args, t_flags flag, t_numbers numbers);
 /*
 ** alone_ls.c
 */
-void				alone(t_args **args, t_flags flag, t_numbers numbers);
+void				alone(t_args **args, t_numbers numbers);
 void				ft_print_bellow(t_args *file);
 char				*ft_strwithoutstrat(char *str, int size);
 
