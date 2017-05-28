@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:00:04 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/28 00:03:35 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/28 20:41:06 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ void	ft_print_bellow(t_args *file)
 
 	split = NULL;
 	tmp = file->bellow;
-	n = ft_strlen(file->arg);
 	get_error_args(&file->bellow);
+	n = ft_strlen(file->arg);
+//	ft_putstr(CYAN); //
 	while (tmp)
 	{
 //	printf(YELLOW"ALONE - print_bellow | tmp = %s\terror = %d\n"RESET, tmp->arg, tmp->error); //
-//	ft_putstr(RESET); //
 		split = ft_strwithoutstart(tmp->arg, (n + 1));
 		if (tmp->error == 13)
 		{	
@@ -57,19 +57,17 @@ void	ft_print_bellow(t_args *file)
 		ft_strdel(&split);
 		tmp = tmp->next;
 	}
+//	ft_putstr(RESET); //
 }
 void	alone(t_args **args, t_flags flag, t_numbers numbers)
 {
 	t_args	*file;
 	char	*split;
 	int		arguments;
-//	int		i;
 
 	split = NULL;
 	file = *args;
 	arguments = 0;
-
-	
 
 	while (file) //Affiche les fichiers (file->error == 20);
 	{
@@ -89,7 +87,6 @@ void	alone(t_args **args, t_flags flag, t_numbers numbers)
 
 	file = *args;
 	arguments = 0;
-//	i = 0;
 	while (file) //Affiche les repositories et les permissions denied "de 1ier ordre"
 	{
 		if (file->error == 0)
@@ -97,25 +94,19 @@ void	alone(t_args **args, t_flags flag, t_numbers numbers)
 					//	printf(YELLOW"ALONE | file = %s\terror = %d\n"RESET, file->arg, file->error); //
 					//	ft_putstr(RESET); //
 			arguments++;
-			if (numbers.n_file + numbers.n_other > 1)
+			if (file->arg[ft_strlen(file->arg) - 1] != '.' && numbers.n_file + numbers.n_other > 1)
 			{
 				ft_putstr(file->arg);
 				ft_putendl(":");
+				ft_print_bellow(file);
+				if ((numbers.n_file + numbers.n_other + numbers.n_denied) > 1 && arguments < (numbers.n_file + numbers.n_denied))
+					ft_putendl("");
 			}
-			ft_print_bellow(file);
 			if (flag.u_r != 0 && file->bellow != NULL)
 			{
 				flag.u_r = 2;
-		//		if (i == 0)
-		//		{
-		//			i = 1;
-		//			ft_putendl(RED"");
-		//		}
 				alone(&file->bellow, flag, numbers);
-				ft_putstr(RESET);
 			}
-			if ((numbers.n_file + numbers.n_other + numbers.n_denied) > 1 && arguments < (numbers.n_file + numbers.n_denied))
-				ft_putendl("");
 		}
 		else if (file->error == 13)
 		{	

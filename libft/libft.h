@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 16:04:07 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/04/04 16:15:07 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/28 19:49:16 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,12 @@
 
 # define RESET	   "\033[0m"
 # define HIGHLIGHT "\033[1m"
+# define DIM		"\e[2m"
+# define ITALIC		"\e[3m"
 # define UNDERLINE "\033[4m"
 # define BLINK     "\033[5m"
+# define REVERSE	"\e[7m"
+# define HIDDEN		"\e[8m"
 # define BLACK     "\033[30m"
 # define RED       "\033[31m"
 # define GREEN     "\033[32m"
