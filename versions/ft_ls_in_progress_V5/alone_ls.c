@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:00:04 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/28 00:03:35 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/27 22:22:24 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,44 +58,57 @@ void	ft_print_bellow(t_args *file)
 		tmp = tmp->next;
 	}
 }
-void	alone(t_args **args, t_flags flag, t_numbers numbers)
+void	alone(t_args **args, t_numbers numbers)
 {
 	t_args	*file;
 	char	*split;
 	int		arguments;
-//	int		i;
 
 	split = NULL;
 	file = *args;
 	arguments = 0;
-
 	
+
+
 
 	while (file) //Affiche les fichiers (file->error == 20);
 	{
-		if (file->error == 20 && flag.u_r != 2)
+		if (file->error == 20/* || file->error == 13*/)
 		{
-					//	printf(YELLOW"ALONE | file = %s\terror = %d\n"RESET, file->arg, file->error); //
-					//	ft_putstr(RESET); //
+//	printf(YELLOW"ALONE | file = %s\terror = %d\n"RESET, file->arg, file->error); //
+//	ft_putstr(RESET); //
 			arguments++;
-			ft_putendl(file->arg);
+/*			if (file->error == 13)
+			{	
+				errno = file->error;
+				ft_putstr_fd("ft_ls: ", 2);
+				perror(file->arg);
+			}
+			else*/
+				ft_putendl(file->arg);
 			if (arguments == (numbers.n_other - numbers.removed) && (numbers.n_file + numbers.n_denied) != 0)
 				ft_putendl("");
 		}
+/*		else if (file->error == 13)
+			{	
+			arguments++;
+				errno = file->error;
+				ft_putstr_fd("ft_ls: ", 2);
+				perror(file->arg);
+			if (arguments == (numbers.n_other - numbers.removed) && (numbers.n_file + numbers.n_denied) != 0)
+				ft_putendl("");
+			}*/
+
 		file = file->next;
 	}
-
-
-
 	file = *args;
 	arguments = 0;
-//	i = 0;
-	while (file) //Affiche les repositories et les permissions denied "de 1ier ordre"
+	while (file) //Affiche les 
 	{
 		if (file->error == 0)
 		{
-					//	printf(YELLOW"ALONE | file = %s\terror = %d\n"RESET, file->arg, file->error); //
-					//	ft_putstr(RESET); //
+//	printf(YELLOW"ALONE | file = %s\terror = %d\n"RESET, file->arg, file->error); //
+//	ft_putstr(RESET); //
 			arguments++;
 			if (numbers.n_file + numbers.n_other > 1)
 			{
@@ -103,24 +116,13 @@ void	alone(t_args **args, t_flags flag, t_numbers numbers)
 				ft_putendl(":");
 			}
 			ft_print_bellow(file);
-			if (flag.u_r != 0 && file->bellow != NULL)
-			{
-				flag.u_r = 2;
-		//		if (i == 0)
-		//		{
-		//			i = 1;
-		//			ft_putendl(RED"");
-		//		}
-				alone(&file->bellow, flag, numbers);
-				ft_putstr(RESET);
-			}
 			if ((numbers.n_file + numbers.n_other + numbers.n_denied) > 1 && arguments < (numbers.n_file + numbers.n_denied))
 				ft_putendl("");
 		}
 		else if (file->error == 13)
 		{	
-					//	printf(YELLOW"ALONE | file = %s\terror = %d\n"RESET, file->arg, file->error); //
-					//	ft_putstr(RESET); //
+//	printf(YELLOW"ALONE | file = %s\terror = %d\n"RESET, file->arg, file->error); //
+//	ft_putstr(RESET); //
 			arguments++;
 			ft_putstr_fd(file->arg, 2);
 			ft_putendl_fd(":", 2);
