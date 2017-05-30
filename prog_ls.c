@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/28 19:11:10 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/30 20:16:11 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_flags		init_flag(void)
 	flag.a = 0;
 	flag.l_r = 0;
 	flag.t = 0;
+	flag.none = 0;
 	return (flag);
 }
 
@@ -158,6 +159,67 @@ void		ft_prog(t_option *opt, t_args *args)
 
 	flag = init_flag();
 	flag = check_opt(opt, flag);
+	args = ft_mergesort(args, ft_ascii_mergesort);
+	get_error_args(&args);
+	put_error_args(&args);
+	numbers = count_args(&args);
+	numbers.removed = remove_error_args(&args, 0);
+
+/*
+		if (flag.u_r == 0)
+			process_args(&args, flag.a); //il affichera et il fera -t -r 
+
+		else if (flag.u_r == 1)
+		{
+			process_args(&args, flag.a); //il affichera et il fera -t -r 
+			tmp = args;
+			while (tmp)
+			{
+				//aff tmp
+				if (tmp->bellow != NULL)
+					process_args(tmp_bellow); //avec -R debloque
+				tmp = tmp->next;
+			}
+		}
+*/
+
+
+	if (flag.u_r == 1) // if -R.
+	{
+		process_args(&args, flag.a);
+		process_flags(args, flag);
+		alone_2(args);
+		ft_putstr("d_type =");
+		ft_putnbr(args->d_type);
+		ft_putendl("");
+		ft_putstr("type = dossier ?");
+		ft_putnbr(S_ISDIR(args->lstat.st_mode));
+		ft_putendl("");
+		opt_u_r(&args, flag);
+		
+	}
+	else if (flag.u_r == 0) // if pas -R.
+	{
+		process_args(&args, flag.a);
+		process_flags(args, flag);
+
+		alone(&args, flag, numbers);
+	}
+	//process_args(&args, flag.a);
+	//process_flags(args, flag, numbers);
+}
+
+
+
+
+/*
+void		ft_prog(t_option *opt, t_args *args)
+{
+	t_flags		flag;
+	t_numbers	numbers;
+
+	flag = init_flag();
+	flag = check_opt(opt, flag);
 	printf(CYAN"prog - flags | l = %d\tR = %d\ta = %d\tr = %d\tt = %d\n"RESET, flag.l, flag.u_r, flag.a, flag.l_r, flag.t); //
 	ft_putstr(RESET); //
 
@@ -169,4 +231,4 @@ void		ft_prog(t_option *opt, t_args *args)
 	process_args(&args, flag.a);
 //	printf("n_file = %d\tn_other = %d, removed = %d\n", numbers.n_file, numbers.n_other, numbers.removed);
 	process_flags(args, flag, numbers);
-}
+}*/

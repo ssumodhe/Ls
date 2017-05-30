@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/28 20:41:10 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/30 20:16:13 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ typedef struct		s_args
 	int					i;
 	char				*arg;
 	int					error;
-	struct dirent		*d;
+//	struct dirent		*d;
+	int					d_type;
+	struct stat			lstat;
 	struct stat			stat;
 	struct s_args		*bellow;
 	struct s_args		*next;
@@ -89,22 +91,25 @@ void				ft_modif_date_mergesort(t_args **tmp, t_args **left, t_args **right);
 */
 //void				process_args(t_args **args);
 void				process_args(t_args **args, int opt_a);
+void				create_bellow(t_args **args, int opt_a);
 void				ft_openfiles(t_args **args);
 char				*ft_strjoin_by(char *str1, char c, char *str2);
 void				put_args(t_args **args);
 void				all_args(t_args **args);
+void				get_link_stat(t_args *tmp);
+void				get_stat(t_args *tmp);
 
 /*
-** process_args_ls.c
+** process_flags_ls.c
 */
-void				process_flags(t_args *args, t_flags flag, t_numbers numbers);
+void				process_flags(t_args *args, t_flags flag);
 
 /*
 ** alone_ls.c
 */
 void				alone(t_args **args, t_flags flag, t_numbers numbers);
 void				ft_print_bellow(t_args *file);
-char				*ft_strwithoutstrat(char *str, int size);
+//char				*ft_strwithoutstrat(char *str, int size);
 
 /*
 ** opt_t_ls.c
@@ -113,9 +118,19 @@ void				opt_t(t_args **args);
 void				all_args_opt_t(t_args **args);
 
 /*
-** opt_r_ls.c
+** opt_l_r_ls.c
 */
-void				opt_r(t_args **args);
+void				opt_l_r(t_args **args);
 void				all_args_opt_r(t_args **args);
+
+/*
+** opt_u_r_ls.c
+*/
+void				opt_u_r(t_args **args, t_flags flag);
+void				ft_run(t_args *args, t_flags flag);
+void				ft_put_this_list(t_args *args);
+int					check_if_point(char *str);
+void				ft_put_perm_denied(t_args *file);
+void				alone_2(t_args *args);
 
 #endif

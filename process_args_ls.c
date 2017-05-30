@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/26 23:46:43 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/30 20:16:06 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	all_args(t_args **args)
 		if (tmp->bellow != NULL)
 		{
 			tmp->bellow = ft_mergesort(tmp->bellow, ft_ascii_mergesort);
-			all_args(&tmp->bellow);
+//			all_args(&tmp->bellow); //pour -R + mettre autre fonction tri
 		}
 		tmp = tmp->next;
 	}
@@ -70,20 +70,43 @@ char	*ft_strjoin_by(char *str1, char c, char *str2)
 	return(join);
 }
 
+void		get_stat(t_args	*tmp)
+{
+	errno = 0;
+	if((stat(tmp->arg, &tmp->stat)) == -1)
+	{
+			tmp->error = errno; //errno = 13....;
+			//free + set NULL le tmp->stat
+	}
+}
 
-t_args *args_newlist(char *str, struct dirent *d)
+
+void		get_link_stat(t_args	*tmp)
+{
+	errno = 0;
+	if((lstat(tmp->arg, &tmp->lstat)) == -1)
+	{
+			tmp->error = errno; //errno = 13....;
+			//free + set NULL le tmp->stat
+	}
+}
+
+t_args *args_newlist(char *str, struct dirent *d, int error)
 {
 	t_args	*new;
 
 	if(!(new = (t_args *)malloc(sizeof(*new))))
 		ft_exit(RED"error malloc bellow's list creation"RESET);
+	new->error = error;
 	new->arg = ft_strjoin_by(str, '/', d->d_name);
-	new->d = d;
+	new->d_type = d->d_type; //on s'en tape
 //	new->stat = NULL;
+	get_link_stat(new);
+	get_stat(new);
 	new->bellow = NULL;
 	new->next = NULL;
 	new->prev = NULL;
-	return(new);
+		return(new);
 }
 
 
@@ -94,21 +117,18 @@ void	ft_openfiles(t_args **args)
 	t_args	*tmp;
 	int		i;
 
+	errno = 0;
 	dir = NULL;
 	i = ft_strlen((*args)->arg);
-	if ((*args)->arg[i] != '.' && (dir = opendir((*args)->arg)))
+	if (/*(*args)->arg[i] != '.' && */(dir = opendir((*args)->arg)))
 	{
 		while ((d = readdir(dir)))
-		{//		ft_putstr(RED);
-		//		ft_putstr((*args)->arg);
-		//		ft_putchar('\t');
-		//		ft_putendl(d->d_name);
-		//		ft_putstr(RESET);
-
+		{
+		
 			if ((*args)->bellow == NULL)
 			{
 				//free*/
-				(*args)->bellow = args_newlist((*args)->arg, d);
+				(*args)->bellow = args_newlist((*args)->arg, d, errno);
 				tmp = (*args)->bellow;
 			}
 			else
@@ -116,13 +136,22 @@ void	ft_openfiles(t_args **args)
 				tmp = (*args)->bellow;
 				while (tmp->next != NULL)
 					tmp = tmp->next;
-				tmp->next = args_newlist((*args)->arg, d);
+				tmp->next = args_newlist((*args)->arg, d, errno);
 				tmp = tmp->next;
 			}
-			if (d->d_name[0] != '.' && d->d_type == 4)
-				ft_openfiles(&tmp);
+//			if (d->d_name[0] != '.' && d->d_type == 4) //pour -R
+//				ft_openfiles(&tmp);
 		}
 	}
+	else 
+		(*args)->error = errno;
+	
+//	ft_putstr(HIGHLIGHT UNDERLINE GREEN ITALIC); //
+//	ft_putstr((*args)->arg); //
+//	ft_putstr("   error = "); //
+//	ft_putnbr((*args)->error); //
+//	ft_putendl(RESET""); //
+
 	if (dir && closedir(dir) == -1)
 		ft_exit("We seem to reach a probleme when closing the directory");
 }
@@ -134,18 +163,19 @@ void	ft_openfiles_withouta(t_args **args)
 	t_args	*tmp;
 	int		i;
 
+	errno = 0;
 	dir = NULL;
 	i = ft_strlen((*args)->arg);
-	if ((*args)->arg[i] != '.' && (dir = opendir((*args)->arg)))
+	if (/*(*args)->arg[i] != '.' && */(dir = opendir((*args)->arg)))
 	{
 		while ((d = readdir(dir)))
 		{
 			if (d->d_name[0] != '.')
 			{
-						if ((*args)->bellow == NULL)
+				if ((*args)->bellow == NULL)
 				{
 					//free*/
-					(*args)->bellow = args_newlist((*args)->arg, d);
+					(*args)->bellow = args_newlist((*args)->arg, d, errno);
 					tmp = (*args)->bellow;
 				}
 				else
@@ -153,16 +183,34 @@ void	ft_openfiles_withouta(t_args **args)
 					tmp = (*args)->bellow;
 					while (tmp->next != NULL)
 						tmp = tmp->next;
-					tmp->next = args_newlist((*args)->arg, d);
+					tmp->next = args_newlist((*args)->arg, d, errno);
 					tmp = tmp->next;
 				}
-				if (d->d_name[0] != '.' && d->d_type == 4)
-					ft_openfiles_withouta(&tmp);
+		//		ft_putendl("ON A REUSSI");
+//				if (d->d_name[0] != '.' && d->d_type == 4) // pour -R
+//					ft_openfiles_withouta(&tmp);
 			}
 		}
 	}
+	else 
+		(*args)->error = errno;
+	
+//	ft_putstr(HIGHLIGHT UNDERLINE GREEN ITALIC); //
+//	ft_putstr((*args)->arg); //
+//	ft_putstr("   error = "); //
+//	ft_putnbr((*args)->error); //
+//	ft_putendl(RESET""); //
+
 	if (dir && closedir(dir) == -1)
 		ft_exit("We seem to reach a probleme when closing the directory");
+}
+
+void	create_bellow(t_args **args, int opt_a)
+{
+		if (opt_a == 1)
+			ft_openfiles(args);
+		else 
+			ft_openfiles_withouta(args);
 }
 
 void	process_args(t_args **args, int opt_a)
@@ -172,15 +220,8 @@ void	process_args(t_args **args, int opt_a)
 	tmp = *args;
 	while (tmp)
 	{
-		if (opt_a == 1)
-			ft_openfiles(&tmp);
-		else 
-			ft_openfiles_withouta(&tmp);
+		create_bellow(&tmp, opt_a);	
 		tmp = tmp->next;
 	}
-//	put_args(args); //
 	all_args(args); //Tri ascii par mergesort
-//	ft_putstr(YELLOW); //
-//	put_args(args); //
-//	ft_putstr(RESET); //
 }

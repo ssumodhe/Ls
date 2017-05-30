@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   opt_r_ls.c                                         :+:      :+:    :+:   */
+/*   opt_l_r_ls.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/25 19:00:13 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/27 20:33:13 by ssumodhe         ###   ########.fr       */
+/*   Created: 2017/05/29 20:35:14 by ssumodhe          #+#    #+#             */
+/*   Updated: 2017/05/30 13:08:20 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	all_args_opt_r(t_args **args)
 
 	tmp = *args;
 	before = NULL;
-	while (tmp->next != NULL)
+	while (tmp->next != NULL) //J'initialise les prev
 	{
 		tmp->prev = before;
 		before = tmp;
@@ -30,7 +30,7 @@ void	all_args_opt_r(t_args **args)
 
 	tmp_2 = tmp;
 	before = tmp_2;
-	while (tmp->prev != NULL)
+	while (tmp->prev != NULL) // Je reverse
 	{
 		tmp_2->next = tmp->prev;
 		tmp_2 = tmp_2->next;
@@ -41,7 +41,7 @@ void	all_args_opt_r(t_args **args)
 	*args = before;
 }
 
-void	opt_r(t_args **args)
+void	opt_l_r(t_args **args)
 {
 	t_args	*tmp;
 
@@ -51,7 +51,7 @@ void	opt_r(t_args **args)
 		if (tmp->bellow != NULL)
 		{
 			all_args_opt_r(&tmp->bellow);
-			opt_r(&tmp->bellow);
+			opt_l_r(&tmp->bellow);
 		}
 		tmp = tmp->next;
 	}

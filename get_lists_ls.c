@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 16:14:40 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/25 19:25:19 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/30 20:16:04 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ t_args	*new_args(int i, char *arg)
 	new->i = i;
 	new->arg = ft_strdup(arg);
 	new->error = 0;
-	new->d = NULL;
-//	new->stat = NULL;
+//	new->d = NULL;
+	new->d_type = 0; // a virer??
+	get_link_stat(new);
+	get_stat(new);
 	new->bellow = NULL;
 	new->next = NULL;
 	new->prev = NULL;

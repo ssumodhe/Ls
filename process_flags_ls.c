@@ -6,28 +6,27 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 18:12:08 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/28 20:41:07 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/30 15:42:05 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void		process_flags(t_args *args, t_flags flag, t_numbers numbers)
+void		process_flags(t_args *args, t_flags flag)
 {
 //	t_args	*tmp; //
-//	int			i;
-
+//	int			i; //
 
 	if (flag.t == 1)
 	{
-		all_args_opt_t(&args);
-		opt_t(&args);
+	//	all_args_opt_t(&args);
+		opt_t(&args); // pour -R
 	}
 
 	if (flag.l_r == 1)
 	{
-		all_args_opt_r(&args);
-		opt_r(&args);
+	//	all_args_opt_r(&args);
+		opt_l_r(&args); // pour -R
 	}
 
 /*
@@ -44,7 +43,6 @@ void		process_flags(t_args *args, t_flags flag, t_numbers numbers)
 		i++;
 	}
 	ft_putstr(RESET); //
-//end-tests.
-*/
-	alone(&args, flag, numbers);
+//end-tests.*/
+
 }
