@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/30 20:16:13 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/31 12:57:23 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,9 +128,10 @@ void				all_args_opt_r(t_args **args);
 */
 void				opt_u_r(t_args **args, t_flags flag);
 void				ft_run(t_args *args, t_flags flag);
+void				ft_put_first_list(t_args *args);
 void				ft_put_this_list(t_args *args);
 int					check_if_point(char *str);
-void				ft_put_perm_denied(t_args *file);
+void				ft_put_perm_denied(t_args *file, int mode);
 void				alone_2(t_args *args);
 
 #endif

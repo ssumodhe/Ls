@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/30 20:16:06 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/31 12:57:30 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,7 @@ void	create_bellow(t_args **args, int opt_a)
 			ft_openfiles(args);
 		else 
 			ft_openfiles_withouta(args);
+		all_args(args); //Tri ascii par mergesort
 }
 
 void	process_args(t_args **args, int opt_a)

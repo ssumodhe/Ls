@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:00:04 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/30 20:16:05 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/31 12:57:25 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,17 @@ void	ft_print_bellow(t_args *file)
 {
 	t_args	*tmp;
 	char 	*split;
-	int		n;
 
 	split = NULL;
 	tmp = file->bellow;
 	get_error_args(&file->bellow);
-	n = ft_strlen(file->arg);
 	while (tmp)
 	{
-//		split = ft_strwithoutstart(tmp->arg, (n + 1));
 		split = (ft_strrchr(tmp->arg, '/') + 1);
-/*		if (tmp->error == 13) //foirage avec ./ft_ls -a /
-		{	
-			errno = tmp->error;
-			ft_putstr_fd("ft_ls: ", 2);
-			perror(split);
-		}
-		else*/
+		if (split != NULL)
 			ft_putendl(split);
-//		ft_strdel(&split);
+		else
+			ft_putendl(tmp->arg); // Mis en protection
 		tmp = tmp->next;
 	}
 }
@@ -115,7 +107,7 @@ void	alone(t_args **args, t_flags flag, t_numbers numbers)
 				perror(file->arg);
 			else
 				perror(ft_strrchr(file->arg, '/') + 1);*/
-			ft_put_perm_denied(file);
+			ft_put_perm_denied(file, 0); /// condition a mettre pour savoir si nom du dossier ou pas ! 
 		if ((numbers.n_file + numbers.n_other + numbers.n_denied) > 1 && arguments < (numbers.n_file + numbers.n_denied))
 			ft_putendl("");
 		}

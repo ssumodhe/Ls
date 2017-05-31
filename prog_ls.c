@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/30 20:16:11 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/31 13:01:56 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,13 +189,26 @@ void		ft_prog(t_option *opt, t_args *args)
 		process_args(&args, flag.a);
 		process_flags(args, flag);
 		alone_2(args);
-		ft_putstr("d_type =");
-		ft_putnbr(args->d_type);
-		ft_putendl("");
-		ft_putstr("type = dossier ?");
-		ft_putnbr(S_ISDIR(args->lstat.st_mode));
-		ft_putendl("");
-		opt_u_r(&args, flag);
+
+//
+		if (args)
+		{
+			ft_putstr(HIGHLIGHT CYAN ITALIC);
+			ft_putstr("type = dossier (lstat) ?");
+			ft_putnbr(S_ISDIR(args->lstat.st_mode));
+			ft_putendl("");
+			ft_putstr("type = dossier (stat) ?");
+			ft_putnbr(S_ISDIR(args->stat.st_mode));
+			ft_putendl("");
+			ft_putstr("args error = ");
+			ft_putnbr(args->error);
+			ft_putendl("");
+			ft_putstr(RESET);
+
+			opt_u_r(&args, flag);
+		}
+//
+
 		
 	}
 	else if (flag.u_r == 0) // if pas -R.
