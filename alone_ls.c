@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:00:04 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/31 12:57:25 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/31 18:38:47 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,9 @@ void	alone(t_args **args, t_flags flag, t_numbers numbers)
 				perror(file->arg);
 			else
 				perror(ft_strrchr(file->arg, '/') + 1);*/
-			ft_put_perm_denied(file, 0); /// condition a mettre pour savoir si nom du dossier ou pas ! 
+			ft_putstr(file->arg);
+			ft_putendl(":");
+			ft_put_perm_denied(file); /// condition a mettre pour savoir si nom du dossier ou pas ! 
 		if ((numbers.n_file + numbers.n_other + numbers.n_denied) > 1 && arguments < (numbers.n_file + numbers.n_denied))
 			ft_putendl("");
 		}

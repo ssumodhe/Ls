@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/31 13:01:56 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/31 18:38:39 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,28 @@ void		put_error_args(t_args **args)
 	tmp = *args;
 	while (tmp)
 	{
-		if (tmp->error != 0 && tmp->error != 13 && tmp->error != 20)
+			
+		/*	if (tmp->error != 0 && tmp->error != 13 && tmp->error != 20)
+			{
+				errno = tmp->error;
+				ft_putstr_fd("ft_ls: ", 2);
+				perror(tmp->arg);
+			}*/
+
+		if (tmp->error != 0 && tmp->error != 20)
 		{
-			errno = tmp->error;
-			ft_putstr_fd("ft_ls: ", 2);
-			perror(tmp->arg);
+			if (tmp->error == 13 && S_ISDIR(tmp->stat.st_mode) == 0)
+			{
+				errno = tmp->error;
+				ft_putstr_fd("ft_ls: ", 2);
+				perror(tmp->arg);
+			}
+			else if (tmp->error != 13)
+			{
+				errno = tmp->error;
+				ft_putstr_fd("ft_ls: ", 2);
+				perror(tmp->arg);
+			}
 		}
 		tmp = tmp->next;
 	}
@@ -110,21 +127,56 @@ int			remove_error_args(t_args **args, int removed)
 	t_args	*tmp;
 
 	tmp = *args;
-	if (tmp && tmp->error != 0 && tmp->error != 13 && tmp->error != 20)
+/*	if (tmp && tmp->error != 0 && tmp->error != 13 && tmp->error != 20)
 	{
 		removed++;
 		tmp = tmp->next;
 		*args = tmp;
 		removed = remove_error_args(args, removed);
+	}*/
+	if (tmp != NULL && tmp->error != 0 && tmp->error != 20)
+	{
+		if (tmp->error == 13 && S_ISDIR(tmp->stat.st_mode) == 0)
+		{
+		removed++;
+		tmp = tmp->next;
+		*args = tmp;
+		removed = remove_error_args(args, removed);
+		}
+		else if (tmp->error != 13)
+		{
+		removed++;
+		tmp = tmp->next;
+		*args = tmp;
+		removed = remove_error_args(args, removed);
+		}
 	}
+
 	while (tmp)
 	{
-		if (tmp->next != NULL && tmp->next->error != 0 && tmp->next->error != 13 && tmp->next->error != 20)
+
+	if (tmp->next != NULL && tmp->next->error != 0 && tmp->next->error != 20)
+	{
+		if (tmp->next->error == 13 && S_ISDIR(tmp->next->stat.st_mode) == 0)
+		{
+		removed++;
+		tmp->next = tmp->next->next;
+		removed = remove_error_args(args, removed);
+		}
+		else if (tmp->next->error != 13)
+		{
+		removed++;
+		tmp->next = tmp->next->next;
+		removed = remove_error_args(args, removed);
+		}
+	}
+
+/*		if (tmp->next != NULL && tmp->next->error != 0 && tmp->next->error != 13 && tmp->next->error != 20)
 		{
 			removed++;
 			tmp->next = tmp->next->next;
 			removed = remove_error_args(args, removed);
-		}
+		}*/
 		tmp = tmp->next;
 	}
 	return (removed);
@@ -139,6 +191,7 @@ t_numbers	count_args(t_args **args)
 	numbers.n_file = 0;
 	numbers.n_denied = 0;
 	numbers.n_other = 0;
+	numbers.removed = 0;
 	while (tmp)
 	{
 		if (tmp->error == 0)
@@ -193,7 +246,7 @@ void		ft_prog(t_option *opt, t_args *args)
 //
 		if (args)
 		{
-			ft_putstr(HIGHLIGHT CYAN ITALIC);
+			/*ft_putstr(HIGHLIGHT CYAN ITALIC);
 			ft_putstr("type = dossier (lstat) ?");
 			ft_putnbr(S_ISDIR(args->lstat.st_mode));
 			ft_putendl("");
@@ -203,9 +256,9 @@ void		ft_prog(t_option *opt, t_args *args)
 			ft_putstr("args error = ");
 			ft_putnbr(args->error);
 			ft_putendl("");
-			ft_putstr(RESET);
+			ft_putstr(RESET);*/
 
-			opt_u_r(&args, flag);
+			opt_u_r(&args, flag, numbers);
 		}
 //
 
