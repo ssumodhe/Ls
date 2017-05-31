@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:00:04 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/31 18:38:47 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/31 20:27:48 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	ft_print_bellow(t_args *file)
 
 	split = NULL;
 	tmp = file->bellow;
-	get_error_args(&file->bellow);
 	while (tmp)
 	{
 		split = (ft_strrchr(tmp->arg, '/') + 1);

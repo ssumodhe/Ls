@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/31 18:38:40 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/31 20:27:47 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	ft_openfiles(t_args **args)
 	struct dirent *d;
 	t_args	*tmp;
 
-//	errno = 0;
+	errno = 0;
 	dir = NULL;
 	if ((dir = opendir((*args)->arg)))
 	{

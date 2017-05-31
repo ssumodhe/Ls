@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/31 18:38:39 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/31 20:27:44 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,27 @@ int			remove_error_args(t_args **args, int removed)
 	return (removed);
 }
 
+t_numbers	get_numbers(t_args *args)
+{
+	t_args		*tmp;
+	t_numbers	numbers;
+
+	tmp = args;
+	numbers.n_file = 0;
+	numbers.n_denied = 0;
+	numbers.n_other = 0;
+	numbers.removed = 0;
+	while (tmp)
+	{
+		if (S_ISDIR(tmp->stat.st_mode) != 0)
+			numbers.n_file++;
+		if (S_ISDIR(tmp->stat.st_mode) == 0)
+			numbers.n_other++;
+		tmp = tmp->next;
+	}
+	return (numbers);
+}
+/*
 t_numbers	count_args(t_args **args)
 {
 	t_args		*tmp;
@@ -204,7 +225,7 @@ t_numbers	count_args(t_args **args)
 	}
 	return (numbers);
 }
-
+*/
 void		ft_prog(t_option *opt, t_args *args)
 {
 	t_flags		flag;
@@ -213,10 +234,16 @@ void		ft_prog(t_option *opt, t_args *args)
 	flag = init_flag();
 	flag = check_opt(opt, flag);
 	args = ft_mergesort(args, ft_ascii_mergesort);
-	get_error_args(&args);
+	get_error_args(&args); // recupere les valeurs errno
 	put_error_args(&args);
-	numbers = count_args(&args);
 	numbers.removed = remove_error_args(&args, 0);
+	numbers = get_numbers(args);
+
+/*	ft_putstr(GREEN UNDERLINE);
+	ft_putnbr(numbers.n_file);
+	ft_putstr("  ");
+	ft_putnbr(numbers.n_other);
+	ft_putendl(RESET);*/
 
 /*
 		if (flag.u_r == 0)
@@ -239,14 +266,14 @@ void		ft_prog(t_option *opt, t_args *args)
 
 	if (flag.u_r == 1) // if -R.
 	{
-		process_args(&args, flag.a);
-		process_flags(args, flag);
-		alone_2(args);
+		process_args(&args, flag.a); // creer tous les bellow des args et trie ascii
+		process_flags(args, flag); // tri -t et -r
+		alone_2(args); // affiche les file NON OUVRABLES
 
 //
 		if (args)
 		{
-			/*ft_putstr(HIGHLIGHT CYAN ITALIC);
+/*			ft_putstr(HIGHLIGHT CYAN ITALIC);
 			ft_putstr("type = dossier (lstat) ?");
 			ft_putnbr(S_ISDIR(args->lstat.st_mode));
 			ft_putendl("");
