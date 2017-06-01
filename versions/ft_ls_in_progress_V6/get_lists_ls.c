@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 16:14:40 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/01 18:19:12 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/31 20:27:50 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ t_args	*new_args(int i, char *arg)
 		ft_exit(RED"error malloc args's list creation"RESET);
 	new->i = i;
 	new->arg = ft_strdup(arg);
-	new->field = NULL;
 	new->error = 0;
 //	new->d = NULL;
 	new->d_type = 0; // a virer??

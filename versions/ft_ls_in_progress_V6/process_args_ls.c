@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/01 19:49:00 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/31 20:27:47 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	all_args(t_args **args)
 		if (tmp->bellow != NULL)
 		{
 			tmp->bellow = ft_mergesort(tmp->bellow, ft_ascii_mergesort);
+//			all_args(&tmp->bellow); //pour -R + mettre autre fonction tri
 		}
 		tmp = tmp->next;
 	}
@@ -71,21 +72,27 @@ char	*ft_strjoin_by(char *str1, char c, char *str2)
 
 void		get_stat(t_args	*tmp)
 {
+	//errno = 0;
 	if ((stat(tmp->arg, &tmp->stat)) == -1)
 	{
 		;
 			//free + set NULL le tmp->stat
 	}
+	//tmp->error = errno; //errno = 13....;
 }
 
 
 void		get_link_stat(t_args	*tmp)
 {
-	if ((lstat(tmp->arg, &tmp->lstat)) == -1)
+	//errno = 0;
+	if((lstat(tmp->arg, &tmp->lstat)) == -1)
 	{
 		;
 			//free + set NULL le tmp->stat
 	}
+	//tmp->error = errno; //errno = 13....;
+	//ft_putendl("tmp->error = ");
+	//ft_putnbr(tmp->error);
 }
 
 t_args *args_newlist(char *str, struct dirent *d)
@@ -96,7 +103,6 @@ t_args *args_newlist(char *str, struct dirent *d)
 		ft_exit(RED"error malloc bellow's list creation"RESET);
 	new->error = 0;
 	new->arg = ft_strjoin_by(str, '/', d->d_name);
-	new->field = NULL;
 	new->d_type = d->d_type; //on s'en tape
 	get_stat(new);
 	get_link_stat(new);
@@ -162,6 +168,7 @@ void	ft_openfiles_withouta(t_args **args)
 				if ((*args)->bellow == NULL)
 				{
 					//free*/
+					//(*args)->bellow = args_newlist((*args)->arg, d, errno);
 					(*args)->bellow = args_newlist((*args)->arg, d);
 					tmp = (*args)->bellow;
 				}
@@ -173,11 +180,21 @@ void	ft_openfiles_withouta(t_args **args)
 					tmp->next = args_newlist((*args)->arg, d);
 					tmp = tmp->next;
 				}
+		//		ft_putendl("ON A REUSSI");
+//				if (d->d_name[0] != '.' && d->d_type == 4) // pour -R
+//					ft_openfiles_withouta(&tmp);
 			}
 		}
 	}
 	else 
 		(*args)->error = errno;
+	
+//	ft_putstr(HIGHLIGHT UNDERLINE GREEN ITALIC); //
+//	ft_putstr((*args)->arg); //
+//	ft_putstr("   error = "); //
+//	ft_putnbr((*args)->error); //
+//	ft_putendl(RESET""); //
+
 	if (dir && closedir(dir) == -1)
 		ft_exit("We seem to reach a probleme when closing the directory");
 }
@@ -201,5 +218,5 @@ void	process_args(t_args **args, int opt_a)
 		create_bellow(&tmp, opt_a);	
 		tmp = tmp->next;
 	}
-//	all_args(args); //Tri ascii par mergesort
+	all_args(args); //Tri ascii par mergesort
 }

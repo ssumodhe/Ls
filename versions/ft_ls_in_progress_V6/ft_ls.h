@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/01 19:49:06 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/01 13:05:56 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 typedef	struct		s_numbers
 {
 	int		n_file;
-	int		n_denied;
+	int		n_denied; //no need
 	int		n_other;
 	int		removed;
 }					t_numbers;
@@ -47,10 +47,9 @@ typedef struct		s_args
 {
 	int					i;
 	char				*arg;
-	char				*field;
 	int					error;
 //	struct dirent		*d;
-	int					d_type;
+	int					d_type; //no need
 	struct stat			lstat;
 	struct stat			stat;
 	struct s_args		*bellow;
@@ -109,7 +108,7 @@ void				process_flags(t_args *args, t_flags flag);
 ** alone_ls.c
 */
 void				alone(t_args **args, t_flags flag, t_numbers numbers);
-void				ft_print_bellow(t_args *file, t_flags flag);
+void				ft_print_bellow(t_args *file);
 //char				*ft_strwithoutstrat(char *str, int size);
 
 /*
@@ -129,10 +128,11 @@ void				all_args_opt_r(t_args **args);
 */
 void				opt_u_r(t_args **args, t_flags flag, t_numbers numbers);
 void				ft_run(t_args *args, t_flags flag);
-void				ft_put_first_list(t_args *args, t_numbers numbers, t_flags flag);
-void				ft_put_this_list(t_args *args, t_flags flag);
+void				ft_put_first_list(t_args *args, t_numbers numbers);
+void				ft_put_this_list(t_args *args);
 int					check_if_point(char *str);
+void				alone_2(t_args *args);
+t_numbers			count_args_2(t_args *file);
 void				ft_put_perm_denied(t_args *file);
-void				alone_2(t_args *args, t_flags flag);
 
 #endif

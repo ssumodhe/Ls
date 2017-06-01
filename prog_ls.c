@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/05/31 20:27:44 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/01 19:49:03 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,10 @@ t_flags		check_opt(t_option *opt, t_flags flag) //fonction qui verifie les optio
 			if (tmp->opt[i] != 'l' && tmp->opt[i] != 'R' && tmp->opt[i] != 'a' \
 					&& tmp->opt[i] != 'r' && tmp->opt[i] != 't')
 			{
-				ft_putstr("ft_ls: illegal option -- "); //a mettre sur la sortie d'erreur
-				ft_putchar(tmp->opt[i]);
-				ft_exit("\nusage: ft_ls [-lRart] [file ...]");
+				ft_putstr_fd("ft_ls: illegal option -- ", 2); //a mettre sur la sortie d'erreur
+				ft_putchar_fd(tmp->opt[i], 2);
+				ft_putstr_fd("\nusage: ft_ls [-lRart] [file ...]", 2);
+				ft_exit("");
 			}
 			else
 				flag = fill_flag(flag, tmp->opt[i]);
@@ -80,7 +81,6 @@ void		get_error_args(t_args **args)
 		errno = 0;
 		dir = opendir(tmp->arg);
 		tmp->error = errno;
-	//	printf("args = %s\terror = %d\n", tmp->arg, tmp->error);
 		if (dir != NULL)
 			if (closedir(dir) == -1)
 				ft_exit("We seem to reach a problem when closing the directory");
@@ -95,14 +95,6 @@ void		put_error_args(t_args **args)
 	tmp = *args;
 	while (tmp)
 	{
-			
-		/*	if (tmp->error != 0 && tmp->error != 13 && tmp->error != 20)
-			{
-				errno = tmp->error;
-				ft_putstr_fd("ft_ls: ", 2);
-				perror(tmp->arg);
-			}*/
-
 		if (tmp->error != 0 && tmp->error != 20)
 		{
 			if (tmp->error == 13 && S_ISDIR(tmp->stat.st_mode) == 0)
@@ -124,111 +116,84 @@ void		put_error_args(t_args **args)
 
 int			remove_error_args(t_args **args, int removed)
 {
+
 	t_args	*tmp;
 
 	tmp = *args;
-/*	if (tmp && tmp->error != 0 && tmp->error != 13 && tmp->error != 20)
-	{
-		removed++;
-		tmp = tmp->next;
-		*args = tmp;
-		removed = remove_error_args(args, removed);
-	}*/
 	if (tmp != NULL && tmp->error != 0 && tmp->error != 20)
 	{
 		if (tmp->error == 13 && S_ISDIR(tmp->stat.st_mode) == 0)
 		{
-		removed++;
-		tmp = tmp->next;
-		*args = tmp;
-		removed = remove_error_args(args, removed);
+			tmp = tmp->next;
+			*args = tmp;
+			removed = remove_error_args(args, removed);
+			removed++;
 		}
 		else if (tmp->error != 13)
 		{
-		removed++;
-		tmp = tmp->next;
-		*args = tmp;
-		removed = remove_error_args(args, removed);
+			tmp = tmp->next;
+			*args = tmp;
+			removed = remove_error_args(args, removed);
+			removed++;
 		}
 	}
 
 	while (tmp)
 	{
 
-	if (tmp->next != NULL && tmp->next->error != 0 && tmp->next->error != 20)
-	{
-		if (tmp->next->error == 13 && S_ISDIR(tmp->next->stat.st_mode) == 0)
+		if (tmp->next != NULL && tmp->next->error != 0 && tmp->next->error != 20)
 		{
-		removed++;
-		tmp->next = tmp->next->next;
-		removed = remove_error_args(args, removed);
+			if (tmp->next->error == 13 && S_ISDIR(tmp->next->stat.st_mode) == 0)
+			{
+				tmp->next = tmp->next->next;
+				removed = remove_error_args(args, removed);
+				removed++;
+			}
+			else if (tmp->next->error != 13)
+			{
+				tmp->next = tmp->next->next;
+				removed = remove_error_args(args, removed);
+				removed++;
+			}
 		}
-		else if (tmp->next->error != 13)
-		{
-		removed++;
-		tmp->next = tmp->next->next;
-		removed = remove_error_args(args, removed);
-		}
-	}
-
-/*		if (tmp->next != NULL && tmp->next->error != 0 && tmp->next->error != 13 && tmp->next->error != 20)
-		{
-			removed++;
-			tmp->next = tmp->next->next;
-			removed = remove_error_args(args, removed);
-		}*/
 		tmp = tmp->next;
 	}
 	return (removed);
 }
 
-t_numbers	get_numbers(t_args *args)
+t_numbers	get_numbers(t_args *args, t_flags flag)
 {
 	t_args		*tmp;
 	t_numbers	numbers;
 
 	tmp = args;
 	numbers.n_file = 0;
-	numbers.n_denied = 0;
 	numbers.n_other = 0;
-	numbers.removed = 0;
 	while (tmp)
 	{
-		if (S_ISDIR(tmp->stat.st_mode) != 0)
-			numbers.n_file++;
-		if (S_ISDIR(tmp->stat.st_mode) == 0)
-			numbers.n_other++;
-		tmp = tmp->next;
-	}
-	return (numbers);
-}
-/*
-t_numbers	count_args(t_args **args)
-{
-	t_args		*tmp;
-	t_numbers	numbers;
-
-	tmp = *args;
-	numbers.n_file = 0;
-	numbers.n_denied = 0;
-	numbers.n_other = 0;
-	numbers.removed = 0;
-	while (tmp)
-	{
-		if (tmp->error == 0)
-			numbers.n_file++;
-		else if (tmp->error == 13)
-			numbers.n_denied++;
+		if (flag.l == 1)
+		{
+			if (S_ISDIR(tmp->lstat.st_mode) != 0)
+				numbers.n_file++;
+			if (S_ISDIR(tmp->lstat.st_mode) == 0)
+				numbers.n_other++;
+		}
 		else
-			numbers.n_other++;
+		{
+			if (S_ISDIR(tmp->stat.st_mode) != 0)
+				numbers.n_file++;
+			if (S_ISDIR(tmp->stat.st_mode) == 0)
+				numbers.n_other++;
+		}
 		tmp = tmp->next;
 	}
 	return (numbers);
 }
-*/
+
 void		ft_prog(t_option *opt, t_args *args)
 {
 	t_flags		flag;
+	int			removed;
 	t_numbers	numbers;
 
 	flag = init_flag();
@@ -236,92 +201,29 @@ void		ft_prog(t_option *opt, t_args *args)
 	args = ft_mergesort(args, ft_ascii_mergesort);
 	get_error_args(&args); // recupere les valeurs errno
 	put_error_args(&args);
-	numbers.removed = remove_error_args(&args, 0);
-	numbers = get_numbers(args);
-
-/*	ft_putstr(GREEN UNDERLINE);
-	ft_putnbr(numbers.n_file);
-	ft_putstr("  ");
-	ft_putnbr(numbers.n_other);
-	ft_putendl(RESET);*/
-
-/*
-		if (flag.u_r == 0)
-			process_args(&args, flag.a); //il affichera et il fera -t -r 
-
-		else if (flag.u_r == 1)
-		{
-			process_args(&args, flag.a); //il affichera et il fera -t -r 
-			tmp = args;
-			while (tmp)
-			{
-				//aff tmp
-				if (tmp->bellow != NULL)
-					process_args(tmp_bellow); //avec -R debloque
-				tmp = tmp->next;
-			}
-		}
-*/
-
+	removed = remove_error_args(&args, 0);
+	numbers = get_numbers(args, flag);
+	numbers.removed = removed;
 
 	if (flag.u_r == 1) // if -R.
 	{
 		process_args(&args, flag.a); // creer tous les bellow des args et trie ascii
-		process_flags(args, flag); // tri -t et -r
-		alone_2(args); // affiche les file NON OUVRABLES
-
-//
+		process_flags(args, flag); // tri -t et -r et -l
+		alone_2(args, flag); // affiche les file NON OUVRABLES
 		if (args)
 		{
-/*			ft_putstr(HIGHLIGHT CYAN ITALIC);
-			ft_putstr("type = dossier (lstat) ?");
-			ft_putnbr(S_ISDIR(args->lstat.st_mode));
-			ft_putendl("");
-			ft_putstr("type = dossier (stat) ?");
-			ft_putnbr(S_ISDIR(args->stat.st_mode));
-			ft_putendl("");
-			ft_putstr("args error = ");
-			ft_putnbr(args->error);
-			ft_putendl("");
-			ft_putstr(RESET);*/
-
 			opt_u_r(&args, flag, numbers);
 		}
-//
-
-		
 	}
 	else if (flag.u_r == 0) // if pas -R.
 	{
+		if (flag.t == 1 && args)
+			all_args_opt_t(&args);
+		if (flag.l_r == 1 && args)
+			all_args_opt_r(&args);
 		process_args(&args, flag.a);
 		process_flags(args, flag);
 
 		alone(&args, flag, numbers);
 	}
-	//process_args(&args, flag.a);
-	//process_flags(args, flag, numbers);
 }
-
-
-
-
-/*
-void		ft_prog(t_option *opt, t_args *args)
-{
-	t_flags		flag;
-	t_numbers	numbers;
-
-	flag = init_flag();
-	flag = check_opt(opt, flag);
-	printf(CYAN"prog - flags | l = %d\tR = %d\ta = %d\tr = %d\tt = %d\n"RESET, flag.l, flag.u_r, flag.a, flag.l_r, flag.t); //
-	ft_putstr(RESET); //
-
-	args = ft_mergesort(args, ft_ascii_mergesort);
-	get_error_args(&args);
-	put_error_args(&args);
-	numbers = count_args(&args);
-	numbers.removed = remove_error_args(&args, 0);
-	process_args(&args, flag.a);
-//	printf("n_file = %d\tn_other = %d, removed = %d\n", numbers.n_file, numbers.n_other, numbers.removed);
-	process_flags(args, flag, numbers);
-}*/

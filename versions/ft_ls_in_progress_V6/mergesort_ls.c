@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/25 12:10:18 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/01 15:46:14 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/30 20:16:09 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_modif_date_mergesort(t_args **tmp, t_args **left, t_args **right)
 {
-	if ((*left)->stat.st_mtimespec.tv_sec >= (*right)->stat.st_mtimespec.tv_sec) //si erreur tri attentio peut etre lstat
+	if ((*left)->lstat.st_mtimespec.tv_sec >= (*right)->lstat.st_mtimespec.tv_sec)
 	{
 		*tmp = *left;
 		*left = (*left)->next;
@@ -106,6 +106,7 @@ t_args	*ft_mergesort(t_args *merge, void f())
 {
 	t_args	*left;
 	t_args	*right;
+//	t_args	*tmp; //
 	int		i;
 	int		nb_list;
 
@@ -122,6 +123,32 @@ t_args	*ft_mergesort(t_args *merge, void f())
 	right = left->next;
 	left->next = NULL;
 	left = merge;
+/*
+//AFFICHAGE/
+ft_putendl(GREEN"RIGHT"RESET);
+
+	tmp = right;
+	while (tmp != NULL)
+	{
+		ft_putstr(tmp->arg);
+		if (tmp->next != NULL)
+			ft_putstr("\t");
+		tmp = tmp->next;gg
+	}
+	ft_putendl("");
+ft_putendl(GREEN"LEFT"RESET);
+
+	tmp = left;
+	while (tmp != NULL)
+	{
+		ft_putstr(tmp->arg);
+		if (tmp->next != NULL)
+			ft_putstr("\t");
+		tmp = tmp->next;
+	}
+	ft_putendl("");
+//END - AFFICHAGE/
+*/
 	right = ft_mergesort(right, f);
 	left = ft_mergesort(left, f);
 	return ((ft_glue_mergesort(left, right, f)));

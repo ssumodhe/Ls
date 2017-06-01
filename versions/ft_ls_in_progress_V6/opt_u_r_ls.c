@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 20:01:42 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/01 19:48:57 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/05/31 20:27:46 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,20 @@
 
 void		ft_put_perm_denied(t_args *file)
 {
+/*
+	if (mode == 1)
+	{
+		ft_putstr_fd(file->arg, 2);
+		ft_putendl_fd(":", 2);
+	}
+	*/
 	errno = file->error;
 	ft_putstr_fd("ft_ls: ", 2);
 	if (ft_strrchr(file->arg, '/') == NULL)
 		perror(file->arg);
 	else
 		perror(ft_strrchr(file->arg, '/') + 1);
+
 }
 
 t_numbers	count_args_2(t_args *file)
@@ -44,7 +52,7 @@ t_numbers	count_args_2(t_args *file)
 }
 
 
-void		alone_2(t_args *args, t_flags flag)
+void		alone_2(t_args *args)
 {
 	t_args	*file;
 	t_numbers numbers;
@@ -53,14 +61,9 @@ void		alone_2(t_args *args, t_flags flag)
 
 	while (file) //Affiche les fichiers (file->error == 20);
 	{
-		// if (flag.l == 1 && S_ISDIR(file->lstat.st_mode) == 0) // ATTENTION PETIT L
-		// {
-		//	ft_putendl(tmp->field);
-		// }
-		// else
-		if (flag.l == 0 && S_ISDIR(file->stat.st_mode) == 0)
+		if (S_ISDIR(file->stat.st_mode) == 0)
 		{
-			ft_putendl(file->arg); // + l
+			ft_putendl(file->arg);
 		}
 		file = file->next;
 	}
@@ -91,7 +94,7 @@ int			check_if_point(char *str)
 	return (0);
 }
 
-void		ft_put_this_list(t_args *args, t_flags flag)
+void		ft_put_this_list(t_args *args)
 {
 	if (S_ISDIR(args->lstat.st_mode) != 0 && check_if_point(args->arg) == 0)
 	{	
@@ -106,44 +109,47 @@ void		ft_put_this_list(t_args *args, t_flags flag)
 		}
 		else if (args != NULL)
 		{
-			// INTEGRER TOTAL PETIT L
-			ft_print_bellow(args, flag);
+			ft_print_bellow(args);
 		}
 	}
 }
 
-void		ft_put_first_list(t_args *args, t_numbers numbers, t_flags flag)
+void		ft_put_first_list(t_args *args, t_numbers numbers)
 {
-/*	ft_putendl("Je suis au debut first list");
-	ft_putstr("nom = ");
-	ft_putstr(args->arg);
-	ft_putendl("");
-	ft_putstr("stat mode = ");
-	ft_putnbr(S_ISDIR(args->stat.st_mode));
-	ft_putendl("");
-	ft_putstr("lstat mode = ");
-	ft_putnbr(S_ISDIR(args->lstat.st_mode));
-	ft_putendl("");*/
-
-	if ((flag.l == 0 && S_ISDIR(args->stat.st_mode) != 0) || (flag.l == 1 && S_ISDIR(args->lstat.st_mode) != 0))
+	if (S_ISDIR(args->stat.st_mode) != 0)
 	{
 		if (numbers.n_file > 1 || numbers.removed >= 1 || numbers.n_other >= 1) //
 		{
-			ft_putstr(GREEN); //
+			ft_putstr(RED); //
 			ft_putstr(args->arg);
 			ft_putstr(RESET); //
 			ft_putendl(":");
 
 		}
-		if (args->error == 13) //ajouter une condition pour gerer munki => version SARAH
+		if (args->error == 13)
 		{
 			ft_put_perm_denied(args);
 		}
 		else if (args != NULL)
 		{
-			// INTEGRER TOTAL PETIT L
-			ft_print_bellow(args, flag);
+			ft_print_bellow(args);
 		}
+
+		/*
+		if (args->error == 13)
+		{
+			ft_put_perm_denied(args);
+		}
+		else 
+		{
+			ft_putstr(RED); //
+			ft_putstr(args->arg);
+			ft_putstr(RESET); //
+			ft_putendl(":");
+		}
+		if (args != NULL)
+			ft_print_bellow(args);
+			*/
 	}
 }
 
@@ -159,7 +165,9 @@ void		ft_run(t_args *bellow, t_flags flag)
 		process_flags(tmp, flag);
 		if (S_ISDIR(tmp->lstat.st_mode) != 0 && check_if_point(tmp->arg) == 0) // ici que saut en trop quand -a
 			ft_putendl("");
-		ft_put_this_list(tmp, flag);
+		ft_put_this_list(tmp);
+//		if (S_ISDIR(tmp->lstat.st_mode) != 0 && check_if_point(tmp->arg) == 0) // ici que saut en trop quand -a
+//			ft_putendl("FT_RUN | ------>");
 		if (ft_if_go_bellow(tmp) == 1)
 			ft_run(tmp->bellow, flag);
 		tmp = tmp->next;
@@ -179,7 +187,7 @@ void		opt_u_r(t_args **args, t_flags flag, t_numbers numbers)
 			ft_putendl("");
 		if (S_ISDIR(tmp->stat.st_mode) != 0) 
 			a++;
-		ft_put_first_list(tmp, numbers, flag);
+		ft_put_first_list(tmp, numbers);
 //		if (S_ISDIR(tmp->stat.st_mode) != 0) // ici qu'il faut intervenir si args tout seul
 //			ft_putendl("OPT_U_R | ------>");
 		if (tmp->bellow != NULL)
