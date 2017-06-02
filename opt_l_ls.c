@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 17:17:29 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/02 20:50:29 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/02 20:54:49 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ void	all_args_opt_l(t_args *args)
 		tmp = tmp->next;
 	}
 	// on boucle UNIQUEMENT sur la liste chainée = on ne passeuh PAS dans les bellow
-	// on calcule la taille de chaque item en remplissant t_max
+	// on recup les infos necessaires (pour t_max ? ou pour tous ?)
+	// on remplit t_max.
 	// on repasse dans la liste chainée : on malloc et on remplit field
 }
 
