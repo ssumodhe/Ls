@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 20:01:42 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/01 19:48:57 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/02 20:50:35 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void		alone_2(t_args *args, t_flags flag)
 
 int			ft_if_go_bellow(t_args *tmp)
 {
+	if (!tmp)
+		return (0);
 	if (S_ISDIR(tmp->lstat.st_mode) != 0 && (check_if_point(tmp->arg) == 0 && tmp->bellow != NULL))
 		return (1);
 	return (0);
@@ -93,6 +95,8 @@ int			check_if_point(char *str)
 
 void		ft_put_this_list(t_args *args, t_flags flag)
 {
+	if (!args)
+		return ;
 	if (S_ISDIR(args->lstat.st_mode) != 0 && check_if_point(args->arg) == 0)
 	{	
 		ft_putstr(RED); //
@@ -125,6 +129,8 @@ void		ft_put_first_list(t_args *args, t_numbers numbers, t_flags flag)
 	ft_putnbr(S_ISDIR(args->lstat.st_mode));
 	ft_putendl("");*/
 
+	if (!args)
+		return ;
 	if ((flag.l == 0 && S_ISDIR(args->stat.st_mode) != 0) || (flag.l == 1 && S_ISDIR(args->lstat.st_mode) != 0))
 	{
 		if (numbers.n_file > 1 || numbers.removed >= 1 || numbers.n_other >= 1) //
@@ -148,20 +154,22 @@ void		ft_put_first_list(t_args *args, t_numbers numbers, t_flags flag)
 }
 
 
-void		ft_run(t_args *bellow, t_flags flag)
+void		ft_run(t_args **bellow, t_flags flag)
 {
 	t_args	*tmp;
 
-	tmp = bellow;
+	if (!bellow)
+		return ;
+	tmp = *bellow;
 	while (tmp)
 	{
 		create_bellow(&tmp, flag.a); //creer la liste chainee
-		process_flags(tmp, flag);
+		process_flags(&tmp->bellow, flag);
 		if (S_ISDIR(tmp->lstat.st_mode) != 0 && check_if_point(tmp->arg) == 0) // ici que saut en trop quand -a
 			ft_putendl("");
 		ft_put_this_list(tmp, flag);
 		if (ft_if_go_bellow(tmp) == 1)
-			ft_run(tmp->bellow, flag);
+			ft_run(&tmp->bellow, flag);
 		tmp = tmp->next;
 	}
 }
@@ -171,6 +179,8 @@ void		opt_u_r(t_args **args, t_flags flag, t_numbers numbers)
 	t_args	*tmp;
 	int		a;
 
+	if (!args)
+		return ;
 	tmp = *args;
 	a = 0;
 	while (tmp) // attention petit l (courrrrrrrrs)
@@ -184,7 +194,7 @@ void		opt_u_r(t_args **args, t_flags flag, t_numbers numbers)
 //			ft_putendl("OPT_U_R | ------>");
 		if (tmp->bellow != NULL)
 		{
-			ft_run(tmp->bellow, flag);
+			ft_run(&tmp->bellow, flag);
 		}
 		tmp = tmp->next;
 	}

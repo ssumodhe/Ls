@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/01 19:49:00 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/02 20:50:36 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	all_args(t_args **args)
 {
 	t_args	*tmp;
 
+	if (!args)
+		return ;
 	tmp = *args;
 	while (tmp)
 	{
@@ -31,6 +33,8 @@ void	put_args(t_args **args)
 {
 	t_args	*tmp;
 
+	if (!args)
+		return ;
 	tmp = *args;
 	while (tmp)
 	{
@@ -72,20 +76,14 @@ char	*ft_strjoin_by(char *str1, char c, char *str2)
 void		get_stat(t_args	*tmp)
 {
 	if ((stat(tmp->arg, &tmp->stat)) == -1)
-	{
 		;
-			//free + set NULL le tmp->stat
-	}
 }
 
 
 void		get_link_stat(t_args	*tmp)
 {
 	if ((lstat(tmp->arg, &tmp->lstat)) == -1)
-	{
 		;
-			//free + set NULL le tmp->stat
-	}
 }
 
 t_args *args_newlist(char *str, struct dirent *d)
@@ -113,6 +111,8 @@ void	ft_openfiles(t_args **args)
 	struct dirent *d;
 	t_args	*tmp;
 
+	if (!args)
+		return ;
 	errno = 0;
 	dir = NULL;
 	if ((dir = opendir((*args)->arg)))
@@ -149,6 +149,8 @@ void	ft_openfiles_withouta(t_args **args)
 	t_args	*tmp;
 	int		i;
 
+	if (!args)
+		return ;
 	errno = 0;
 	dir = NULL;
 	i = ft_strlen((*args)->arg);
@@ -184,6 +186,8 @@ void	ft_openfiles_withouta(t_args **args)
 
 void	create_bellow(t_args **args, int opt_a)
 {
+	if (!args)
+		return ;
 		if (opt_a == 1)
 			ft_openfiles(args);
 		else 
@@ -195,11 +199,12 @@ void	process_args(t_args **args, int opt_a)
 {
 	t_args	*tmp;
 
+	if (!args)
+		return ;
 	tmp = *args;
 	while (tmp)
 	{
 		create_bellow(&tmp, opt_a);	
 		tmp = tmp->next;
 	}
-//	all_args(args); //Tri ascii par mergesort
 }

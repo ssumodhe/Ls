@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:00:04 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/01 19:48:58 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/02 20:50:37 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	alone(t_args **args, t_flags flag, t_numbers numbers)
 	int		arguments;
 	(void)flag;
 
+	if (!args)
+		return ;
 	arguments = 1;
 
 	alone_2(*args, flag); //Affiche les non-ouvrables

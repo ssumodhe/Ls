@@ -6,7 +6,7 @@
 #    By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/30 20:36:48 by ssumodhe          #+#    #+#              #
-#    Updated: 2017/05/29 20:36:10 by ssumodhe         ###   ########.fr        #
+#    Updated: 2017/06/02 20:36:56 by ssumodhe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRCS = main_ls.c \
 	   process_flags_ls.c \
 	   alone_ls.c \
 	   opt_t_ls.c \
+	   opt_l_ls.c \
 	   opt_l_r_ls.c \
 	   opt_u_r_ls.c \
 

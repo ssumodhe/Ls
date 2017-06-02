@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 20:35:14 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/01 15:46:35 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/02 20:50:34 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	all_args_opt_r(t_args **args)
 	t_args	*before;
 	t_args	*tmp_2;
 
+	if (!args)
+		return ;
 	tmp = *args;
 	before = NULL;
 	while (tmp->next != NULL) //J'initialise les prev
@@ -45,13 +47,15 @@ void	opt_l_r(t_args **args)
 {
 	t_args	*tmp;
 
+	if (!args)
+		return ;
 	tmp = *args;
 	while (tmp)
 	{
 		if (tmp->bellow != NULL)
 		{
 			all_args_opt_r(&tmp->bellow);
-			opt_l_r(&tmp->bellow);
+			//opt_l_r(&tmp->bellow);
 		}
 		tmp = tmp->next;
 	}

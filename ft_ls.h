@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/02 14:55:37 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/02 20:50:30 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,15 @@ typedef struct		s_option
 	struct s_option		*next;
 }					t_option;
 
+typedef struct			s_info
+{
+	int		hard_link;
+	char	*usr;
+	char	*grp;
+	int		size;
+}						t_info;
+
+
 typedef struct		s_args
 {
 	int					i;
@@ -53,10 +62,19 @@ typedef struct		s_args
 	int					d_type;
 	struct stat			lstat;
 	struct stat			stat;
+	struct s_info		info;
 	struct s_args		*bellow;
 	struct s_args		*next;
 	struct s_args		*prev;
 }					t_args;
+
+typedef struct			s_max
+{
+	int		hard_link;
+	int		usr;
+	int		grp;
+	int		size;
+}						t_max;
 
 /*
 ** get_lists.c
@@ -68,7 +86,7 @@ t_args				*new_args(int i, char *arg);
 /*
 ** prog_ls.c
 */
-void				ft_prog(t_option *opt, t_args *args);
+void				ft_prog(t_option *opt, t_args **args);
 t_numbers			count_args(t_args **args);
 int					remove_error_args(t_args **args, int removed);
 void				put_error_args(t_args **args);
@@ -103,7 +121,7 @@ void				get_stat(t_args *tmp);
 /*
 ** process_flags_ls.c
 */
-void				process_flags(t_args *args, t_flags flag);
+void				process_flags(t_args **args, t_flags flag);
 
 /*
 ** alone_ls.c
@@ -128,7 +146,7 @@ void				all_args_opt_r(t_args **args);
 ** opt_u_r_ls.c
 */
 void				opt_u_r(t_args **args, t_flags flag, t_numbers numbers);
-void				ft_run(t_args *args, t_flags flag);
+void				ft_run(t_args **args, t_flags flag);
 void				ft_put_first_list(t_args *args, t_numbers numbers, t_flags flag);
 void				ft_put_this_list(t_args *args, t_flags flag);
 int					check_if_point(char *str);

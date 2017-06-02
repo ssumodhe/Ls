@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/02 16:23:37 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/02 20:50:39 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ void		get_error_args(t_args **args)
 	DIR		*dir;
 	t_args	*tmp;
 
+	if (!args)
+		return ;
 	tmp = *args;
 	while (tmp)
 	{
@@ -92,6 +94,8 @@ void		put_error_args(t_args **args)
 {
 	t_args	*tmp;
 
+	if (!args)
+		return ;
 	tmp = *args;
 	while (tmp)
 	{
@@ -126,12 +130,15 @@ int			remove_error_args(t_args **args, int removed)
 	t_args	*tmp;
 	t_args	*free; //
 
+	if (!args)
+		return (0);
 	tmp = *args;
 	if (tmp != NULL && tmp->error != 0 && tmp->error != 20)
 	{
-	//	if (tmp->error == 13 && S_ISDIR(tmp->stat.st_mode) == 0)
-		if ((tmp->error == 13 && S_ISDIR(tmp->stat.st_mode) == 0) || (tmp->error != 13))
+		if (tmp->error == 13 && S_ISDIR(tmp->stat.st_mode) == 0)
+//		if ((tmp->error == 13 && S_ISDIR(tmp->stat.st_mode) == 0) || (tmp->error != 13))
 		{
+		ft_putendl("------------- Je remove --------------");
 			free = tmp; //
 			tmp = tmp->next;
 			ft_free_the_removed(&free); //
@@ -139,33 +146,40 @@ int			remove_error_args(t_args **args, int removed)
 			removed = remove_error_args(args, removed);
 			removed++;
 		}
-	/*	else if (tmp->error != 13)
+		else if (tmp->error != 13)
 		{
+		ft_putendl("------------- Je remove --------------");
+			free = tmp; //
 			tmp = tmp->next;
+			ft_free_the_removed(&free); //
 			*args = tmp;
 			removed = remove_error_args(args, removed);
 			removed++;
-		}*/
+		}
 	}
 	while (tmp)
 	{
 		if (tmp->next != NULL && tmp->next->error != 0 && tmp->next->error != 20)
 		{
-		//	if (tmp->next->error == 13 && S_ISDIR(tmp->next->stat.st_mode) == 0)
-			if ((tmp->next->error == 13 && S_ISDIR(tmp->next->stat.st_mode) == 0) || (tmp->next->error != 13))
+			if (tmp->next->error == 13 && S_ISDIR(tmp->next->stat.st_mode) == 0)
+		//	if ((tmp->next->error == 13 && S_ISDIR(tmp->next->stat.st_mode) == 0) || (tmp->next->error != 13))
 			{
+		ft_putendl("------------- Je remove while--------------");
 				free = tmp->next; //
 				tmp->next = tmp->next->next;
 				ft_free_the_removed(&free); //
 				removed = remove_error_args(args, removed);
 				removed++;
 			}
-		/*	else if (tmp->next->error != 13)
+			else if (tmp->next->error != 13)
 			{
+		ft_putendl("------------- Je remove while--------------");
+				free = tmp->next; //
 				tmp->next = tmp->next->next;
+				ft_free_the_removed(&free); //
 				removed = remove_error_args(args, removed);
 				removed++;
-			}*/
+			}
 		}
 		tmp = tmp->next;
 	}
@@ -201,40 +215,53 @@ t_numbers	get_numbers(t_args *args, t_flags flag)
 	return (numbers);
 }
 
-void		ft_prog(t_option *opt, t_args *args)
+void		ft_prog(t_option *opt, t_args **args)
 {
 	t_flags		flag;
 	int			removed;
 	t_numbers	numbers;
 
+	if (!args)
+		return ;
 	flag = init_flag();
 	flag = check_opt(opt, flag);
-	args = ft_mergesort(args, ft_ascii_mergesort);
-	get_error_args(&args); // recupere les valeurs errno
-	put_error_args(&args);
-	removed = remove_error_args(&args, 0);
-	numbers = get_numbers(args, flag);
+	*args = ft_mergesort(*args, ft_ascii_mergesort);
+	get_error_args(args); // recupere les valeurs errno
+	put_error_args(args);
+	removed = remove_error_args(args, 0);
+	numbers = get_numbers(*args, flag);
 	numbers.removed = removed;
 
 	if (flag.u_r == 1) // if -R.
 	{
-		process_args(&args, flag.a); // creer tous les bellow des args et trie ascii
-		process_flags(args, flag); // tri -t et -r et -l
-		alone_2(args, flag); // affiche les file NON OUVRABLES
-		if (args)
+		process_args(args, flag.a); // creer tous les bellow des args et trie ascii
+		process_flags(args, flag); // tri -t et -r et -l pour les args
+
+	if (flag.l_r == 1 && *args)
+		opt_l_r(args); // trie les bellow pour -r //NE PAS METTRE DANS PROCESS_FLAGS
+	if (flag.t == 1 && *args)
+		opt_t(args); // trie les bellow pour -t 
+	//if (flag.l == 1  && *args)
+		//opt_l(*args); // trie les bellow pour -l 
+
+		alone_2(*args, flag); // affiche les file NON OUVRABLES
+		if (*args)
 		{
-			opt_u_r(&args, flag, numbers);
+			opt_u_r(args, flag, numbers);
 		}
 	}
 	else if (flag.u_r == 0) // if pas -R.
 	{
-		if (flag.t == 1 && args)
-			all_args_opt_t(&args);
-		if (flag.l_r == 1 && args)
-			all_args_opt_r(&args);
-		process_args(&args, flag.a);
-		process_flags(args, flag);
+		process_args(args, flag.a);
+		process_flags(args, flag); //trie les arg
 
-		alone(&args, flag, numbers);
+	if (flag.l_r == 1  && *args)
+		opt_l_r(args); // trie les bellow pour -r //NE PAS METTRE DANS PROCESS_FLAGS
+	if (flag.t == 1  && *args)
+		opt_t(args); // trie les bellow pour -t 
+	//if (flag.l == 1 && *args)
+		//opt_l(args); // trie les bellow pour -l 
+
+		alone(args, flag, numbers);
 	}
 }
