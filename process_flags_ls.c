@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 18:12:08 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/02 20:50:33 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/03 00:47:21 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ void		process_flags(t_args **args, t_flags flag)
 //		opt_l_r(&args); //pour les bellow
 	}
 
-//	if (flag.l == 1 && args && *args)
-//	{
-//		opt_l(args);
-//	}
+	if (flag.l == 1 && args && *args)
+	{
+//		all_args_opt_l(*args);
+		opt_l(args);
+	}
 
 }

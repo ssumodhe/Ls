@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/02 20:50:30 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/03 23:45:07 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 # include <dirent.h> //opendir etc
 # include <sys/errno.h> //errno's define
 # include <time.h> //ctime function
+# include <sys/types.h> //getpwuid function
+# include <pwd.h> //getpwuid function
+# include <grp.h> //getgrgid function
+# include <uuid/uuid.h> //getpwuid & getgrgid function
 
 typedef	struct		s_numbers
 {
@@ -49,6 +53,7 @@ typedef struct			s_info
 	char	*usr;
 	char	*grp;
 	int		size;
+	char	*link;
 }						t_info;
 
 
@@ -62,6 +67,8 @@ typedef struct		s_args
 	int					d_type;
 	struct stat			lstat;
 	struct stat			stat;
+	struct passwd		*pwuid;
+	struct group		*grgid;
 	struct s_info		info;
 	struct s_args		*bellow;
 	struct s_args		*next;
@@ -152,5 +159,14 @@ void				ft_put_this_list(t_args *args, t_flags flag);
 int					check_if_point(char *str);
 void				ft_put_perm_denied(t_args *file);
 void				alone_2(t_args *args, t_flags flag);
+
+/*
+** opt_l_r_ls.c
+*/
+void				opt_l(t_args **args);
+void				all_args_opt_l(t_args *args);
+void				ft_get_info_item(t_args *tmp);
+t_max				ft_cmp_max(t_args *tmp, t_max max);
+t_max				ft_init_max(void);
 
 #endif
