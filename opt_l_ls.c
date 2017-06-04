@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 17:17:29 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/03 23:45:03 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/04 21:50:10 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_get_info_item(t_args *tmp)
 	tmp->info.size = (int)(tmp->lstat.st_size);
 	tmp->info.link = NULL;
 
-	ft_putstr(ITALIC PURPLE);
+/*	ft_putstr(ITALIC PURPLE);
 	ft_putstr("~~~~~~~~~~ ");
 	ft_putstr(tmp->arg);
 	ft_putendl(": ~~~~~~~~~~");
@@ -69,7 +69,7 @@ void	ft_get_info_item(t_args *tmp)
 
 	ft_putendl("");
 	ft_putstr(RESET);
-
+*/
 }
 
 char	ft_get_filetype(t_args *tmp)
@@ -94,11 +94,30 @@ char	ft_get_filetype(t_args *tmp)
 	return (c);
 }
 
+void	ft_put_perm(char *field, t_args *tmp)
+{
+	field[1] = (((tmp->lstat.st_mode & S_IRUSR) == S_IRUSR) ? 'r' : '-');
+	field[2] = (((tmp->lstat.st_mode & S_IWUSR) == S_IWUSR) ? 'w' : '-');
+	field[3] = (((tmp->lstat.st_mode & S_IXUSR) == S_IXUSR) ? 'x' : '-');
+	//group
+	field[4] = (((tmp->lstat.st_mode & S_IRGRP) == S_IRGRP) ? 'r' : '-');
+	field[5] = (((tmp->lstat.st_mode & S_IWGRP) == S_IWGRP) ? 'w' : '-');
+	field[6] = (((tmp->lstat.st_mode & S_IXGRP) == S_IXGRP) ? 'x' : '-');
+	//others
+	field[7] = (((tmp->lstat.st_mode & S_IROTH) == S_IROTH) ? 'r' : '-');
+	field[8] = (((tmp->lstat.st_mode & S_IWOTH) == S_IWOTH) ? 'w' : '-');
+	field[9] = (((tmp->lstat.st_mode & S_IXOTH) == S_IXOTH) ? 'x' : '-');
+	field[10] = ' '; //Si bonus attributs
+	field[11] = ' ';
+}
+
 void	ft_put_hardlink(char *field, t_args *tmp, int i)
 {
 	int		n_hlink;
 
 	n_hlink = tmp->info.hard_link;
+	if (n_hlink == 0)
+		field[i--] = '0';
 	while (n_hlink > 0)
 	{
 		field[i] = '0' + (n_hlink % 10);
@@ -113,46 +132,71 @@ void	ft_put_hardlink(char *field, t_args *tmp, int i)
 			i--;
 		}
 	}
-	
+}
+
+void	ft_put_size(char *field, t_args *tmp, int start, int end)
+{
+	int		i;
+	int		n_size;
+
+	i = start + end;
+	n_size = tmp->info.size;
+	if (n_size == 0)
+		field[i--] = '0';
+	while (n_size > 0)
+	{
+		field[i] = '0' + (n_size % 10);
+		n_size = n_size / 10;
+		i--;
+	}
+	if (i != start)
+	{
+		while (i != start)
+		{
+			field[i] = ' ';
+			i--;
+		}
+	}
 }
 
 char	*ft_create_field(int n, t_args *tmp, t_max max)
 {
 	char	*field;
 	int		i;
-	
-	field = (char *)malloc(sizeof(char) * n + 1); //
-//	ft_memset(field, 65, n + 1);
-	field[n] = '\0';
 
+	field = (char *)malloc(sizeof(char) * n + 1);
+	ft_memset(field, 65, n + 1); //
+	field[n] = '\0';
 	i = 0;
 	field[0] = ft_get_filetype(tmp);
-	//owner
-	field[1] = (((tmp->lstat.st_mode & S_IRUSR) == S_IRUSR) ? 'r' : '-');
-	field[2] = (((tmp->lstat.st_mode & S_IWUSR) == S_IWUSR) ? 'w' : '-');
-	field[3] = (((tmp->lstat.st_mode & S_IXUSR) == S_IXUSR) ? 'x' : '-');
-	//group
-	field[4] = (((tmp->lstat.st_mode & S_IRGRP) == S_IRGRP) ? 'r' : '-');
-	field[5] = (((tmp->lstat.st_mode & S_IWGRP) == S_IWGRP) ? 'w' : '-');
-	field[6] = (((tmp->lstat.st_mode & S_IXGRP) == S_IXGRP) ? 'x' : '-');
-	//others
-	field[7] = (((tmp->lstat.st_mode & S_IROTH) == S_IROTH) ? 'r' : '-');
-	field[8] = (((tmp->lstat.st_mode & S_IWOTH) == S_IWOTH) ? 'w' : '-');
-	field[9] = (((tmp->lstat.st_mode & S_IXOTH) == S_IXOTH) ? 'x' : '-');
-	field[10] = ' '; //Si bonus attributs
-	field[11] = ' ';
+	ft_put_perm(field, tmp);
 	ft_put_hardlink(field, tmp, 11 + max.hard_link);
 	field[11 + max.hard_link + 1] = ' ';
 	i = 11 + max.hard_link + 2;
 	ft_strcpy(field + i, tmp->info.usr);
 	i = 11 + max.hard_link + 2 + max.usr;
-	field[i] = ' ';
-	i++;
+	field[i++] = ' ';
+	field[i++] = ' ';
 	ft_strcpy(field + i, tmp->info.grp);
 	i = 11 + max.hard_link + 2 + max.usr + 1 + max.grp;
-	field[i] = '|';
-
-
+	field[++i] = ' ';
+	field[++i] = ' ';
+	ft_put_size(field, tmp, i, max.size);
+	i = i + max.size + 1;
+	field[i++] = ' ';
+	ft_strcpy(field + i, ctime(&tmp->lstat.st_mtime) + 4);
+	i = i + 12;
+	field[i++] = ' ';
+	ft_strcpy(field + i, (ft_strrchr(tmp->arg, '/') + 1));
+	if (S_ISLNK(tmp->lstat.st_mode) != 0)
+	{
+		i = i + ft_strlen((ft_strrchr(tmp->arg, '/') + 1));
+		field[i++] = ' ';
+		field[i++] = '-';
+		field[i++] = '>';
+		field[i++] = ' ';
+		ft_strcpy(field + i, tmp->info.link);
+	}
 	return (field);
 }
 
@@ -176,7 +220,7 @@ void	all_args_opt_l(t_args *args)
 	// on remplit t_max.
 	// on repasse dans la liste chainée : on malloc et on remplit field
 	
-	ft_putstr(CYAN HIGHLIGHT);
+/*	ft_putstr(CYAN HIGHLIGHT);
 	ft_putendl("=== Struct Max ===");
 	ft_putstr("hard_link = ");
 	ft_putnbr(max.hard_link);
@@ -188,27 +232,24 @@ void	all_args_opt_l(t_args *args)
 	ft_putnbr(max.size);
 
 	ft_putendl("");
-	ft_putstr(RESET);
+	ft_putstr(RESET);*/
 
-	char	*buff_read;
+	char	buff_read[256];
 	int		len_read;
-
-
-
-	buff_read = NULL;
 	tmp = args;
 	while (tmp)
 	{
 		n = (10 + 2 + max.hard_link + 1 + max.usr + 2 + max.grp + 2 \
 			+ max.size + 1 + 12 + 1 \
 			+ ft_strlen((ft_strrchr(tmp->arg, '/') + 1)));
-		if ((len_read = readlink(tmp->arg, buff_read, sizeof(buff_read) - 1)) != -1)
+		if (S_ISLNK(tmp->lstat.st_mode) != 0 && (len_read = readlink(tmp->arg, buff_read, 256)))
 		{
-			tmp->info.link = (ft_strrchr(buff_read, '/') + 1);
-			n = n + 3 + ft_strlen(tmp->info.link);
+			buff_read[len_read] = '\0';
+			tmp->info.link = ft_strdup(buff_read);
+			n = n + 4 + ft_strlen(tmp->info.link);
 		}
 		tmp->field = ft_create_field(n, tmp, max); //
-		ft_strdel(&buff_read);
+//		ft_strdel(&buff_read);
 		tmp = tmp->next;
 	}
 }
