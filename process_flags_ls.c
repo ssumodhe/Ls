@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 18:12:08 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/03 00:47:21 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/05 22:19:40 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void		process_flags(t_args **args, t_flags flag)
 
 	if (flag.l == 1 && args && *args)
 	{
-//		all_args_opt_l(*args);
-		opt_l(args);
+		(*args)->l_total = all_args_opt_l(*args);
+		//opt_l(args);
 	}
 
 }

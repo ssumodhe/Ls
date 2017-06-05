@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/04 20:06:27 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/05 20:28:26 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ typedef struct			s_info
 	char	*grp;
 	int		size;
 	char	*link;
+	int		maj;
+	int		min;
 }						t_info;
 
 
@@ -70,6 +72,7 @@ typedef struct		s_args
 	struct passwd		*pwuid;
 	struct group		*grgid;
 	struct s_info		info;
+	int					l_total;
 	struct s_args		*bellow;
 	struct s_args		*next;
 	struct s_args		*prev;
@@ -164,7 +167,7 @@ void				alone_2(t_args *args, t_flags flag);
 ** opt_l_r_ls.c
 */
 void				opt_l(t_args **args);
-void				all_args_opt_l(t_args *args);
+int					all_args_opt_l(t_args *args);
 void				ft_get_info_item(t_args *tmp);
 t_max				ft_cmp_max(t_args *tmp, t_max max);
 t_max				ft_init_max(void);

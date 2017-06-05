@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/02 20:50:36 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/05 22:19:38 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	put_args(t_args **args)
 	while (tmp)
 	{
 		ft_putendl(tmp->arg);
-		if (tmp->bellow != NULL)
-			put_args(&tmp->bellow);
+	//	if (tmp->bellow != NULL)
+	//		put_args(&tmp->bellow);
 		tmp = tmp->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 20:01:42 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/02 20:50:35 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/05 22:19:36 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,11 @@ void		alone_2(t_args *args, t_flags flag)
 
 	while (file) //Affiche les fichiers (file->error == 20);
 	{
-		// if (flag.l == 1 && S_ISDIR(file->lstat.st_mode) == 0) // ATTENTION PETIT L
-		// {
-		//	ft_putendl(tmp->field);
-		// }
-		// else
-		if (flag.l == 0 && S_ISDIR(file->stat.st_mode) == 0)
+		if (flag.l == 1 && S_ISDIR(file->lstat.st_mode) == 0) // ATTENTION PETIT L
+		{
+			ft_putendl(file->field);
+		}
+		else if (flag.l == 0 && S_ISDIR(file->stat.st_mode) == 0)
 		{
 			ft_putendl(file->arg); // + l
 		}
@@ -110,7 +109,7 @@ void		ft_put_this_list(t_args *args, t_flags flag)
 		}
 		else if (args != NULL)
 		{
-			// INTEGRER TOTAL PETIT L
+			// INTEGRER TOTAL PETIT L // au final mis dans print_bellow
 			ft_print_bellow(args, flag);
 		}
 	}
@@ -139,7 +138,6 @@ void		ft_put_first_list(t_args *args, t_numbers numbers, t_flags flag)
 			ft_putstr(args->arg);
 			ft_putstr(RESET); //
 			ft_putendl(":");
-
 		}
 		if (args->error == 13) //ajouter une condition pour gerer munki => version SARAH
 		{
@@ -147,7 +145,7 @@ void		ft_put_first_list(t_args *args, t_numbers numbers, t_flags flag)
 		}
 		else if (args != NULL)
 		{
-			// INTEGRER TOTAL PETIT L
+			// INTEGRER TOTAL PETIT L // au final mis dans print_bellow
 			ft_print_bellow(args, flag);
 		}
 	}

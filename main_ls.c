@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:29 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/04 21:37:01 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/05 22:19:33 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,55 +17,38 @@ int		main(int argc, char **argv)
 	int			i;
 	t_option	*opt;
 	t_args		*args;
-//	t_option	*tmp_o;
-//	t_args		*tmp_a;
+
+//	struct timespec *
 
 	opt = NULL;
 	args = NULL;
 	if (argc != 1)
 	{
 		i = 1;
-		if (argv[1][0] == '-') // pour recuperer les options
+		if (ft_strcmp(argv[1], "--") != 0)
 		{
-			while (i < argc && argv[i][0] == '-')
+			if (argv[1][0] == '-') // pour recuperer les options
 			{
-				opt = fill_option(i, argv[i], opt);
+				while (i < argc && argv[i][0] == '-' && argv[i][1] != '\0')
+				{
+					opt = fill_option(i, argv[i], opt);
+					i++;
+				}
+			}
+			while (i < argc) // pour recuperer les arguments
+			{
+				args = fill_args(i, argv[i], args);
 				i++;
 			}
 		}
-		while (i < argc) // pour recuperer les arguments
-		{
-			args = fill_args(i, argv[i], args);
-			i++;
-		}
-		
 	}
 	if (args == NULL)
 		args = fill_args(i, ".", args);
-
-/* // print les listes
-	tmp_o = opt;
-	while (tmp_o != NULL)
-	{
-		printf(BLUE"Main - option | i = %d\topt = %s\n"RESET, tmp_o->i, tmp_o->opt);
-		tmp_o = tmp_o->next;
-	}
-	tmp_a = args;
-	while (tmp_a != NULL)
-	{
-		printf(BLUE"Main - args | i = %d\targ = %s\n"RESET, tmp_a->i, tmp_a->arg);
-		tmp_a = tmp_a->next;
-	}
-*/
-
-
-//	printf("Main | opt = %d\n", opt->i);
-//	printf("Main | args = %d\n", args->i);
-	
-//	all_args_opt_t(&args);
-//	all_args_opt_r(&args);
 	ft_prog(opt, &args);
 //	while(1);
+
+
+//	printf("THIS IS TIME = %lu\n", time(0));
 
 	return (0);
 }
