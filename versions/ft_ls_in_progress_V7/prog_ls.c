@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/06 23:52:51 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/06 18:06:16 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_flags		check_opt(t_option *opt, t_flags flag) //fonction qui verifie les optio
 			if (tmp->opt[i] != 'l' && tmp->opt[i] != 'R' && tmp->opt[i] != 'a' \
 					&& tmp->opt[i] != 'r' && tmp->opt[i] != 't')
 			{
-				ft_putstr_fd("ft_ls: illegal option -- ", 2);
+				ft_putstr_fd("ft_ls: illegal option -- ", 2); //a mettre sur la sortie d'erreur
 				ft_putchar_fd(tmp->opt[i], 2);
 				ft_putstr_fd("\nusage: ft_ls [-lRart] [file ...]", 2);
 				ft_exit("");

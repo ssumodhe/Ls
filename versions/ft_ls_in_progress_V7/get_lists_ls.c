@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 16:14:40 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 00:18:11 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 00:10:20 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ t_args	*new_args(int i, char *arg)
 	new->arg = ft_strdup(arg);
 	new->field = NULL;
 	new->error = 0;
+//	new->d = NULL;
 	new->d_type = 0; // a virer??
 	get_stat(new);
 	get_link_stat(new);
@@ -80,27 +81,6 @@ t_args	*fill_args(int i, char *arg, t_args *argmt)
 		tmp->next = new_args(i, arg);
 //		printf(GREEN"get_lists - args | i = %d\targ = %s\n"RESET, tmp->next->i, tmp->next->arg); //
 	}
+	ft_putstr(RESET); //
 	return (argmt);
 }
-/*
-void	ft_get_lists(int argc, char **argv, t_option **opt, t_args **args)
-{
-	int			i;
-
-	i = 1;
-	if (argv[1][0] == '-') // pour recuperer les options
-	{
-		while (i < argc && argv[i][0] == '-' && argv[i][1] != '\0')
-		{
-			*opt = fill_option(i, argv[i], *opt);
-			i++;
-		}
-	}
-	while (i < argc) // pour recuperer les arguments
-	{
-		*args = fill_args(i, argv[i], *args);
-		i++;
-	}
-	if (*args == NULL)
-		*args = fill_args(i, ".", *args);
-}*/

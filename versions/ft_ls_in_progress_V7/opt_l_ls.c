@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 17:17:29 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/06 21:08:17 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/06 20:36:32 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,24 @@ void	ft_get_info_item(t_args *tmp)
 		tmp->info.maj = 0;
 		tmp->info.min = 0;
 	}
+
+/*	ft_putstr(ITALIC PURPLE);
+	ft_putstr("~~~~~~~~~~ ");
+	ft_putstr(tmp->arg);
+	ft_putstr("   min = ");
+	ft_putendl(": ~~~~~~~~~~");
+	ft_putstr("nb hard link = ");
+	ft_putnbr(tmp->info.min);
+	ft_putstr("\nuser's name  = ");
+	ft_putstr(tmp->info.usr);
+	ft_putstr("\ngroup's name = ");
+	ft_putstr(tmp->info.grp);
+	ft_putstr("\n\tsize = ");
+	ft_putnbr(tmp->info.size);
+
+	ft_putendl("");
+	ft_putstr(RESET);
+*/
 }
 
 char	ft_get_filetype(t_args *tmp)
@@ -98,9 +116,11 @@ void	ft_put_perm(char *field, t_args *tmp)
 	field[1] = (((tmp->lstat.st_mode & S_IRUSR) == S_IRUSR) ? 'r' : '-');
 	field[2] = (((tmp->lstat.st_mode & S_IWUSR) == S_IWUSR) ? 'w' : '-');
 	field[3] = (((tmp->lstat.st_mode & S_IXUSR) == S_IXUSR) ? 'x' : '-');
+	//group
 	field[4] = (((tmp->lstat.st_mode & S_IRGRP) == S_IRGRP) ? 'r' : '-');
 	field[5] = (((tmp->lstat.st_mode & S_IWGRP) == S_IWGRP) ? 'w' : '-');
 	field[6] = (((tmp->lstat.st_mode & S_IXGRP) == S_IXGRP) ? 'x' : '-');
+	//others
 	field[7] = (((tmp->lstat.st_mode & S_IROTH) == S_IROTH) ? 'r' : '-');
 	field[8] = (((tmp->lstat.st_mode & S_IWOTH) == S_IWOTH) ? 'w' : '-');
 	field[9] = (((tmp->lstat.st_mode & S_IXOTH) == S_IXOTH) ? 'x' : '-');
@@ -149,7 +169,7 @@ void	ft_put_usr(char *field, char *usr, int end)
 {
 	int		i;
 
-	i = 0;
+	i = 0; //ICI SI PB affichage 
 	if (usr != NULL)
 	{
 		i = ft_strlen(usr);
@@ -160,13 +180,15 @@ void	ft_put_usr(char *field, char *usr, int end)
 		field[i] = ' ';
 		i++;
 	}
+
+
 }
 
 void	ft_put_grp(char *field, char *grp, int end)
 {
 	int		i;
 
-	i = 0; 
+	i = 0; //ICI SI PB affichage 
 	if (grp != NULL)
 	{
 		i = ft_strlen(grp);
@@ -177,9 +199,10 @@ void	ft_put_grp(char *field, char *grp, int end)
 		field[i] = ' ';
 		i++;
 	}
+
 }
 
-void	ft_size_maj_min(char *field, t_args *tmp, int start, int end) // A METTRE A LA NORME
+void	ft_size_maj_min(char *field, t_args *tmp, int start, int end)
 {
 	int		i;
 	int		n_m;
@@ -250,6 +273,11 @@ void	ft_put_time(char *field, t_args *tmp)
 	date_year = ctime(&tmp->lstat.st_mtime);
 	if (date_year != NULL)
 	{
+//		ft_putendl(CYAN UNDERLINE); //
+//		ft_putstr(date_year); //
+//		ft_putstr(" n = "); //
+//		ft_putnbr(ft_strlen(date_year)); //
+//		ft_putstr(RESET);//
 		while (i < 12)
 			field[i++] = date_year[j++];
 		if (((time(0) - tmp->lstat.st_mtime) > 15778800))
@@ -263,15 +291,31 @@ void	ft_put_time(char *field, t_args *tmp)
 	else
 		while (i < 12)
 			field[i++] = ' ';
+
+/*	date_year = NULL;
+	if (((time(0) - tmp->lstat.st_mtime) > 15778800))
+	{
+		date_year = ft_strdup(ctime(&tmp->lstat.st_mtime) + 4);
+		ft_strcpy(date_year + 5, ctime(&tmp->lstat.st_mtime) + 17);
+		date_year[6] = ' ';
+		date_year[7] = ' ';
+		date_year[12] = '\0';
+		ft_strcpy(field, date_year);
+		ft_strdel(&date_year);
+	}
+	else
+		ft_strcpy(field, ctime(&tmp->lstat.st_mtime) + 4);*/
+//	ft_putendl("JE SORS DE PUT TIME"); //
 }
 
-char	*ft_create_field(int n, t_args *tmp, t_max max) // A METTRE A LA NORME
+char	*ft_create_field(int n, t_args *tmp, t_max max)
 {
 	char	*field;
 	int		i;
 
 	if (!(field = (char *)malloc(sizeof(char) * n + 1)))
 		return (NULL);
+//	ft_memset(field, 65, n + 1); //
 	field[n] = '\0';
 	i = 0;
 	field[0] = ft_get_filetype(tmp);
@@ -292,6 +336,7 @@ char	*ft_create_field(int n, t_args *tmp, t_max max) // A METTRE A LA NORME
 	i = i + max.size + 1;
 	field[i++] = ' ';
 	ft_put_time(field + i, tmp);
+//	ft_strcpy(field + i, ctime(&tmp->lstat.st_mtime) + 4);
 	i = i + 12;
 	field[i++] = ' ';
 	if (ft_strrchr(tmp->arg, '/') != NULL)
@@ -330,6 +375,30 @@ int		all_args_opt_l(t_args *args)
 		max = ft_cmp_max(tmp, max);
 		tmp = tmp->next;
 	}
+
+//	ft_putstr(YELLOW"total = ");
+//	ft_putnbr(total);
+//	ft_putendl(""RESET);
+
+	// on boucle UNIQUEMENT sur la liste chainée = on ne passeuh PAS dans les bellow
+	// on recup les infos necessaires (pour t_max ? ou pour tous?)
+	// on remplit t_max.
+	// on repasse dans la liste chainée : on malloc et on remplit field
+	
+/*	ft_putstr(CYAN HIGHLIGHT);
+	ft_putendl("=== Struct Max ===");
+	ft_putstr("hard_link = ");
+	ft_putnbr(max.hard_link);
+	ft_putstr("\nuser len = ");
+	ft_putnbr(max.usr);
+	ft_putstr("\ngrp len  = ");
+	ft_putnbr(max.grp);
+	ft_putstr("\nsize = ");
+	ft_putnbr(max.size);
+
+	ft_putendl("");
+	ft_putstr(RESET);
+*/
 	char	buff_read[256];
 	int		len_read;
 	tmp = args;
@@ -338,6 +407,7 @@ int		all_args_opt_l(t_args *args)
 	{
 		n = (10 + 2 + max.hard_link + 1 + max.usr + 2 + max.grp + 2 \
 			+ max.size + 1 + 12 + 1); /*\*/
+//			+ ft_strlen((ft_strrchr(tmp->arg, '/') + 1)));
 		if (ft_strrchr(tmp->arg, '/') != NULL)
 			n = n + ft_strlen((ft_strrchr(tmp->arg, '/') + 1));
 		else
@@ -351,6 +421,11 @@ int		all_args_opt_l(t_args *args)
 			else
 				n = n + 4 + 50; //
 		}
+/*		ft_putstr(GREEN"name = ");
+		ft_putstr(tmp->arg);
+		ft_putstr(" n = ");
+		ft_putnbr(n);
+		ft_putendl(""RESET);*/
 		tmp->field = ft_create_field(n, tmp, max); 
 //		ft_strdel(&buff_read);
 		tmp = tmp->next;

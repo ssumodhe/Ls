@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/06 22:07:23 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/06 18:06:11 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct		s_args
 	char				*arg;
 	char				*field;
 	int					error;
+//	struct dirent		*d;
 	int					d_type;
 	struct stat			lstat;
 	struct stat			stat;
@@ -88,7 +89,6 @@ typedef struct			s_max
 /*
 ** get_lists.c
 */
-//void				ft_get_lists(int argc, char **argv, t_option **opt, t_args **args);
 t_option			*fill_option(int i, char *opt, t_option *option);
 t_args				*fill_args(int i, char *arg, t_args *argmt);
 t_args				*new_args(int i, char *arg);
@@ -118,6 +118,7 @@ void				ft_modif_date_mergesort(t_args **tmp, t_args **left, t_args **right);
 /*
 ** process_args_ls.c
 */
+//void				process_args(t_args **args);
 void				process_args(t_args **args, int opt_a);
 void				create_bellow(t_args **args, int opt_a);
 void				ft_openfiles(t_args **args);
