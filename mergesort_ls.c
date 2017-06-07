@@ -6,54 +6,12 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/25 12:10:18 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 03:02:56 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 16:03:02 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	ft_modif_date_mergesort(t_args **tmp, t_args **left, t_args **right)
-{
-	if ((*left)->lstat.st_mtimespec.tv_sec >= (*right)->lstat.st_mtimespec.tv_sec)
-	{
-		*tmp = *left;
-		*left = (*left)->next;
-	}
-	else
-	{
-		*tmp = *right;
-		*right = (*right)->next;
-	}
-}
-
-void	ft_ascii_mergesort(t_args **tmp, t_args **left, t_args **right)
-{
-	if ((ft_strcmp((*left)->arg, (*right)->arg)) < 0)
-	{
-		*tmp = *left;
-		*left = (*left)->next;
-	}
-	else
-	{
-		*tmp = *right;
-		*right = (*right)->next;
-	}
-}
-/*
-void	ft_descendingorder_mergesort(t_args **tmp, t_args **left, t_args **right)
-{
-	if ((*left)->i > (*right)->i)
-	{
-		*tmp = *left;
-		*left = (*left)->next;
-	}
-	else
-	{
-		*tmp = *right;
-		*right = (*right)->next;
-	}
-}
-*/
 int		ft_lstcount(t_args **merge)
 {
 	t_args	*tmp;
@@ -69,7 +27,13 @@ int		ft_lstcount(t_args **merge)
 	return (nb_list);
 }
 
-t_args *ft_glue_mergesort(t_args *left, t_args *right, void	f()) // A METTRE A LA NORME
+void	ft_put_side(t_args **tmp, t_args **side)
+{
+		*tmp = *side;
+		*side = (*side)->next;
+}
+
+t_args *ft_glue_mergesort(t_args *left, t_args *right, void	f())
 {
 	t_args		*tmp;
 	t_args		*head;
@@ -79,17 +43,11 @@ t_args *ft_glue_mergesort(t_args *left, t_args *right, void	f()) // A METTRE A L
 	while (left || right)
 	{
 		if (!left)
-		{
-			tmp = right;
-			right = right->next;
-		}
+			ft_put_side(&tmp, &right);
 		else 
 		{
 			if (!right)
-			{
-				tmp = left;
-				left = left->next;
-			}
+				ft_put_side(&tmp, &left);
 			else
 				f(&tmp, &left, &right);
 		}

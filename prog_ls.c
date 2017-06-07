@@ -6,70 +6,11 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 03:00:40 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 17:53:30 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-t_flags		init_flag(void)
-{
-	t_flags		flag;
-
-	flag.l = 0;
-	flag.u_r = 0;
-	flag.a = 0;
-	flag.l_r = 0;
-	flag.t = 0;
-	flag.none = 0;
-	return (flag);
-}
-
-t_flags		fill_flag(t_flags flag, char c)
-{
-	if (c == 'l')
-		flag.l = 1;
-	else if (c == 'R')
-		flag.u_r = 1;
-	else if (c == 'a')
-		flag.a = 1;
-	else if (c == 'r')
-		flag.l_r = 1;
-	else if (c == 't')
-		flag.t = 1;
-	if (flag.t == 1 || flag.l_r == 1 || flag.a == 1 || flag.u_r == 1 \
-			|| flag.l == 1)
-		flag.none = 1;
-	return (flag);
-}
-
-t_flags		check_opt(t_option *opt, t_flags flag)
-{
-	int			i;
-	t_option	*tmp;
-
-	tmp = opt;
-	while (tmp != NULL)
-	{
-		i = 1;
-		while (tmp->opt[i] != '\0')
-		{
-			if (tmp->opt[i] != 'l' && tmp->opt[i] != 'R' && tmp->opt[i] != 'a' \
-					&& tmp->opt[i] != 'r' && tmp->opt[i] != 't')
-			{
-				ft_putstr_fd("ft_ls: illegal option -- ", 2);
-				ft_putchar_fd(tmp->opt[i], 2);
-				ft_putstr_fd("\nusage: ft_ls [-lRart] [file ...]", 2);
-				ft_exit("");
-			}
-			else
-				flag = fill_flag(flag, tmp->opt[i]);
-			i++;
-		}
-		tmp = tmp->next;
-	}
-	return (flag);
-}
 
 void		get_error_args(t_args **args)
 {
@@ -117,82 +58,6 @@ void		put_error_args(t_args **args)
 		}
 		tmp = tmp->next;
 	}
-}
-
-void		ft_free_the_removed(t_args **tmp_removed)
-{
-	ft_strdel(&(*tmp_removed)->arg);
-	ft_strdel(&(*tmp_removed)->field);
-	free((*tmp_removed));
-}
-
-int			remove_error_args(t_args **args, int removed) // A METTRE A LA NORME
-{
-	t_args	*tmp;
-	t_args	*free;
-
-	if (!args)
-		return (0);
-	tmp = *args;
-	if (tmp != NULL && tmp->error != 0 && tmp->error != 20)
-	{
-		if ((tmp->error == 13 && S_ISDIR(tmp->stat.st_mode) == 0) || (tmp->error != 13))
-		{
-			free = tmp;
-			tmp = tmp->next;
-			ft_free_the_removed(&free);
-			*args = tmp;
-			removed = remove_error_args(args, removed);
-			removed++;
-			return (removed);
-		}
-	}
-	while (tmp)
-	{
-		if (tmp->next != NULL && tmp->next->error != 0 && tmp->next->error != 20)
-		{
-			if ((tmp->next->error == 13 && S_ISDIR(tmp->next->stat.st_mode) == 0) || (tmp->next->error != 13))
-			{
-				free = tmp->next;
-				tmp->next = tmp->next->next;
-				ft_free_the_removed(&free);
-				removed = remove_error_args(args, removed);
-				removed++;
-				return (removed);
-			}
-		}
-		tmp = tmp->next;
-	}
-	return (removed);
-}
-
-t_numbers	get_numbers(t_args *args, t_flags flag)
-{
-	t_args		*tmp;
-	t_numbers	numbers;
-
-	tmp = args;
-	numbers.n_file = 0;
-	numbers.n_other = 0;
-	while (tmp)
-	{
-		if (flag.l == 1)
-		{
-			if (S_ISDIR(tmp->lstat.st_mode) != 0)
-				numbers.n_file++;
-			if (S_ISDIR(tmp->lstat.st_mode) == 0)
-				numbers.n_other++;
-		}
-		else
-		{
-			if (S_ISDIR(tmp->stat.st_mode) != 0)
-				numbers.n_file++;
-			if (S_ISDIR(tmp->stat.st_mode) == 0)
-				numbers.n_other++;
-		}
-		tmp = tmp->next;
-	}
-	return (numbers);
 }
 
 void		ft_if_no_ur(t_args **args, t_flags flag, t_numbers numbers)

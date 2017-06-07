@@ -6,11 +6,61 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:00:04 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 02:41:16 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 17:53:26 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+void		ft_put_perm_denied(t_args *file)
+{
+	errno = file->error;
+	ft_putstr_fd("ft_ls: ", 2);
+	if (ft_strrchr(file->arg, '/') == NULL)
+		perror(file->arg);
+	else
+		perror(ft_strrchr(file->arg, '/') + 1);
+}
+
+t_numbers	count_args_2(t_args *file)
+{
+	t_args		*tmp;
+	t_numbers	numbers;
+
+	tmp = file;
+	numbers.n_file = 0;
+	numbers.n_denied = 0;
+	numbers.n_other = 0;
+	numbers.removed = 0;
+	while (tmp)
+	{
+		if (S_ISDIR(tmp->stat.st_mode) != 0)
+			numbers.n_file++;
+		else
+			numbers.n_other++;
+		tmp = tmp->next;
+	}
+	return (numbers);
+}
+
+void		alone_2(t_args *args, t_flags flag)
+{
+	t_args	*file;
+	t_numbers numbers;
+
+	file = args;
+	while (file)
+	{
+		if (flag.l == 1 && S_ISDIR(file->lstat.st_mode) == 0)
+			ft_putendl(file->field);
+		else if (flag.l == 0 && S_ISDIR(file->stat.st_mode) == 0)
+			ft_putendl(file->arg);
+		file = file->next;
+	}
+	numbers = count_args_2(args);
+	if (numbers.n_other != 0 && numbers.n_file >= 1)
+		ft_putendl("");
+}
 
 void	ft_print_bellow(t_args *file, t_flags flag)
 {
