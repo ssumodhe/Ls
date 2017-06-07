@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:21:52 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 21:23:23 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 23:53:53 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ void	ft_put_time(char *field, t_args *tmp)
 	{
 		while (i < 12)
 			field[i++] = date_year[j++];
-		if (((time(0) - tmp->lstat.st_mtime) > 15778800))
+		if (((time(0) - tmp->lstat.st_mtime) > 15778800) \
+				|| (time(0) < tmp->lstat.st_mtime))
 		{
 			j = 24;
 			while (j > 19)

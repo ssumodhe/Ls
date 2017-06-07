@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 16:50:39 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 22:43:28 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/08 00:58:19 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,16 @@ void		ft_put_this_list(t_args *args, t_flags flag)
 		if (args->error == 13)
 			ft_put_perm_denied(args);
 		else if (args != NULL)
+		{
+			if (args->bellow && flag.l == 1 && args->field \
+					&& args->field[0] != '\0')
+			{
+				ft_putstr("total ");
+				ft_putnbr(args->bellow->l_total);
+				ft_putendl("");
+			}
 			ft_print_bellow(args, flag);
+		}
 	}
 }
 
@@ -67,6 +76,14 @@ void		ft_put_first_list(t_args *args, t_numbers numbers, t_flags flag)
 		if (args->error == 13)
 			ft_put_perm_denied(args);
 		else if (args != NULL)
+		{
+			if (args && flag.l == 1 && args->field && args->field[0] != '\0')
+			{
+				ft_putstr("total ");
+				ft_putnbr(args->l_total);
+				ft_putendl("");
+			}
 			ft_print_bellow(args, flag);
+		}
 	}
 }

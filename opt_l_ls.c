@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 17:17:29 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 22:39:16 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/08 00:54:53 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	opt_l(t_args **args)
 	while (tmp)
 	{
 		if (tmp->bellow != NULL)
-			(*args)->l_total = all_args_opt_l(tmp->bellow);
+			tmp->l_total = all_args_opt_l(tmp->bellow);
 		tmp = tmp->next;
 	}
 }

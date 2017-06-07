@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:00:04 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 21:22:56 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/08 00:54:29 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,6 @@ void		ft_print_bellow(t_args *file, t_flags flag)
 
 	split = NULL;
 	tmp = file->bellow;
-	if (tmp && flag.l == 1 && tmp->field && tmp->field[0] != '\0')
-	{
-		ft_putstr("total ");
-		ft_putnbr(tmp->l_total);
-		ft_putendl("");
-	}
 	while (tmp)
 	{
 		if (flag.l == 1 && tmp->field && tmp->field[0] != '\0')
