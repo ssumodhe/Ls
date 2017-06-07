@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/01 17:17:29 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/06 21:08:17 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 02:44:28 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ t_max	ft_cmp_max(t_args *tmp, t_max max)
 void	ft_get_info_item(t_args *tmp)
 {
 	tmp->info.hard_link = (int)(tmp->lstat.st_nlink);
-	tmp->pwuid = getpwuid(tmp->lstat.st_uid); // try with NULL - SEG - else keep st_uid
+	tmp->pwuid = getpwuid(tmp->lstat.st_uid);
 	if (tmp->pwuid != NULL)
 		tmp->info.usr = ft_strdup(tmp->pwuid->pw_name);
 	else
 		tmp->info.usr = ft_strdup("");
-	tmp->grgid = getgrgid(tmp->lstat.st_gid); // try with NULL
+	tmp->grgid = getgrgid(tmp->lstat.st_gid);
 	if (tmp->grgid != NULL)
 		tmp->info.grp = ft_strdup(tmp->grgid->gr_name);
 	else
@@ -64,7 +64,7 @@ void	ft_get_info_item(t_args *tmp)
 		tmp->info.maj = major(tmp->lstat.st_rdev);
 		tmp->info.min = minor(tmp->lstat.st_rdev);
 	}
-	else/* ???? initialiser maj et min otherwise??*/
+	else
 	{
 		tmp->info.maj = 0;
 		tmp->info.min = 0;
@@ -104,7 +104,7 @@ void	ft_put_perm(char *field, t_args *tmp)
 	field[7] = (((tmp->lstat.st_mode & S_IROTH) == S_IROTH) ? 'r' : '-');
 	field[8] = (((tmp->lstat.st_mode & S_IWOTH) == S_IWOTH) ? 'w' : '-');
 	field[9] = (((tmp->lstat.st_mode & S_IXOTH) == S_IXOTH) ? 'x' : '-');
-	field[10] = ' '; //Si bonus attributs
+	field[10] = ' ';
 	field[11] = ' ';
 }
 
@@ -337,7 +337,7 @@ int		all_args_opt_l(t_args *args)
 	while (tmp)
 	{
 		n = (10 + 2 + max.hard_link + 1 + max.usr + 2 + max.grp + 2 \
-			+ max.size + 1 + 12 + 1); /*\*/
+				+ max.size + 1 + 12 + 1);
 		if (ft_strrchr(tmp->arg, '/') != NULL)
 			n = n + ft_strlen((ft_strrchr(tmp->arg, '/') + 1));
 		else
@@ -349,10 +349,9 @@ int		all_args_opt_l(t_args *args)
 			if (tmp->info.link != NULL)
 				n = n + 4 + ft_strlen(tmp->info.link);
 			else
-				n = n + 4 + 50; //
+				n = n + 4 + 50;
 		}
 		tmp->field = ft_create_field(n, tmp, max); 
-//		ft_strdel(&buff_read);
 		tmp = tmp->next;
 	}
 	return (total);

@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/25 12:10:18 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/02 19:29:18 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 03:02:56 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_modif_date_mergesort(t_args **tmp, t_args **left, t_args **right)
 {
-	if ((*left)->lstat.st_mtimespec.tv_sec >= (*right)->lstat.st_mtimespec.tv_sec) //si erreur tri attentio peut etre lstat
+	if ((*left)->lstat.st_mtimespec.tv_sec >= (*right)->lstat.st_mtimespec.tv_sec)
 	{
 		*tmp = *left;
 		*left = (*left)->next;
@@ -39,7 +39,7 @@ void	ft_ascii_mergesort(t_args **tmp, t_args **left, t_args **right)
 		*right = (*right)->next;
 	}
 }
-
+/*
 void	ft_descendingorder_mergesort(t_args **tmp, t_args **left, t_args **right)
 {
 	if ((*left)->i > (*right)->i)
@@ -53,7 +53,7 @@ void	ft_descendingorder_mergesort(t_args **tmp, t_args **left, t_args **right)
 		*right = (*right)->next;
 	}
 }
-
+*/
 int		ft_lstcount(t_args **merge)
 {
 	t_args	*tmp;
@@ -69,7 +69,7 @@ int		ft_lstcount(t_args **merge)
 	return (nb_list);
 }
 
-t_args *ft_glue_mergesort(t_args *left, t_args *right, void	f())
+t_args *ft_glue_mergesort(t_args *left, t_args *right, void	f()) // A METTRE A LA NORME
 {
 	t_args		*tmp;
 	t_args		*head;

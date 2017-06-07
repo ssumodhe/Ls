@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/02 17:04:06 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 00:10:28 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 03:05:52 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,6 @@ void	all_args(t_args **args)
 		{
 			tmp->bellow = ft_mergesort(tmp->bellow, ft_ascii_mergesort);
 		}
-		tmp = tmp->next;
-	}
-}
-
-void	put_args(t_args **args)
-{
-	t_args	*tmp;
-
-	if (!args)
-		return ;
-	tmp = *args;
-	while (tmp)
-	{
-		ft_putendl(tmp->arg);
-	//	if (tmp->bellow != NULL)
-	//		put_args(&tmp->bellow);
 		tmp = tmp->next;
 	}
 }
@@ -95,7 +79,6 @@ t_args *args_newlist(char *str, struct dirent *d)
 	new->error = 0;
 	new->arg = ft_strjoin_by(str, '/', d->d_name);
 	new->field = NULL;
-	new->d_type = d->d_type; //on s'en tape
 	get_stat(new);
 	get_link_stat(new);
 	new->l_total = 0;
@@ -106,7 +89,7 @@ t_args *args_newlist(char *str, struct dirent *d)
 }
 
 
-void	ft_openfiles(t_args **args)
+void	ft_openfiles(t_args **args) // A METTRE A LA NORME
 {
 	DIR		*dir;
 	struct dirent *d;
@@ -123,7 +106,6 @@ void	ft_openfiles(t_args **args)
 		{
 			if ((*args)->bellow == NULL)
 			{
-				//free*/
 				(*args)->bellow = args_newlist((*args)->arg, d);
 				tmp = (*args)->bellow;
 			}
@@ -143,19 +125,17 @@ void	ft_openfiles(t_args **args)
 		ft_exit("We seem to reach a probleme when closing the directory");
 }
 
-void	ft_openfiles_withouta(t_args **args)
+void	ft_openfiles_withouta(t_args **args) // A METTRE A LA NORME
 {
 	DIR		*dir;
 	struct dirent *d;
 	t_args	*tmp;
-//	int		i;
 
 	if (!args)
 		return ;
 	errno = 0;
 	dir = NULL;
-//	i = ft_strlen((*args)->arg);
-	if (/*(*args)->arg[i] != '.' && */(dir = opendir((*args)->arg)))
+	if ((dir = opendir((*args)->arg)))
 	{
 		(*args)->error = errno;
 		while ((d = readdir(dir)))
@@ -164,7 +144,6 @@ void	ft_openfiles_withouta(t_args **args)
 			{
 				if ((*args)->bellow == NULL)
 				{
-					//free*/
 					(*args)->bellow = args_newlist((*args)->arg, d);
 					tmp = (*args)->bellow;
 				}
@@ -189,11 +168,11 @@ void	create_bellow(t_args **args, int opt_a)
 {
 	if (!args)
 		return ;
-		if (opt_a == 1)
-			ft_openfiles(args);
-		else 
-			ft_openfiles_withouta(args);
-		all_args(args); //Tri ascii par mergesort
+	if (opt_a == 1)
+		ft_openfiles(args);
+	else 
+		ft_openfiles_withouta(args);
+	all_args(args);
 }
 
 void	process_args(t_args **args, int opt_a)

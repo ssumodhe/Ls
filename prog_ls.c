@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/06 23:52:51 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 03:00:40 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,13 @@ t_flags		fill_flag(t_flags flag, char c)
 		flag.l_r = 1;
 	else if (c == 't')
 		flag.t = 1;
-	if (flag.t == 1 || flag.l_r == 1 || flag.a == 1 || flag.u_r == 1 || flag.l == 1)
+	if (flag.t == 1 || flag.l_r == 1 || flag.a == 1 || flag.u_r == 1 \
+			|| flag.l == 1)
 		flag.none = 1;
 	return (flag);
 }
 
-t_flags		check_opt(t_option *opt, t_flags flag) //fonction qui verifie les options
+t_flags		check_opt(t_option *opt, t_flags flag)
 {
 	int			i;
 	t_option	*tmp;
@@ -125,56 +126,39 @@ void		ft_free_the_removed(t_args **tmp_removed)
 	free((*tmp_removed));
 }
 
-int			remove_error_args(t_args **args, int removed)
+int			remove_error_args(t_args **args, int removed) // A METTRE A LA NORME
 {
 	t_args	*tmp;
-	t_args	*free; //
+	t_args	*free;
 
 	if (!args)
 		return (0);
 	tmp = *args;
 	if (tmp != NULL && tmp->error != 0 && tmp->error != 20)
 	{
-		if (tmp->error == 13 && S_ISDIR(tmp->stat.st_mode) == 0)
-//		if ((tmp->error == 13 && S_ISDIR(tmp->stat.st_mode) == 0) || (tmp->error != 13))
+		if ((tmp->error == 13 && S_ISDIR(tmp->stat.st_mode) == 0) || (tmp->error != 13))
 		{
-			free = tmp; //
+			free = tmp;
 			tmp = tmp->next;
-			ft_free_the_removed(&free); //
+			ft_free_the_removed(&free);
 			*args = tmp;
 			removed = remove_error_args(args, removed);
 			removed++;
-		}
-		else if (tmp->error != 13)
-		{
-			free = tmp; //
-			tmp = tmp->next;
-			ft_free_the_removed(&free); //
-			*args = tmp;
-			removed = remove_error_args(args, removed);
-			removed++;
+			return (removed);
 		}
 	}
 	while (tmp)
 	{
 		if (tmp->next != NULL && tmp->next->error != 0 && tmp->next->error != 20)
 		{
-			if (tmp->next->error == 13 && S_ISDIR(tmp->next->stat.st_mode) == 0)
-		//	if ((tmp->next->error == 13 && S_ISDIR(tmp->next->stat.st_mode) == 0) || (tmp->next->error != 13))
+			if ((tmp->next->error == 13 && S_ISDIR(tmp->next->stat.st_mode) == 0) || (tmp->next->error != 13))
 			{
-				free = tmp->next; //
+				free = tmp->next;
 				tmp->next = tmp->next->next;
-				ft_free_the_removed(&free); //
+				ft_free_the_removed(&free);
 				removed = remove_error_args(args, removed);
 				removed++;
-			}
-			else if (tmp->next->error != 13)
-			{
-				free = tmp->next; //
-				tmp->next = tmp->next->next;
-				ft_free_the_removed(&free); //
-				removed = remove_error_args(args, removed);
-				removed++;
+				return (removed);
 			}
 		}
 		tmp = tmp->next;
@@ -211,6 +195,36 @@ t_numbers	get_numbers(t_args *args, t_flags flag)
 	return (numbers);
 }
 
+void		ft_if_no_ur(t_args **args, t_flags flag, t_numbers numbers)
+{
+	process_args(args, flag.a);
+	process_flags(args, flag);
+	if (flag.t == 1  && *args)
+		opt_t(args);
+	if (flag.l_r == 1  && *args)
+		opt_l_r(args);
+	if (flag.l == 1 && *args)
+		opt_l(args); 
+	alone(args, flag, numbers);
+}
+
+void		ft_if_upper_r(t_args **args, t_flags flag, t_numbers numbers)
+{
+	process_args(args, flag.a);
+	process_flags(args, flag);
+	if (flag.t == 1 && *args)
+		opt_t(args);
+	if (flag.l_r == 1 && *args)
+		opt_l_r(args);
+	if (flag.l == 1  && *args)
+		opt_l(args);
+	alone_2(*args, flag);
+	if (*args)
+	{
+		opt_u_r(args, flag, numbers);
+	}
+}
+
 void		ft_prog(t_option *opt, t_args **args)
 {
 	t_flags		flag;
@@ -222,45 +236,13 @@ void		ft_prog(t_option *opt, t_args **args)
 	flag = init_flag();
 	flag = check_opt(opt, flag);
 	*args = ft_mergesort(*args, ft_ascii_mergesort);
-	get_error_args(args); // recupere les valeurs errno
+	get_error_args(args);
 	put_error_args(args);
 	removed = remove_error_args(args, 0);
 	numbers = get_numbers(*args, flag);
 	numbers.removed = removed;
-
-
-
-	if (flag.u_r == 1) // if -R.
-	{
-			
-		process_args(args, flag.a); // creer tous les bellow des args et trie ascii
-		process_flags(args, flag); // tri -t et -r et -l pour les args
-
-	if (flag.l_r == 1 && *args)
-		opt_l_r(args); // trie les bellow pour -r //NE PAS METTRE DANS PROCESS_FLAGS
-	if (flag.t == 1 && *args)
-		opt_t(args); // trie les bellow pour -t 
-	if (flag.l == 1  && *args)
-		opt_l(args); // trie les bellow pour -l 
-
-		alone_2(*args, flag); // affiche les file NON OUVRABLES
-		if (*args)
-		{
-			opt_u_r(args, flag, numbers);
-		}
-	}
-	else if (flag.u_r == 0) // if pas -R.
-	{
-		process_args(args, flag.a);
-		process_flags(args, flag); //trie les arg
-
-	if (flag.l_r == 1  && *args)
-		opt_l_r(args); // trie les bellow pour -r //NE PAS METTRE DANS PROCESS_FLAGS
-	if (flag.t == 1  && *args)
-		opt_t(args); // trie les bellow pour -t 
-	if (flag.l == 1 && *args)
-		opt_l(args); // trie les bellow pour -l 
-
-		alone(args, flag, numbers);
-	}
+	if (flag.u_r == 1)
+		ft_if_upper_r(args, flag, numbers);
+	else if (flag.u_r == 0)
+		ft_if_no_ur(args, flag, numbers);
 }

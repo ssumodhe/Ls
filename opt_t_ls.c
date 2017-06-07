@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/18 17:37:21 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/02 20:50:38 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 02:41:33 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	opt_t(t_args **args)
 		if (tmp->bellow != NULL)
 		{
 			all_args_opt_t(&tmp->bellow);
-//			opt_t(&tmp->bellow);
 		}
 		tmp = tmp->next;
 	}

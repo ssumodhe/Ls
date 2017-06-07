@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 20:01:42 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/06 21:08:19 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 02:46:19 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,18 @@ t_numbers	count_args_2(t_args *file)
 	return (numbers);
 }
 
-
 void		alone_2(t_args *args, t_flags flag)
 {
 	t_args	*file;
 	t_numbers numbers;
 
 	file = args;
-
-	while (file) //Affiche les fichiers (file->error == 20);
+	while (file)
 	{
-		if (flag.l == 1 && S_ISDIR(file->lstat.st_mode) == 0) // ATTENTION PETIT L
+		if (flag.l == 1 && S_ISDIR(file->lstat.st_mode) == 0)
 			ft_putendl(file->field);
 		else if (flag.l == 0 && S_ISDIR(file->stat.st_mode) == 0)
-			ft_putendl(file->arg); // + l
+			ft_putendl(file->arg);
 		file = file->next;
 	}
 	numbers = count_args_2(args);
@@ -109,7 +107,7 @@ void		ft_put_first_list(t_args *args, t_numbers numbers, t_flags flag)
 		return ;
 	if ((flag.l == 0 && S_ISDIR(args->stat.st_mode) != 0) || (flag.l == 1 && S_ISDIR(args->lstat.st_mode) != 0))
 	{
-		if (numbers.n_file > 1 || numbers.removed >= 1 || numbers.n_other >= 1) //
+		if (numbers.n_file > 1 || numbers.removed >= 1 || numbers.n_other >= 1)
 		{
 			ft_putstr(args->arg);
 			ft_putendl(":");
@@ -121,7 +119,6 @@ void		ft_put_first_list(t_args *args, t_numbers numbers, t_flags flag)
 	}
 }
 
-
 void		ft_run(t_args **bellow, t_flags flag)
 {
 	t_args	*tmp;
@@ -131,9 +128,9 @@ void		ft_run(t_args **bellow, t_flags flag)
 	tmp = *bellow;
 	while (tmp)
 	{
-		create_bellow(&tmp, flag.a); //creer la liste chainee
+		create_bellow(&tmp, flag.a);
 		process_flags(&tmp->bellow, flag);
-		if (S_ISDIR(tmp->lstat.st_mode) != 0 && check_if_point(tmp->arg) == 0) // ici que saut en trop quand -a
+		if (S_ISDIR(tmp->lstat.st_mode) != 0 && check_if_point(tmp->arg) == 0)
 			ft_putendl("");
 		ft_put_this_list(tmp, flag);
 		if (ft_if_go_bellow(tmp) == 1)
@@ -151,9 +148,9 @@ void		opt_u_r(t_args **args, t_flags flag, t_numbers numbers)
 		return ;
 	tmp = *args;
 	a = 0;
-	while (tmp) // attention petit l (courrrrrrrrs)
+	while (tmp)
 	{
-		if (S_ISDIR(tmp->stat.st_mode) != 0 && a != 0) // ici qu'il faut intervenir si args tout seul
+		if (S_ISDIR(tmp->stat.st_mode) != 0 && a != 0)
 			ft_putendl("");
 		if (S_ISDIR(tmp->stat.st_mode) != 0) 
 			a++;

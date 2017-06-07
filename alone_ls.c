@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:00:04 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/06 18:06:20 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 02:41:16 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	ft_print_bellow(t_args *file, t_flags flag)
 {
 	t_args	*tmp;
-	char 	*split;
+	char	*split;
 
 	split = NULL;
 	tmp = file->bellow;
-	if (tmp && flag.l == 1) // INTEGRER TOTAL PETIT L
+	if (tmp && flag.l == 1)
 	{
 		ft_putstr("total ");
 		ft_putnbr(tmp->l_total);
@@ -27,9 +27,8 @@ void	ft_print_bellow(t_args *file, t_flags flag)
 	}
 	while (tmp)
 	{
-		 if (flag.l == 1)
+		if (flag.l == 1)
 			ft_putendl(tmp->field);
-		// gerer munki peut etre ? //version clem mais bancale peut etre
 		else
 		{
 			split = (ft_strrchr(tmp->arg, '/') + 1);
@@ -46,15 +45,12 @@ void	alone(t_args **args, t_flags flag, t_numbers numbers)
 {
 	t_args	*tmp;
 	int		arguments;
-	(void)flag;
 
 	if (!args)
 		return ;
 	arguments = 1;
-
-	alone_2(*args, flag); //Affiche les non-ouvrables
-
-	tmp = *args; //Affiche les ouvrables
+	alone_2(*args, flag);
+	tmp = *args;
 	while (tmp)
 	{
 		ft_put_first_list(tmp, numbers, flag);
