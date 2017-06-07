@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 16:14:40 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 15:48:02 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 21:30:39 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ t_args			*fill_args(int i, char *arg, t_args *argmt)
 	return (argmt);
 }
 
-void	ft_get_lists(int argc, char **argv, t_option **opt, t_args **args)
+void			ft_get_lists(int argc, char **argv, t_option **opt, \
+		t_args **args)
 {
 	int			i;
 

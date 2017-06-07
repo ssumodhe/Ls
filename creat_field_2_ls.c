@@ -6,13 +6,31 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:21:52 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 17:53:22 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 21:23:23 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	ft_size_maj_min(char *field, t_args *tmp, int start, int end) // A METTRE A LA NORME
+void	ft_size_put_maj(char *field, t_args *tmp, int start)
+{
+	int		i;
+	int		n_m;
+
+	n_m = tmp->info.maj;
+	i = start + ft_intlen(n_m);
+	field[i + 1] = ',';
+	if (n_m == 0)
+		field[i--] = '0';
+	while (n_m > 0)
+	{
+		field[i] = '0' + (n_m % 10);
+		n_m = n_m / 10;
+		i--;
+	}
+}
+
+void	ft_size_maj_min(char *field, t_args *tmp, int start, int end)
 {
 	int		i;
 	int		n_m;
@@ -32,17 +50,7 @@ void	ft_size_maj_min(char *field, t_args *tmp, int start, int end) // A METTRE A
 		field[i] = ' ';
 		i--;
 	}
-	n_m = tmp->info.maj;
-	i = start + ft_intlen(n_m);
-	field[i + 1] = ',';
-	if (n_m == 0)
-		field[i--] = '0';
-	while (n_m > 0)
-	{
-		field[i] = '0' + (n_m % 10);
-		n_m = n_m / 10;
-		i--;
-	}
+	ft_size_put_maj(field, tmp, start);
 }
 
 void	ft_put_size(char *field, t_args *tmp, int start, int end)

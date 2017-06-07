@@ -6,7 +6,7 @@
 #    By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/03/30 20:36:48 by ssumodhe          #+#    #+#              #
-#    Updated: 2017/06/07 17:51:07 by ssumodhe         ###   ########.fr        #
+#    Updated: 2017/06/07 22:35:41 by ssumodhe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS = main_ls.c \
 	   alone_ls.c \
 	   opt_t_ls.c \
 	   opt_l_ls.c \
+	   struct_max_lc.c \
 	   creat_field_ls.c \
 	   creat_field_2_ls.c \
 	   creat_field_3_ls.c \

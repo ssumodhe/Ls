@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/21 17:19:59 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 17:53:28 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 22:52:47 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 # define FT_LS_H
 
 # include "libft/libft.h"
-# include <dirent.h> //opendir etc
-# include <sys/errno.h> //errno's define
-# include <time.h> //ctime function
-# include <sys/types.h> //getpwuid function
-# include <pwd.h> //getpwuid function
-# include <grp.h> //getgrgid function
-# include <uuid/uuid.h> //getpwuid & getgrgid function
+# include <dirent.h>
+# include <sys/errno.h>
+# include <time.h>
+# include <sys/types.h>
+# include <pwd.h>
+# include <grp.h>
+# include <uuid/uuid.h>
 
 # define PB_CLOSE_DIR "We seem to reach a probleme when closing the directory"
 
@@ -49,7 +49,7 @@ typedef struct		s_option
 	struct s_option		*next;
 }					t_option;
 
-typedef struct			s_info
+typedef struct		s_info
 {
 	int		hard_link;
 	char	*usr;
@@ -58,8 +58,7 @@ typedef struct			s_info
 	char	*link;
 	int		maj;
 	int		min;
-}						t_info;
-
+}					t_info;
 
 typedef struct		s_args
 {
@@ -78,18 +77,19 @@ typedef struct		s_args
 	struct s_args		*prev;
 }					t_args;
 
-typedef struct			s_max
+typedef struct		s_max
 {
 	int		hard_link;
 	int		usr;
 	int		grp;
 	int		size;
-}						t_max;
+}					t_max;
 
 /*
 ** get_lists.c
 */
-void				ft_get_lists(int argc, char **argv, t_option **opt, t_args **args);
+void				ft_get_lists(int argc, char **argv, t_option **opt, \
+						t_args **args);
 t_option			*fill_option(int i, char *opt, t_option *option);
 t_args				*fill_args(int i, char *arg, t_args *argmt);
 t_args				*new_args(int i, char *arg);
@@ -98,7 +98,8 @@ t_args				*new_args(int i, char *arg);
 ** prog_ls.c
 */
 void				ft_prog(t_option *opt, t_args **args);
-void				ft_if_upper_r(t_args **args, t_flags flag, t_numbers numbers);
+void				ft_if_upper_r(t_args **args, t_flags flag, \
+						t_numbers numbers);
 void				ft_if_no_ur(t_args **args, t_flags flag, t_numbers numbers);
 void				put_error_args(t_args **args);
 void				get_error_args(t_args **args);
@@ -130,8 +131,10 @@ int					ft_lstcount(t_args **merge);
 /*
 ** mergesort_mod_ls.c
 */
-void				ft_ascii_mergesort(t_args **tmp, t_args **left, t_args **right);
-void				ft_modif_date_mergesort(t_args **tmp, t_args **left, t_args **right);
+void				ft_ascii_mergesort(t_args **tmp, t_args **left, \
+						t_args **right);
+void				ft_modif_date_mergesort(t_args **tmp, t_args **left, \
+						t_args **right);
 
 /*
 ** process_args_ls.c
@@ -187,7 +190,8 @@ void				ft_run(t_args **args, t_flags flag);
 /*
 ** put_lists_ls.c
 */
-void				ft_put_first_list(t_args *args, t_numbers numbers, t_flags flag);
+void				ft_put_first_list(t_args *args, t_numbers numbers, \
+						t_flags flag);
 void				ft_put_this_list(t_args *args, t_flags flag);
 int					check_if_point(char *str);
 int					ft_if_go_bellow(t_args *tmp);
@@ -197,6 +201,12 @@ int					ft_if_go_bellow(t_args *tmp);
 */
 void				opt_l(t_args **args);
 int					all_args_opt_l(t_args *args);
+void				ft_opt_l_field(t_args *args, t_max max);
+int					ft_n_if_link(t_args *tmp, int n);
+
+/*
+** struct_max_ls.c
+*/
 t_max				ft_cmp_max(t_args *tmp, t_max max);
 t_max				ft_init_max(void);
 
@@ -205,12 +215,15 @@ t_max				ft_init_max(void);
 */
 void				ft_get_info_item(t_args *tmp);
 char				ft_get_filetype(t_args *tmp);
-char				*ft_create_field(int n, t_args *tmp, t_max max); //+1
+int					ft_fill_field(char *field, t_args *tmp, t_max max);
+char				*ft_create_field(int n, t_args *tmp, t_max max);
 
 /*
 ** creat_field_2_ls.c
 */
-void				ft_size_maj_min(char *field, t_args *tmp, int start, int end); //+1
+void				ft_size_maj_min(char *field, t_args *tmp, int start, \
+						int end);
+void				ft_size_put_maj(char *field, t_args *tmp, int start);
 void				ft_put_size(char *field, t_args *tmp, int start, int end);
 void				ft_put_time(char *field, t_args *tmp);
 
@@ -218,7 +231,7 @@ void				ft_put_time(char *field, t_args *tmp);
 ** creat_field_3_ls.c
 */
 void				ft_put_perm(char *field, t_args *tmp);
-void				ft_put_ext_perm(char *field, t_args *tmp, int usr, int grp, int oth);
+void				ft_put_ext_perm(char *field, t_args *tmp);
 void				ft_put_hardlink(char *field, t_args *tmp, int i);
 void				ft_put_usr(char *field, char *usr, int end);
 void				ft_put_grp(char *field, char *grp, int end);

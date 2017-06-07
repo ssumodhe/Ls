@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 15:48:40 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 16:02:37 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 21:33:26 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	ft_modif_date_mergesort(t_args **tmp, t_args **left, t_args **right)
 {
-	if ((*left)->lstat.st_mtimespec.tv_sec >= (*right)->lstat.st_mtimespec.tv_sec)
+	if ((*left)->lstat.st_mtimespec.tv_sec >= \
+			(*right)->lstat.st_mtimespec.tv_sec)
 	{
 		*tmp = *left;
 		*left = (*left)->next;

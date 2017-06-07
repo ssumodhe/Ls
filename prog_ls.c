@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 18:02:47 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 17:53:30 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 22:48:23 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		get_error_args(t_args **args)
 		tmp->error = errno;
 		if (dir != NULL)
 			if (closedir(dir) == -1)
-				ft_exit("We seem to reach a problem when closing the directory");
+				ft_exit(PB_CLOSE_DIR);
 		tmp = tmp->next;
 	}
 }
@@ -64,12 +64,12 @@ void		ft_if_no_ur(t_args **args, t_flags flag, t_numbers numbers)
 {
 	process_args(args, flag.a);
 	process_flags(args, flag);
-	if (flag.t == 1  && *args)
+	if (flag.t == 1 && *args)
 		opt_t(args);
-	if (flag.l_r == 1  && *args)
+	if (flag.l_r == 1 && *args)
 		opt_l_r(args);
 	if (flag.l == 1 && *args)
-		opt_l(args); 
+		opt_l(args);
 	alone(args, flag, numbers);
 }
 
@@ -81,7 +81,7 @@ void		ft_if_upper_r(t_args **args, t_flags flag, t_numbers numbers)
 		opt_t(args);
 	if (flag.l_r == 1 && *args)
 		opt_l_r(args);
-	if (flag.l == 1  && *args)
+	if (flag.l == 1 && *args)
 		opt_l(args);
 	alone_2(*args, flag);
 	if (*args)

@@ -6,13 +6,13 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 16:19:26 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 16:25:32 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 21:37:44 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-char	*ft_strjoin_by(char *str1, char c, char *str2)
+char		*ft_strjoin_by(char *str1, char c, char *str2)
 {
 	int		n1;
 	int		n2;
@@ -37,14 +37,14 @@ char	*ft_strjoin_by(char *str1, char c, char *str2)
 	b = 0;
 	while (str2[b] != '\0')
 		join[a++] = str2[b++];
-	return(join);
+	return (join);
 }
 
-t_args *args_newlist(char *str, struct dirent *d)
+t_args		*args_newlist(char *str, struct dirent *d)
 {
 	t_args	*new;
 
-	if(!(new = (t_args *)malloc(sizeof(*new))))
+	if (!(new = (t_args *)malloc(sizeof(*new))))
 		ft_exit(RED"error malloc bellow's list creation"RESET);
 	new->error = 0;
 	new->arg = ft_strjoin_by(str, '/', d->d_name);
@@ -55,10 +55,10 @@ t_args *args_newlist(char *str, struct dirent *d)
 	new->bellow = NULL;
 	new->next = NULL;
 	new->prev = NULL;
-	return(new);
+	return (new);
 }
 
-void	ft_put_bellow_file(t_args **args, struct dirent *d)
+void		ft_put_bellow_file(t_args **args, struct dirent *d)
 {
 	t_args	*tmp;
 
@@ -77,11 +77,10 @@ void	ft_put_bellow_file(t_args **args, struct dirent *d)
 	}
 }
 
-
-void	ft_openfiles(t_args **args)
+void		ft_openfiles(t_args **args)
 {
-	DIR		*dir;
-	struct dirent *d;
+	DIR				*dir;
+	struct dirent	*d;
 
 	if (!args)
 		return ;
@@ -101,10 +100,10 @@ void	ft_openfiles(t_args **args)
 		ft_exit(PB_CLOSE_DIR);
 }
 
-void	ft_openfiles_withouta(t_args **args)
+void		ft_openfiles_withouta(t_args **args)
 {
-	DIR		*dir;
-	struct dirent *d;
+	DIR				*dir;
+	struct dirent	*d;
 
 	if (!args)
 		return ;
@@ -121,7 +120,7 @@ void	ft_openfiles_withouta(t_args **args)
 			}
 		}
 	}
-	else 
+	else
 		(*args)->error = errno;
 	if (dir && closedir(dir) == -1)
 		ft_exit(PB_CLOSE_DIR);

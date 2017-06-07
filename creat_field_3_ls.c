@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:46:07 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 17:53:23 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 21:28:37 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,21 @@ void	ft_put_perm(char *field, t_args *tmp)
 	field[11] = ' ';
 }
 
-void	ft_put_ext_perm(char *field, t_args *tmp, int usr, int grp, int oth)
+void	ft_put_ext_perm(char *field, t_args *tmp)
 {
 	char	current_usr;
 	char	current_grp;
 	char	current_oth;
 
-	current_usr = field[usr];
-	current_grp = field[grp];
-	current_oth = field[oth];
-	field[usr] = (((tmp->lstat.st_mode & S_ISUID) == S_ISUID) ? 's' : current_usr);
-	field[grp] = (((tmp->lstat.st_mode & S_ISGID) == S_ISGID) ? 's' : current_grp);
-	field[oth] = (((tmp->lstat.st_mode & S_ISVTX) == S_ISVTX) ? 't' : current_oth);
+	current_usr = field[3];
+	current_grp = field[6];
+	current_oth = field[9];
+	field[3] = (((tmp->lstat.st_mode & S_ISUID) == S_ISUID) ? \
+		's' : current_usr);
+	field[6] = (((tmp->lstat.st_mode & S_ISGID) == S_ISGID) ? \
+		's' : current_grp);
+	field[9] = (((tmp->lstat.st_mode & S_ISVTX) == S_ISVTX) ? \
+		't' : current_oth);
 }
 
 void	ft_put_hardlink(char *field, t_args *tmp, int i)
@@ -85,7 +88,7 @@ void	ft_put_grp(char *field, char *grp, int end)
 {
 	int		i;
 
-	i = 0; 
+	i = 0;
 	if (grp != NULL)
 	{
 		i = ft_strlen(grp);

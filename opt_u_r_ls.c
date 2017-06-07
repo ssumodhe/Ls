@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 20:01:42 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 17:00:15 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 22:40:21 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void		opt_u_r(t_args **args, t_flags flag, t_numbers numbers)
 	{
 		if (S_ISDIR(tmp->stat.st_mode) != 0 && a != 0)
 			ft_putendl("");
-		if (S_ISDIR(tmp->stat.st_mode) != 0) 
+		if (S_ISDIR(tmp->stat.st_mode) != 0)
 			a++;
 		ft_put_first_list(tmp, numbers, flag);
 		if (tmp->bellow != NULL)

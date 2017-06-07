@@ -6,13 +6,13 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/25 12:10:18 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 16:03:02 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 21:32:55 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		ft_lstcount(t_args **merge)
+int			ft_lstcount(t_args **merge)
 {
 	t_args	*tmp;
 	int		nb_list;
@@ -27,13 +27,13 @@ int		ft_lstcount(t_args **merge)
 	return (nb_list);
 }
 
-void	ft_put_side(t_args **tmp, t_args **side)
+void		ft_put_side(t_args **tmp, t_args **side)
 {
-		*tmp = *side;
-		*side = (*side)->next;
+	*tmp = *side;
+	*side = (*side)->next;
 }
 
-t_args *ft_glue_mergesort(t_args *left, t_args *right, void	f())
+t_args		*ft_glue_mergesort(t_args *left, t_args *right, void f())
 {
 	t_args		*tmp;
 	t_args		*head;
@@ -44,7 +44,7 @@ t_args *ft_glue_mergesort(t_args *left, t_args *right, void	f())
 	{
 		if (!left)
 			ft_put_side(&tmp, &right);
-		else 
+		else
 		{
 			if (!right)
 				ft_put_side(&tmp, &left);
@@ -60,7 +60,7 @@ t_args *ft_glue_mergesort(t_args *left, t_args *right, void	f())
 	return (head);
 }
 
-t_args	*ft_mergesort(t_args *merge, void f())
+t_args		*ft_mergesort(t_args *merge, void f())
 {
 	t_args	*left;
 	t_args	*right;

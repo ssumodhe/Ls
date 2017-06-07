@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:00:04 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 17:53:26 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 21:22:56 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ t_numbers	count_args_2(t_args *file)
 
 void		alone_2(t_args *args, t_flags flag)
 {
-	t_args	*file;
-	t_numbers numbers;
+	t_args		*file;
+	t_numbers	numbers;
 
 	file = args;
 	while (file)
@@ -62,14 +62,14 @@ void		alone_2(t_args *args, t_flags flag)
 		ft_putendl("");
 }
 
-void	ft_print_bellow(t_args *file, t_flags flag)
+void		ft_print_bellow(t_args *file, t_flags flag)
 {
 	t_args	*tmp;
 	char	*split;
 
 	split = NULL;
 	tmp = file->bellow;
-	if (tmp && flag.l == 1)
+	if (tmp && flag.l == 1 && tmp->field && tmp->field[0] != '\0')
 	{
 		ft_putstr("total ");
 		ft_putnbr(tmp->l_total);
@@ -77,7 +77,7 @@ void	ft_print_bellow(t_args *file, t_flags flag)
 	}
 	while (tmp)
 	{
-		if (flag.l == 1)
+		if (flag.l == 1 && tmp->field && tmp->field[0] != '\0')
 			ft_putendl(tmp->field);
 		else
 		{
@@ -91,7 +91,7 @@ void	ft_print_bellow(t_args *file, t_flags flag)
 	}
 }
 
-void	alone(t_args **args, t_flags flag, t_numbers numbers)
+void		alone(t_args **args, t_flags flag, t_numbers numbers)
 {
 	t_args	*tmp;
 	int		arguments;

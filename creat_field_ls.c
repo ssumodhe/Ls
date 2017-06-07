@@ -6,7 +6,7 @@
 /*   By: ssumodhe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/07 17:01:43 by ssumodhe          #+#    #+#             */
-/*   Updated: 2017/06/07 17:53:20 by ssumodhe         ###   ########.fr       */
+/*   Updated: 2017/06/07 21:29:17 by ssumodhe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,14 @@ char	ft_get_filetype(t_args *tmp)
 	return (c);
 }
 
-char	*ft_create_field(int n, t_args *tmp, t_max max) // A METTRE A LA NORME
+int		ft_fill_field(char *field, t_args *tmp, t_max max)
 {
-	char	*field;
 	int		i;
 
-	if (!(field = (char *)malloc(sizeof(char) * n + 1)))
-		return (NULL);
-	field[n] = '\0';
 	i = 0;
 	field[0] = ft_get_filetype(tmp);
 	ft_put_perm(field, tmp);
-	ft_put_ext_perm(field, tmp, 3, 6, 9);
+	ft_put_ext_perm(field, tmp);
 	ft_put_hardlink(field, tmp, 11 + max.hard_link);
 	field[11 + max.hard_link + 1] = ' ';
 	i = 11 + max.hard_link + 2;
@@ -90,6 +86,18 @@ char	*ft_create_field(int n, t_args *tmp, t_max max) // A METTRE A LA NORME
 	ft_put_time(field + i, tmp);
 	i = i + 12;
 	field[i++] = ' ';
+	return (i);
+}
+
+char	*ft_create_field(int n, t_args *tmp, t_max max)
+{
+	char	*field;
+	int		i;
+
+	if (!(field = (char *)malloc(sizeof(char) * n + 1)))
+		return (NULL);
+	field[n] = '\0';
+	i = ft_fill_field(field, tmp, max);
 	if (ft_strrchr(tmp->arg, '/') != NULL)
 		ft_strcpy(field + i, (ft_strrchr(tmp->arg, '/') + 1));
 	else
@@ -108,4 +116,3 @@ char	*ft_create_field(int n, t_args *tmp, t_max max) // A METTRE A LA NORME
 	}
 	return (field);
 }
-
